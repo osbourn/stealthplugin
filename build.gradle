@@ -47,11 +47,13 @@ spigot {
             description = 'Morph a player into a given entity'
             permission = 'stealth.morph'
             permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command> <entity> [<player>]'
         }
         create('unmorph') {
             description = 'Unmorph a morphed player'
             permission = 'stealth.morph'
             permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command> [<player>]'
         }
     }
     permissions {
