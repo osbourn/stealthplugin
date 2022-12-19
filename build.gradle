@@ -43,6 +43,8 @@ spigot {
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
+        create('morph') {
+        }
     }
     permissions {
         'stealth.togglekillarrows' {

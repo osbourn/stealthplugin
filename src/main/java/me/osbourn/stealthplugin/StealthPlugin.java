@@ -14,6 +14,9 @@ public final class StealthPlugin extends JavaPlugin {
         this.getCommand("toggleannouncebeacons").setExecutor(announceBeaconsHandler);
 
         this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());
+
+        MorphManager morphManager = new MorphManager();
+        this.getCommand("morph").setExecutor(new MorphCommand(morphManager));
     }
 
     @Override
