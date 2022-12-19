@@ -11,7 +11,6 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +40,13 @@ public class MorphManager implements Listener {
         Object[] matching = player.getWorld().getEntities().stream()
                 .filter(entity -> entity.getUniqueId().equals(targetUUID))
                 .toArray();
-        return (LivingEntity) matching[0];
+        if (matching.length != 1) {
+            this.fastUnmorph(player);
+            player.sendMessage("Morphed entity not found");
+            return null;
+        } else {
+            return (LivingEntity) matching[0];
+        }
     }
 
     public void morphAsEntity(Player player, LivingEntity target) {
@@ -57,6 +62,16 @@ public class MorphManager implements Listener {
         player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(
                 target.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         player.setHealth(target.getHealth());
+    }
+
+    /**
+     * If the morphed entity is not found, the player should be quickly unmorphed to avoid constant errors to console
+     */
+    public void fastUnmorph(Player player) {
+        player.setInvisible(false);
+        player.getCollidableExemptions().remove(this.morphs.get(player.getUniqueId()));
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
+        this.morphs.remove(player.getUniqueId());
     }
 
     public void unmorph(Player player) {
@@ -84,7 +99,9 @@ public class MorphManager implements Listener {
         if (isPlayerMorphed(player)) {
             Location loc = event.getTo();
             LivingEntity entity = this.getMorphedEntity(player);
-            entity.teleport(loc);
+            if (entity != null) {
+                entity.teleport(loc);
+            }
         }
     }
 
