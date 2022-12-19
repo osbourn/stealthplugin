@@ -12,6 +12,8 @@ public final class StealthPlugin extends JavaPlugin {
         AnnounceBeaconsHandler announceBeaconsHandler = new AnnounceBeaconsHandler();
         this.getServer().getPluginManager().registerEvents(announceBeaconsHandler, this);
         this.getCommand("toggleannouncebeacons").setExecutor(announceBeaconsHandler);
+
+        this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());
     }
 
     @Override

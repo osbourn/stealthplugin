@@ -27,13 +27,19 @@ spigot {
     commands {
         create('togglekillarrows') {
             description = 'Toggles whether or not arrows insta-kill entities'
-            permission 'stealth.togglekillarrows'
+            permission = 'stealth.togglekillarrows'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
         create('toggleannouncebeacons') {
             description = 'Toggles whether or not it is announced when beacons are broken'
-            permission 'stealth.toggleannouncebeacons'
+            permission = 'stealth.toggleannouncebeacons'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command>'
+        }
+        create('giveteamarmor') {
+            description = 'Sets the armor of all players on a team to leather armor with their team color'
+            permission = 'stealth.giveteamarmor'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
@@ -45,6 +51,10 @@ spigot {
         }
         'stealth.toggleannouncebeacons' {
             description = 'Allows /toggleannouncebeacons command'
+            defaults = 'op'
+        }
+        'stealth.giveteamarmor' {
+            description = 'Allows /giveteamarmor command'
             defaults = 'op'
         }
     }
