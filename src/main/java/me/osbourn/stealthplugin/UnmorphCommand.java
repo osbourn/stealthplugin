@@ -27,6 +27,10 @@ public class UnmorphCommand implements CommandExecutor {
                 return false;
             }
         } else if (args.length == 1) {
+            if (args[0].equals("*")) {
+                unmorphAllPlayers();
+                return true;
+            }
             player = Bukkit.getPlayer(args[0]);
             if (player == null) {
                 sender.sendMessage("No player " + args[0] + " found!");
@@ -43,6 +47,14 @@ public class UnmorphCommand implements CommandExecutor {
         } else {
             sender.sendMessage("Player was not morphed");
             return false;
+        }
+    }
+
+    private void unmorphAllPlayers() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (this.morphManager.isPlayerMorphed(player)) {
+                this.morphManager.unmorph(player);
+            }
         }
     }
 }
