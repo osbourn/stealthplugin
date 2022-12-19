@@ -1,4 +1,0 @@
-name: StealthPlugin
-version: '${version}'
-main: me.osbourn.stealthplugin.StealthPlugin
-api-version: 1.18
