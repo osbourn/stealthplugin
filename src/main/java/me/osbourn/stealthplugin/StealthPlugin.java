@@ -13,6 +13,10 @@ public final class StealthPlugin extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(announceBeaconsHandler, this);
         this.getCommand("toggleannouncebeacons").setExecutor(announceBeaconsHandler);
 
+        ProtectLayersHandler protectLayersHandler = new ProtectLayersHandler();
+        this.getServer().getPluginManager().registerEvents(protectLayersHandler, this);
+        this.getCommand("setprotectedlayer").setExecutor(protectLayersHandler);
+
         this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());
 
         MorphManager morphManager = new MorphManager();
