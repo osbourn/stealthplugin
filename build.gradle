@@ -44,6 +44,14 @@ spigot {
             usage = '/<command>'
         }
         create('morph') {
+            description = 'Morph a player into a given entity'
+            permission = 'stealth.morph'
+            permissionMessage = 'You do not have permission to use this command'
+        }
+        create('unmorph') {
+            description = 'Unmorph a morphed player'
+            permission = 'stealth.morph'
+            permissionMessage = 'You do not have permission to use this command'
         }
     }
     permissions {
@@ -57,6 +65,10 @@ spigot {
         }
         'stealth.giveteamarmor' {
             description = 'Allows /giveteamarmor command'
+            defaults = 'op'
+        }
+        'stealth.morph' {
+            description = 'Allows /morph and /unmorph commands'
             defaults = 'op'
         }
     }
