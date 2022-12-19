@@ -23,6 +23,7 @@ dependencies {
 }
 
 spigot {
+    apiVersion '1.18'
     commands {
         create('togglekillarrows') {
             description = 'Toggles whether or not arrows insta-kill entities'
@@ -30,10 +31,20 @@ spigot {
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
+        create('toggleannouncebeacons') {
+            description = 'Toggles whether or not it is announced when beacons are broken'
+            permission 'stealth.toggleannouncebeacons'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command>'
+        }
     }
     permissions {
         'stealth.togglekillarrows' {
             description = 'Allows /togglekillarrows command'
+            defaults = 'op'
+        }
+        'stealth.toggleannouncebeacons' {
+            description = 'Allows /toggleannouncebeacons command'
             defaults = 'op'
         }
     }

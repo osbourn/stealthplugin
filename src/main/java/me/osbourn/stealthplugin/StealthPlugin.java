@@ -8,6 +8,10 @@ public final class StealthPlugin extends JavaPlugin {
         KillArrowsHandler killArrowsHandler = new KillArrowsHandler();
         this.getServer().getPluginManager().registerEvents(killArrowsHandler, this);
         this.getCommand("togglekillarrows").setExecutor(killArrowsHandler);
+
+        AnnounceBeaconsHandler announceBeaconsHandler = new AnnounceBeaconsHandler();
+        this.getServer().getPluginManager().registerEvents(announceBeaconsHandler, this);
+        this.getCommand("toggleannouncebeacons").setExecutor(announceBeaconsHandler);
     }
 
     @Override
