@@ -6,8 +6,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupArrowEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -90,6 +94,29 @@ public class MorphManager implements Listener {
         if (isPlayerMorphed(player)) {
             event.setDeathMessage("Morphed player " + event.getDeathMessage());
             this.unmorph(player);
+        }
+    }
+
+    @EventHandler
+    public void pickupItemEvent(EntityPickupItemEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            if (this.isPlayerMorphed(player)) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void pickupArrowEvent(PlayerPickupArrowEvent event) {
+        if (this.isPlayerMorphed(event.getPlayer())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void breakBlockEvent(BlockBreakEvent event) {
+        if (this.isPlayerMorphed(event.getPlayer())) {
+            event.setCancelled(true);
         }
     }
 }
