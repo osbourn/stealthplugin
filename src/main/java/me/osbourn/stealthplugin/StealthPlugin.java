@@ -19,6 +19,11 @@ public final class StealthPlugin extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(morphManager, this);
         this.getCommand("morph").setExecutor(new MorphCommand(morphManager));
         this.getCommand("unmorph").setExecutor(new UnmorphCommand(morphManager));
+
+        MorphOnRespawnHandler morphOnRespawnHandler = new MorphOnRespawnHandler(morphManager);
+        this.getServer().getPluginManager().registerEvents(morphOnRespawnHandler, this);
+        this.getCommand("togglemorphonrespawn").setExecutor(morphOnRespawnHandler);
+
     }
 
     @Override

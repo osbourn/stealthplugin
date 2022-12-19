@@ -37,6 +37,12 @@ spigot {
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
+        create('togglemorphonrespawn') {
+            description = 'Toggles whether or not players morph when they respawn'
+            permission = 'stealth.togglemorphonrespawn'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command>'
+        }
         create('giveteamarmor') {
             description = 'Sets the armor of all players on a team to leather armor with their team color'
             permission = 'stealth.giveteamarmor'
@@ -63,6 +69,10 @@ spigot {
         }
         'stealth.toggleannouncebeacons' {
             description = 'Allows /toggleannouncebeacons command'
+            defaults = 'op'
+        }
+        'stealth.togglemorphonrespawn' {
+            description = "Allows /togglemorphonrespawn command"
             defaults = 'op'
         }
         'stealth.giveteamarmor' {
