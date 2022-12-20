@@ -19,6 +19,7 @@ public final class StealthPlugin extends JavaPlugin {
         this.getCommand("unmorph").setExecutor(new UnmorphCommand(morphManager));
 
         TogglableHandler.registerHandler(new MorphOnRespawnHandler(morphManager), "togglemorphonrespawn", this);
+        TogglableHandler.registerHandler(new PlayersDropArrowsHandler(morphManager), "toggleplayersdroparrows", this);
     }
 
     @Override

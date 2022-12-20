@@ -49,6 +49,12 @@ spigot {
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
+        create('toggleplayersdroparrows') {
+            description = 'Toggles whether or not players drop arrows on death'
+            permission = 'stealth.toggleplayersdroparrows'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command>'
+        }
         create('setprotectedlayer') {
             description = 'Sets or disables the protected layer'
             permission = 'stealth.setprotectedlayer'
@@ -89,6 +95,10 @@ spigot {
         }
         'stealth.toggleclearinventoryondeath' {
             description = 'Allows /toggleclearinventoryondeath command'
+            defaults = 'op'
+        }
+        'stealth.toggleplayersdroparrows' {
+            description = 'Allows /toggleplayersdroparrows command'
             defaults = 'op'
         }
         'stealth.setprotectedlayer' {
