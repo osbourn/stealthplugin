@@ -3,18 +3,12 @@ package me.osbourn.stealthplugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-public class AnnounceBeaconsHandler implements Listener, CommandExecutor {
-    private boolean isActive = true;
-
+public class AnnounceBeaconsHandler extends TogglableHandler {
     private void announceDestruction(Block block, String adjective) {
         Block blockBelow = block.getRelative(0, -1, 0);
         String blockBelowName = switch (blockBelow.getType()) {
@@ -49,25 +43,12 @@ public class AnnounceBeaconsHandler implements Listener, CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("stealth.toggleannouncebeacons")) {
-            return false;
-        }
-
-        this.setActive(!this.isActive());
-        if (this.isActive()) {
-            sender.sendMessage("Beacon destruction announcements enabled");
-        } else {
-            sender.sendMessage("Beacon destruction announcements disabled");
-        }
-        return true;
+    protected String description() {
+        return "Beacon destruction announcements";
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean state) {
-        this.isActive = state;
+    @Override
+    protected String permission() {
+        return "stealth.toggleannouncebeacons";
     }
 }

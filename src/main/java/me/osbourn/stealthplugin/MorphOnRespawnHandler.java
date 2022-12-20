@@ -1,21 +1,17 @@
 package me.osbourn.stealthplugin;
 
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-public class MorphOnRespawnHandler implements Listener, CommandExecutor {
-    private boolean isActive = true;
+public class MorphOnRespawnHandler extends TogglableHandler {
     private final MorphManager morphManager;
 
     public MorphOnRespawnHandler(MorphManager morphManager) {
+        super();
         this.morphManager = morphManager;
     }
 
@@ -34,25 +30,12 @@ public class MorphOnRespawnHandler implements Listener, CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("stealth.togglemorphonrespawn")) {
-            return false;
-        }
-
-        this.setActive(!this.isActive());
-        if (this.isActive()) {
-            sender.sendMessage("Morph on respawn enabled");
-        } else {
-            sender.sendMessage("Morph on respawn disabled");
-        }
-        return true;
+    protected String description() {
+        return "Morph on respawn";
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean state) {
-        this.isActive = state;
+    @Override
+    protected String permission() {
+        return "stealth.togglemorphonrespawn";
     }
 }
