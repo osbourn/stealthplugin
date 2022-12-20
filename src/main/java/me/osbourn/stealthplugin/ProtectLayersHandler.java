@@ -2,20 +2,23 @@ package me.osbourn.stealthplugin;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-public class ProtectLayersHandler implements Listener, CommandExecutor {
-    private int layer = -1;
+public class ProtectLayersHandler extends TogglableHandler {
+    private int layer = 0;
+
+    public ProtectLayersHandler() {
+        super();
+        this.setActive(false);
+    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (this.getLayer() >= 0) {
+        if (this.isActive()) {
             Location loc = event.getBlock().getLocation();
             if (loc.getBlockY() <= this.getLayer()) {
                 event.setCancelled(true);
@@ -25,7 +28,7 @@ public class ProtectLayersHandler implements Listener, CommandExecutor {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (this.getLayer() >= 0) {
+        if (this.isActive()) {
             Location loc = event.getBlock().getLocation();
             if (loc.getBlockY() <= this.getLayer()) {
                 event.setCancelled(true);
@@ -41,27 +44,41 @@ public class ProtectLayersHandler implements Listener, CommandExecutor {
     }
 
     @Override
+    protected String description() {
+        return "Protected layer";
+    }
+
+    @Override
+    protected String permission() {
+        return "stealth.setprotectedlayer";
+    }
+
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 0) {
+            return super.onCommand(sender, command, label, args);
+        }
+
         if (!sender.hasPermission("stealth.setprotectedlayer")) {
             return false;
         }
 
-        if (args.length == 0) {
-            this.setLayer(-1);
-            sender.sendMessage("Protected layer disabled");
-            return true;
-        } else if (args.length == 1) {
-            try {
-                int layer = Integer.parseInt(args[0]);
-                this.setLayer(layer);
-                sender.sendMessage("Protected layer set to " + layer);
-                return true;
-            } catch (NumberFormatException e) {
-                sender.sendMessage("Invalid number");
-                return false;
-            }
-        } else {
+        if (args.length > 1) {
             sender.sendMessage("Too many arguments");
+            return false;
+        }
+
+        try {
+            int layer = Integer.parseInt(args[0]);
+            this.setLayer(layer);
+            if (this.isActive()) {
+                sender.sendMessage("Protected layer set to " + layer);
+            } else {
+                sender.sendMessage("Protected layer set to " + layer + ", but protected layer is still disabled");
+            }
+            return true;
+        } catch (NumberFormatException e) {
+            sender.sendMessage("Invalid number");
             return false;
         }
     }
