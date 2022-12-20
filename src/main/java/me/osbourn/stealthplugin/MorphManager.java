@@ -1,18 +1,23 @@
 package me.osbourn.stealthplugin;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -136,6 +141,21 @@ public class MorphManager implements Listener {
     public void breakBlockEvent(BlockBreakEvent event) {
         if (this.isPlayerMorphed(event.getPlayer())) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void playerInteractEvent(PlayerInteractEvent event) {
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (this.isPlayerMorphed(event.getPlayer())) {
+                final Material[] restrictedBlocks = { Material.CHEST, Material.BARREL, Material.HOPPER,
+                    Material.TRAPPED_CHEST, Material.SHULKER_BOX, Material.DISPENSER, Material.DROPPER,
+                    Material.FURNACE, Material.CAMPFIRE, Material.SOUL_CAMPFIRE };
+                Block block = event.getClickedBlock();
+                if (Arrays.asList(restrictedBlocks).contains(block.getType())) {
+                    event.setCancelled(true);
+                };
+            }
         }
     }
 }
