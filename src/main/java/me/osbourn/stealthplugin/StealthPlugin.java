@@ -8,6 +8,7 @@ public final class StealthPlugin extends JavaPlugin {
 
         TogglableHandler.registerHandler(new KillArrowsHandler(), "togglekillarrows", this);
         TogglableHandler.registerHandler(new AnnounceBeaconsHandler(), "toggleannouncebeacons", this);
+        TogglableHandler.registerHandler(new ClearInventoryOnDeathHandler(), "toggleclearinventoryondeath", this);
         TogglableHandler.registerHandler(new ProtectLayersHandler(), "setprotectedlayer", this);
 
         this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());

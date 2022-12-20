@@ -43,6 +43,12 @@ spigot {
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
+        create('toggleclearinventoryondeath') {
+            description = 'Toggles whether or not player inventories are cleared on death'
+            permission = 'stealth.toggleclearinventoryondeath'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command>'
+        }
         create('setprotectedlayer') {
             description = 'Sets or disables the protected layer'
             permission = 'stealth.setprotectedlayer'
@@ -79,6 +85,10 @@ spigot {
         }
         'stealth.togglemorphonrespawn' {
             description = 'Allows /togglemorphonrespawn command'
+            defaults = 'op'
+        }
+        'stealth.toggleclearinventoryondeath' {
+            description = 'Allows /toggleclearinventoryondeath command'
             defaults = 'op'
         }
         'stealth.setprotectedlayer' {
