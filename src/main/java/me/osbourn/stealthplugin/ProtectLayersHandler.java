@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
@@ -40,6 +41,15 @@ public class ProtectLayersHandler extends TogglableHandler {
     public void onEntityExplode(EntityExplodeEvent event) {
         if (this.isActive()) {
             event.blockList().removeIf(block -> block.getLocation().getBlockY() <= this.getLayer());
+        }
+    }
+
+    @EventHandler
+    public void onBlockBurn(BlockBurnEvent event) {
+        if (this.isActive()) {
+            if (event.getBlock().getLocation().getBlockY() <= this.getLayer()) {
+                event.setCancelled(true);
+            }
         }
     }
 
