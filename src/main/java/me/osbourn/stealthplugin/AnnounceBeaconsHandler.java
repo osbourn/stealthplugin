@@ -9,6 +9,13 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class AnnounceBeaconsHandler extends TogglableHandler {
+    private final MorphManager morphManager;
+
+    public AnnounceBeaconsHandler(MorphManager morphManager) {
+        super();
+        this.morphManager = morphManager;
+    }
+
     private void announceDestruction(Block block, String adjective) {
         Block blockBelow = block.getRelative(0, -1, 0);
         String blockBelowName = switch (blockBelow.getType()) {
@@ -27,7 +34,9 @@ public class AnnounceBeaconsHandler extends TogglableHandler {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if (this.isActive() && event.getBlock().getType() == Material.BEACON) {
-            announceDestruction(event.getBlock(), "was broken");
+            if (!this.morphManager.isPlayerMorphed(event.getPlayer())) {
+                announceDestruction(event.getBlock(), "was broken");
+            }
         }
     }
 
