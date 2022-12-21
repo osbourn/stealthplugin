@@ -38,7 +38,7 @@ public class ProtectLayersHandler extends TogglableHandler {
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
-        if (this.getLayer() >= 0) {
+        if (this.isActive()) {
             event.blockList().removeIf(block -> block.getLocation().getBlockY() <= this.getLayer());
         }
     }
