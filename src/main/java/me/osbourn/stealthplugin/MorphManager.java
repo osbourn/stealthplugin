@@ -1,5 +1,6 @@
 package me.osbourn.stealthplugin;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -118,7 +119,7 @@ public class MorphManager implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         if (isPlayerMorphed(player)) {
-            event.setDeathMessage("Morphed player " + event.getDeathMessage());
+            event.setDeathMessage(ChatColor.DARK_GRAY + "Morphed player " + event.getDeathMessage());
             this.unmorph(player);
         }
     }
