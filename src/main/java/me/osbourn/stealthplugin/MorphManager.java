@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
@@ -155,6 +157,17 @@ public class MorphManager implements Listener {
                 if (Arrays.asList(restrictedBlocks).contains(block.getType())) {
                     event.setCancelled(true);
                 };
+            }
+        }
+    }
+
+    @EventHandler
+    public void arrowHitEvent(ProjectileHitEvent event) {
+        if (event.getEntity().getType() == EntityType.ARROW) {
+            if (event.getHitEntity() != null && event.getHitEntity() instanceof Player player) {
+                if (this.isPlayerMorphed(player)) {
+                    event.setCancelled(true);
+                }
             }
         }
     }
