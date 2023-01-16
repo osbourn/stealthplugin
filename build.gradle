@@ -67,6 +67,12 @@ spigot {
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
+        create('randomizeteams') {
+            description = 'Randomizes Teams'
+            permission = 'stealth.randomizeteams'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command> <teamname>:<count> <teamname2>:<count> ...'
+        }
         create('morph') {
             description = 'Morph a player into a given entity'
             permission = 'stealth.morph'
@@ -107,6 +113,10 @@ spigot {
         }
         'stealth.giveteamarmor' {
             description = 'Allows /giveteamarmor command'
+            defaults = 'op'
+        }
+        'stealth.randomizeteams' {
+            description = 'Allows /randomizeteams command'
             defaults = 'op'
         }
         'stealth.morph' {

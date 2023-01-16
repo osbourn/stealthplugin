@@ -6,6 +6,7 @@ public final class StealthPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());
+        this.getCommand("randomizeteams").setExecutor(new RandomizeTeamsCommand());
 
         MorphManager morphManager = new MorphManager();
         this.getServer().getPluginManager().registerEvents(morphManager, this);
