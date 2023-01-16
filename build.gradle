@@ -16,14 +16,20 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
+    maven {
+        name = 'enginehub-maven'
+        url = 'https://maven.enginehub.org/repo/'
+    }
 }
 
 dependencies {
     compileOnly spigot('1.18.2')
+    compileOnly 'com.sk89q.worldedit:worldedit-core:7.2.0-SNAPSHOT'
 }
 
 spigot {
     apiVersion '1.18'
+    depends 'WorldEdit'
     commands {
         create('togglekillarrows') {
             description = 'Toggles whether or not arrows insta-kill entities'
