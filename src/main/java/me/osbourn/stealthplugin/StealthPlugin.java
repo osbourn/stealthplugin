@@ -25,12 +25,12 @@ public final class StealthPlugin extends JavaPlugin {
         this.getCommand("morph").setExecutor(new MorphCommand(morphManager));
         this.getCommand("unmorph").setExecutor(new UnmorphCommand(morphManager));
 
-        TogglableHandler.registerHandler(new KillArrowsHandler(), "togglekillarrows", this);
-        TogglableHandler.registerHandler(new ClearInventoryOnDeathHandler(), "toggleclearinventoryondeath", this);
-        TogglableHandler.registerHandler(new ProtectLayersHandler(), "setprotectedlayer", this);
-        TogglableHandler.registerHandler(new AnnounceBeaconsHandler(morphManager), "toggleannouncebeacons", this);
-        TogglableHandler.registerHandler(new MorphOnRespawnHandler(morphManager), "togglemorphonrespawn", this);
-        TogglableHandler.registerHandler(new PlayersDropArrowsHandler(morphManager), "toggleplayersdroparrows", this);
+        registerSetting(new KillArrowsHandler());
+        registerSetting(new ClearInventoryOnDeathHandler());
+        registerSetting(new ProtectLayersHandler());
+        registerSetting(new AnnounceBeaconsHandler(morphManager));
+        registerSetting(new MorphOnRespawnHandler(morphManager));
+        registerSetting(new PlayersDropArrowsHandler(morphManager));
     }
 
     public List<Setting> getSettingsList() {
@@ -38,10 +38,12 @@ public final class StealthPlugin extends JavaPlugin {
     }
 
     private void registerSetting(Setting setting) {
+        // TODO: Better way of making sure that every setting is a Listener
         settingsList.add(setting);
-        if (setting instanceof Listener l) {
-            this.getServer().getPluginManager().registerEvents(l, this);
+        if (!(setting instanceof Listener)) {
+            throw new AssertionError();
         }
+        this.getServer().getPluginManager().registerEvents((Listener) setting, this);
     }
 
     @Override

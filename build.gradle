@@ -37,42 +37,6 @@ spigot {
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command> <settingname> [value]'
         }
-        create('togglekillarrows') {
-            description = 'Toggles whether or not arrows insta-kill entities'
-            permission = 'stealth.manage'
-            permissionMessage = 'You do not have permission to use this command'
-            usage = '/<command>'
-        }
-        create('toggleannouncebeacons') {
-            description = 'Toggles whether or not it is announced when beacons are broken'
-            permission = 'stealth.manage'
-            permissionMessage = 'You do not have permission to use this command'
-            usage = '/<command>'
-        }
-        create('togglemorphonrespawn') {
-            description = 'Toggles whether or not players morph when they respawn'
-            permission = 'stealth.manage'
-            permissionMessage = 'You do not have permission to use this command'
-            usage = '/<command>'
-        }
-        create('toggleclearinventoryondeath') {
-            description = 'Toggles whether or not player inventories are cleared on death'
-            permission = 'stealth.manage'
-            permissionMessage = 'You do not have permission to use this command'
-            usage = '/<command>'
-        }
-        create('toggleplayersdroparrows') {
-            description = 'Toggles whether or not players drop arrows on death'
-            permission = 'stealth.manage'
-            permissionMessage = 'You do not have permission to use this command'
-            usage = '/<command>'
-        }
-        create('setprotectedlayer') {
-            description = 'Sets or disables the protected layer'
-            permission = 'stealth.manage'
-            permissionMessage = 'You do not have permission to use this command'
-            usage = '/<command> [<height>]'
-        }
         create('giveteamarmor') {
             description = 'Sets the armor of all players on a team to leather armor with their team color'
             permission = 'stealth.manage'
