@@ -16,9 +16,4 @@ public class ClearInventoryOnDeathHandler extends TogglableHandler {
     protected String description() {
         return "Clear inventory on death";
     }
-
-    @Override
-    protected String permission() {
-        return "stealth.toggleclearinventoryondeath";
-    }
 }

@@ -15,7 +15,7 @@ import org.bukkit.scoreboard.Team;
 public class GiveTeamArmorCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("stealth.giveteamarmor")) {
+        if (!sender.hasPermission("stealth.manage")) {
             return false;
         }
 

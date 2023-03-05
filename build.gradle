@@ -33,100 +33,68 @@ spigot {
     commands {
         create('togglekillarrows') {
             description = 'Toggles whether or not arrows insta-kill entities'
-            permission = 'stealth.togglekillarrows'
+            permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
         create('toggleannouncebeacons') {
             description = 'Toggles whether or not it is announced when beacons are broken'
-            permission = 'stealth.toggleannouncebeacons'
+            permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
         create('togglemorphonrespawn') {
             description = 'Toggles whether or not players morph when they respawn'
-            permission = 'stealth.togglemorphonrespawn'
+            permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
         create('toggleclearinventoryondeath') {
             description = 'Toggles whether or not player inventories are cleared on death'
-            permission = 'stealth.toggleclearinventoryondeath'
+            permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
         create('toggleplayersdroparrows') {
             description = 'Toggles whether or not players drop arrows on death'
-            permission = 'stealth.toggleplayersdroparrows'
+            permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
         create('setprotectedlayer') {
             description = 'Sets or disables the protected layer'
-            permission = 'stealth.setprotectedlayer'
+            permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command> [<height>]'
         }
         create('giveteamarmor') {
             description = 'Sets the armor of all players on a team to leather armor with their team color'
-            permission = 'stealth.giveteamarmor'
+            permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command>'
         }
         create('randomizeteams') {
             description = 'Randomizes Teams'
-            permission = 'stealth.randomizeteams'
+            permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command> <teamname>:<count> <teamname2>:<count> ...'
         }
         create('morph') {
             description = 'Morph a player into a given entity'
-            permission = 'stealth.morph'
+            permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command> <entity> [<player>]'
         }
         create('unmorph') {
             description = 'Unmorph a morphed player'
-            permission = 'stealth.morph'
+            permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command> [<player>]'
         }
     }
     permissions {
-        'stealth.togglekillarrows' {
-            description = 'Allows /togglekillarrows command'
-            defaults = 'op'
-        }
-        'stealth.toggleannouncebeacons' {
-            description = 'Allows /toggleannouncebeacons command'
-            defaults = 'op'
-        }
-        'stealth.togglemorphonrespawn' {
-            description = 'Allows /togglemorphonrespawn command'
-            defaults = 'op'
-        }
-        'stealth.toggleclearinventoryondeath' {
-            description = 'Allows /toggleclearinventoryondeath command'
-            defaults = 'op'
-        }
-        'stealth.toggleplayersdroparrows' {
-            description = 'Allows /toggleplayersdroparrows command'
-            defaults = 'op'
-        }
-        'stealth.setprotectedlayer' {
-            description = 'Allows /setprotectedlayer command'
-            defaults = 'op'
-        }
-        'stealth.giveteamarmor' {
-            description = 'Allows /giveteamarmor command'
-            defaults = 'op'
-        }
-        'stealth.randomizeteams' {
-            description = 'Allows /randomizeteams command'
-            defaults = 'op'
-        }
-        'stealth.morph' {
-            description = 'Allows /morph and /unmorph commands'
+        'stealth.manage' {
+            description = 'Allows running commands specific to the plugin'
             defaults = 'op'
         }
     }

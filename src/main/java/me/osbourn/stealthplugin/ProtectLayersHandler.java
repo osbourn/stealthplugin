@@ -59,17 +59,12 @@ public class ProtectLayersHandler extends TogglableHandler {
     }
 
     @Override
-    protected String permission() {
-        return "stealth.setprotectedlayer";
-    }
-
-    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
             return super.onCommand(sender, command, label, args);
         }
 
-        if (!sender.hasPermission("stealth.setprotectedlayer")) {
+        if (!sender.hasPermission("stealth.manage")) {
             return false;
         }
 

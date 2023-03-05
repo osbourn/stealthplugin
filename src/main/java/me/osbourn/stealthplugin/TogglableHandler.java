@@ -15,14 +15,9 @@ public abstract class TogglableHandler implements Listener, CommandExecutor {
      */
     protected abstract String description();
 
-    /**
-     * The permission needed to run the toggle command.
-     */
-    protected abstract String permission();
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission(permission())) {
+        if (!sender.hasPermission("stealth.manage")) {
             return false;
         }
 

@@ -16,9 +16,4 @@ public class KillArrowsHandler extends TogglableHandler {
     protected String description() {
         return "Insta-kill arrows";
     }
-
-    @Override
-    protected String permission() {
-        return "stealth.togglekillarrows";
-    }
 }

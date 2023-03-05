@@ -33,9 +33,4 @@ public class MorphOnRespawnHandler extends TogglableHandler {
     protected String description() {
         return "Morph on respawn";
     }
-
-    @Override
-    protected String permission() {
-        return "stealth.togglemorphonrespawn";
-    }
 }

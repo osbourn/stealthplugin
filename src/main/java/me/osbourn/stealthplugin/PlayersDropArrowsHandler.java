@@ -27,9 +27,4 @@ public class PlayersDropArrowsHandler extends TogglableHandler {
     protected String description() {
         return "Players drop arrows";
     }
-
-    @Override
-    protected String permission() {
-        return "stealth.toggleplayersdroparrows";
-    }
 }

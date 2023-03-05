@@ -55,9 +55,4 @@ public class AnnounceBeaconsHandler extends TogglableHandler {
     protected String description() {
         return "Beacon destruction announcements";
     }
-
-    @Override
-    protected String permission() {
-        return "stealth.toggleannouncebeacons";
-    }
 }

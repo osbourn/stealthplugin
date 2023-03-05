@@ -17,7 +17,7 @@ import org.bukkit.scoreboard.Team;
 public class RandomizeTeamsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("stealth.randomizeteams")) {
+        if (!sender.hasPermission("stealth.manage")) {
             return false;
         }
 
