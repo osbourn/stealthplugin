@@ -35,6 +35,10 @@ public final class StealthPlugin extends JavaPlugin {
         registerSetting(new AnnounceBeaconsHandler(morphManager));
         registerSetting(new MorphOnRespawnHandler(morphManager));
         registerSetting(new PlayersDropArrowsHandler(morphManager));
+
+        GameManager gameManager = new GameManager(this);
+        gameManager.runTaskTimer(this, 20, 20);
+        this.getCommand("game").setExecutor(new GameCommand(gameManager));
     }
 
     public List<Setting> getSettingsList() {
