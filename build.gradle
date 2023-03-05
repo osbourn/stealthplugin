@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
     compileOnly spigot('1.18.2')
-    compileOnly 'com.sk89q.worldedit:worldedit-core:7.2.0-SNAPSHOT'
+    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT'
 }
 
 spigot {
@@ -60,6 +60,12 @@ spigot {
             permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command> [<player>]'
+        }
+        create('pastestructure') {
+            description = 'Paste the WorldEdit schematic at the location set using /settings'
+            permission = 'stealth.manage'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command>'
         }
     }
     permissions {

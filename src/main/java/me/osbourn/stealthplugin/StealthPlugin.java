@@ -25,6 +25,10 @@ public final class StealthPlugin extends JavaPlugin {
         this.getCommand("morph").setExecutor(new MorphCommand(morphManager));
         this.getCommand("unmorph").setExecutor(new UnmorphCommand(morphManager));
 
+        StructurePositionSetting structurePositionSetting = new StructurePositionSetting();
+        this.settingsList.add(structurePositionSetting);
+        this.getCommand("pastestructure").setExecutor(new PasteStructureCommand(this, structurePositionSetting));
+
         registerSetting(new KillArrowsHandler());
         registerSetting(new ClearInventoryOnDeathHandler());
         registerSetting(new ProtectLayersHandler());
