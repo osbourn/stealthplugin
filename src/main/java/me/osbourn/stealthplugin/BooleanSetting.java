@@ -1,5 +1,7 @@
 package me.osbourn.stealthplugin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public abstract class BooleanSetting implements Setting {
@@ -35,5 +37,10 @@ public abstract class BooleanSetting implements Setting {
         } else {
             return Optional.of("Expected \"true\" or \"false\"");
         }
+    }
+
+    @Override
+    public List<String> tabCompletionOptions() {
+        return List.of("true", "false");
     }
 }

@@ -16,7 +16,9 @@ public final class StealthPlugin extends JavaPlugin {
 
         this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());
         this.getCommand("randomizeteams").setExecutor(new RandomizeTeamsCommand());
-        this.getCommand("settings").setExecutor(new SettingsCommand(this));
+        SettingsCommand settingsCommand = new SettingsCommand(this);
+        this.getCommand("settings").setExecutor(settingsCommand);
+        this.getCommand("settings").setTabCompleter(settingsCommand);
 
         MorphManager morphManager = new MorphManager();
         this.getServer().getPluginManager().registerEvents(morphManager, this);

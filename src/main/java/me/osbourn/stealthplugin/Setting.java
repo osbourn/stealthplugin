@@ -1,5 +1,7 @@
 package me.osbourn.stealthplugin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public interface Setting {
@@ -20,5 +22,12 @@ public interface Setting {
      * @return The error message when an invalid setting is provided, or None if it is a success.
      */
     Optional<String> trySet(String[] arguments);
+
+    /**
+     * The list of options that will be displayed by tab complete, an empty list by default
+     */
+    default List<String> tabCompletionOptions() {
+        return List.of();
+    }
 
 }

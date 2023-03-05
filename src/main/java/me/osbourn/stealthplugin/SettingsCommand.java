@@ -3,12 +3,15 @@ package me.osbourn.stealthplugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-public class SettingsCommand implements CommandExecutor {
+public class SettingsCommand implements CommandExecutor, TabCompleter {
     private final StealthPlugin plugin;
     public SettingsCommand(StealthPlugin plugin) {
         this.plugin = plugin;
@@ -43,5 +46,24 @@ public class SettingsCommand implements CommandExecutor {
             result.ifPresent(s -> sender.sendMessage("Error: " + s));
         }
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
+                                      @NotNull String[] args) {
+        if (args.length <= 1) {
+            return this.plugin.getSettingsList().stream()
+                    .map(setting -> setting.getName())
+                    .toList();
+        } else if (args.length == 2) {
+            Optional<Setting> setting = this.plugin.getSettingsList().stream()
+                    .filter(s -> s.getName().equals(args[0]))
+                    .findFirst();
+            if (setting.isPresent()) {
+                return setting.get().tabCompletionOptions();
+            }
+        }
+        return List.of();
     }
 }
