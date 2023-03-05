@@ -1,9 +1,11 @@
 package me.osbourn.stealthplugin;
 
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public final class StealthPlugin extends JavaPlugin {
     private List<Setting> settingsList;
@@ -11,8 +13,10 @@ public final class StealthPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         this.settingsList = new ArrayList<>();
+
         this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());
         this.getCommand("randomizeteams").setExecutor(new RandomizeTeamsCommand());
+        this.getCommand("settings").setExecutor(new SettingsCommand(this));
 
         MorphManager morphManager = new MorphManager();
         this.getServer().getPluginManager().registerEvents(morphManager, this);
@@ -29,6 +33,13 @@ public final class StealthPlugin extends JavaPlugin {
 
     public List<Setting> getSettingsList() {
         return settingsList;
+    }
+
+    private void registerSetting(Setting setting) {
+        settingsList.add(setting);
+        if (setting instanceof Listener l) {
+            this.getServer().getPluginManager().registerEvents(l, this);
+        }
     }
 
     @Override

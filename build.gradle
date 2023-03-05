@@ -31,6 +31,12 @@ spigot {
     apiVersion '1.18'
     depends 'WorldEdit'
     commands {
+        create('settings') {
+            description = 'Set options for the StealthPlugin'
+            permission = 'stealth.manage'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command> <settingname> [value]'
+        }
         create('togglekillarrows') {
             description = 'Toggles whether or not arrows insta-kill entities'
             permission = 'stealth.manage'
