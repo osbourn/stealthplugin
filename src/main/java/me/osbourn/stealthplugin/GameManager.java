@@ -2,6 +2,7 @@ package me.osbourn.stealthplugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 public class GameManager extends BukkitRunnable implements Listener {
     private final StealthPlugin plugin;
+    private final MorphManager morphManager;
     private final Scoreboard scoreboard;
     /**
      * The scoreboard objective which is used to render game information.
@@ -31,10 +33,11 @@ public class GameManager extends BukkitRunnable implements Listener {
     private int timeRemaining;
     private boolean isRoundActive;
 
-    public GameManager(StealthPlugin plugin) {
+    public GameManager(StealthPlugin plugin, MorphManager morphManager) {
         this.plugin = plugin;
         this.timeRemaining = 600;
         this.isRoundActive = false;
+        this.morphManager = morphManager;
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.scoreboardObjective = this.scoreboard.registerNewObjective("stealthgame", "dummy",
                 ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Game Info");
@@ -69,25 +72,41 @@ public class GameManager extends BukkitRunnable implements Listener {
     private List<String> getScoreboardLines() {
         List<String> lines = new ArrayList<>();
 
-        lines.add("Players:");
         Map<Team, List<Player>> teams = new HashMap<>();
+        // TODO: Consider rendering players not on teams
+        List<Player> playersWithoutTeams = new ArrayList<>();
         for (Player player : Bukkit.getOnlinePlayers()) {
             Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
-            if (!teams.containsKey(team)) {
-                teams.put(team, new ArrayList<>());
+            if (team == null) {
+                playersWithoutTeams.add(player);
+            } else {
+                if (!teams.containsKey(team)) {
+                    teams.put(team, new ArrayList<>());
+                }
+                teams.get(team).add(player);
             }
-            teams.get(team).add(player);
         }
         for (Map.Entry<Team, List<Player>> entry : teams.entrySet()) {
-            lines.add(entry.getKey().getName());
+            ChatColor color = entry.getKey().getColor();
+            lines.add(ChatColor.BOLD + entry.getKey().getName() + ":");
             for (Player player : entry.getValue()) {
-                lines.add(player.getDisplayName());
+                if (this.isPlayerEliminated(player)) {
+                    lines.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + player.getName());
+                } else {
+                    lines.add(color + player.getName());
+                }
             }
         }
 
-        lines.add("" + this.timeRemaining);
+        int minutesLeft = timeRemaining / 60;
+        int secondsLeft = timeRemaining % 60;
+        lines.add(String.format("%sTime: %02d:%02d", ChatColor.YELLOW, minutesLeft, secondsLeft));
 
         return lines;
+    }
+
+    private boolean isPlayerEliminated(Player player) {
+        return player.getGameMode() == GameMode.SPECTATOR || this.morphManager.isPlayerMorphed(player) || player.isDead();
     }
 
     private void onTimeUp() {
