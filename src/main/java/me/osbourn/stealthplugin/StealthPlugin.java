@@ -37,6 +37,7 @@ public final class StealthPlugin extends JavaPlugin {
         registerSetting(new PlayersDropArrowsHandler(morphManager));
 
         GameManager gameManager = new GameManager(this);
+        this.getServer().getPluginManager().registerEvents(gameManager, this);
         gameManager.runTaskTimer(this, 20, 20);
         this.getCommand("game").setExecutor(new GameCommand(gameManager));
     }
