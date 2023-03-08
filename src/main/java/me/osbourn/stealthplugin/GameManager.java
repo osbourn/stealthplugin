@@ -2,6 +2,7 @@ package me.osbourn.stealthplugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -9,8 +10,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameManager extends BukkitRunnable implements Listener {
     private final StealthPlugin plugin;
@@ -32,7 +37,7 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.isRoundActive = false;
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.scoreboardObjective = this.scoreboard.registerNewObjective("stealthgame", "dummy",
-                ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Stealth Game");
+                ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Game Info");
         this.scoreboardObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
         this.scoreboardObjectiveDisplayHandler = new ObjectiveDisplayHandler(this.scoreboardObjective);
     }
@@ -44,9 +49,7 @@ public class GameManager extends BukkitRunnable implements Listener {
     @Override
     public void run() {
         if (this.isRoundActive) {
-            // TODO: Remove test code
-            announceMessage("" + timeRemaining);
-            this.scoreboardObjectiveDisplayHandler.updateObjective(List.of("" + timeRemaining));
+            this.scoreboardObjectiveDisplayHandler.updateObjective(getScoreboardLines());
 
             updateGame();
 
@@ -61,6 +64,30 @@ public class GameManager extends BukkitRunnable implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.getPlayer().setScoreboard(this.scoreboard);
+    }
+
+    private List<String> getScoreboardLines() {
+        List<String> lines = new ArrayList<>();
+
+        lines.add("Players:");
+        Map<Team, List<Player>> teams = new HashMap<>();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
+            if (!teams.containsKey(team)) {
+                teams.put(team, new ArrayList<>());
+            }
+            teams.get(team).add(player);
+        }
+        for (Map.Entry<Team, List<Player>> entry : teams.entrySet()) {
+            lines.add(entry.getKey().getName());
+            for (Player player : entry.getValue()) {
+                lines.add(player.getDisplayName());
+            }
+        }
+
+        lines.add("" + this.timeRemaining);
+
+        return lines;
     }
 
     private void onTimeUp() {
