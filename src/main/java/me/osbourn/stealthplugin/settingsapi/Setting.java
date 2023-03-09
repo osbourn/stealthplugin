@@ -1,4 +1,4 @@
-package me.osbourn.stealthplugin;
+package me.osbourn.stealthplugin.settingsapi;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,7 @@
-package me.osbourn.stealthplugin;
+package me.osbourn.stealthplugin.handlers;
 
+import me.osbourn.stealthplugin.MorphManager;
+import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

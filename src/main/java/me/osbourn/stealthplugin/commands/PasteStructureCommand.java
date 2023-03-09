@@ -1,4 +1,4 @@
-package me.osbourn.stealthplugin;
+package me.osbourn.stealthplugin.commands;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -12,6 +12,8 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import me.osbourn.stealthplugin.StealthPlugin;
+import me.osbourn.stealthplugin.settingsapi.StructurePositionSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;

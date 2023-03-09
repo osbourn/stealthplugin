@@ -1,4 +1,6 @@
-package me.osbourn.stealthplugin;
+package me.osbourn.stealthplugin.settingsapi;
+
+import me.osbourn.stealthplugin.settingsapi.Setting;
 
 import java.util.Optional;
 

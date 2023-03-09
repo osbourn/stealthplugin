@@ -1,5 +1,7 @@
-package me.osbourn.stealthplugin;
+package me.osbourn.stealthplugin.handlers;
 
+import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
+import me.osbourn.stealthplugin.MorphManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

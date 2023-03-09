@@ -1,4 +1,4 @@
-package me.osbourn.stealthplugin;
+package me.osbourn.stealthplugin.commands;
 
 import java.sql.Array;
 import java.util.*;

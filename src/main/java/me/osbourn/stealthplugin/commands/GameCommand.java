@@ -1,5 +1,6 @@
-package me.osbourn.stealthplugin;
+package me.osbourn.stealthplugin.commands;
 
+import me.osbourn.stealthplugin.GameManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

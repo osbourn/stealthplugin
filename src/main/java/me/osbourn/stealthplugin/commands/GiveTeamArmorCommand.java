@@ -1,4 +1,4 @@
-package me.osbourn.stealthplugin;
+package me.osbourn.stealthplugin.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

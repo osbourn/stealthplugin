@@ -1,5 +1,6 @@
-package me.osbourn.stealthplugin;
+package me.osbourn.stealthplugin.commands;
 
+import me.osbourn.stealthplugin.MorphManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

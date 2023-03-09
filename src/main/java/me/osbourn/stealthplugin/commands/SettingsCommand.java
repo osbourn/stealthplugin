@@ -1,5 +1,7 @@
-package me.osbourn.stealthplugin;
+package me.osbourn.stealthplugin.commands;
 
+import me.osbourn.stealthplugin.settingsapi.Setting;
+import me.osbourn.stealthplugin.StealthPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

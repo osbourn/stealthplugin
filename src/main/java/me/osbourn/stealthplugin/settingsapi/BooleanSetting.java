@@ -1,6 +1,7 @@
-package me.osbourn.stealthplugin;
+package me.osbourn.stealthplugin.settingsapi;
 
-import java.util.ArrayList;
+import me.osbourn.stealthplugin.settingsapi.Setting;
+
 import java.util.List;
 import java.util.Optional;
 

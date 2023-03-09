@@ -1,11 +1,14 @@
 package me.osbourn.stealthplugin;
 
+import me.osbourn.stealthplugin.commands.*;
+import me.osbourn.stealthplugin.handlers.*;
+import me.osbourn.stealthplugin.settingsapi.Setting;
+import me.osbourn.stealthplugin.settingsapi.StructurePositionSetting;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public final class StealthPlugin extends JavaPlugin {
     private List<Setting> settingsList;
