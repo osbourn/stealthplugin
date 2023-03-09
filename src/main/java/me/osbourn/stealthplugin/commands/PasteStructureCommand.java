@@ -13,7 +13,7 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import me.osbourn.stealthplugin.StealthPlugin;
-import me.osbourn.stealthplugin.settingsapi.StructurePositionSetting;
+import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -28,9 +28,9 @@ import java.io.IOException;
 
 public class PasteStructureCommand implements CommandExecutor {
     private final StealthPlugin plugin;
-    private final StructurePositionSetting positionSettings;
+    private final LocationSetting positionSettings;
 
-    public PasteStructureCommand(StealthPlugin plugin, StructurePositionSetting positionSettings) {
+    public PasteStructureCommand(StealthPlugin plugin, LocationSetting positionSettings) {
         this.plugin = plugin;
         this.positionSettings = positionSettings;
     }

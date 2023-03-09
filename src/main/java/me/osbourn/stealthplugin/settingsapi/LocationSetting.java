@@ -1,13 +1,12 @@
 package me.osbourn.stealthplugin.settingsapi;
 
-import me.osbourn.stealthplugin.settingsapi.Setting;
-
 import java.util.Optional;
 
-public class StructurePositionSetting implements Setting {
-    private int x = 0;
-    private int y = 100;
-    private int z = 0;
+public class LocationSetting implements Setting {
+    private int x;
+    private int y;
+    private int z;
+    private String settingName;
 
     public int x() {
         return this.x;
@@ -21,14 +20,21 @@ public class StructurePositionSetting implements Setting {
         return this.z;
     }
 
+    public LocationSetting(String settingName, int initialX, int initialY, int initialZ) {
+        this.settingName = settingName;
+        this.x = initialX;
+        this.y = initialY;
+        this.z = initialZ;
+    }
+
     @Override
     public String getName() {
-        return "structurepastelocation";
+        return this.settingName;
     }
 
     @Override
     public String getInfo() {
-        return String.format("structurepastelocation is currently set to %d %d %d", this.x(), this.y(), this.z());
+        return String.format(this.getName() + " is currently set to %d %d %d", this.x(), this.y(), this.z());
     }
 
     @Override

@@ -2,8 +2,8 @@ package me.osbourn.stealthplugin;
 
 import me.osbourn.stealthplugin.commands.*;
 import me.osbourn.stealthplugin.handlers.*;
+import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import me.osbourn.stealthplugin.settingsapi.Setting;
-import me.osbourn.stealthplugin.settingsapi.StructurePositionSetting;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,7 +28,7 @@ public final class StealthPlugin extends JavaPlugin {
         this.getCommand("morph").setExecutor(new MorphCommand(morphManager));
         this.getCommand("unmorph").setExecutor(new UnmorphCommand(morphManager));
 
-        StructurePositionSetting structurePositionSetting = new StructurePositionSetting();
+        LocationSetting structurePositionSetting = new LocationSetting("structurepastelocation", 0, 100, 0);
         this.settingsList.add(structurePositionSetting);
         this.getCommand("pastestructure").setExecutor(new PasteStructureCommand(this, structurePositionSetting));
 
