@@ -41,6 +41,7 @@ public class GameManager extends BukkitRunnable implements Listener {
      */
     private final Objective scoreboardObjective;
     private final ObjectiveDisplayHandler scoreboardObjectiveDisplayHandler;
+    private final GameManagerSettings settings;
     private final IntegerSetting timePerRoundSetting;
     private final StringSetting attackingTeamNameSetting;
     private final StringSetting defendingTeamNameSetting;
@@ -58,6 +59,7 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.isTimerActive = false;
         this.morphManager = morphManager;
         this.gameTargets = gameTargets;
+        this.settings = settings;
         this.timePerRoundSetting = settings.timePerRoundSetting();
         this.attackingTeamNameSetting = settings.attackingTeamNameSetting();
         this.attackingTeamSpawnLocationSetting = settings.attackingTeamSpawnLocationSetting();
@@ -101,45 +103,51 @@ public class GameManager extends BukkitRunnable implements Listener {
     private List<String> getScoreboardLines() {
         List<String> lines = new ArrayList<>();
 
-        for (Material material : this.gameTargets.getTargetMaterials()) {
-            String materialName = MaterialsUtil.prettyMaterialName(material.toString());
-            boolean hasBeenBroken = this.gameTargets.hasBeenBroken(material);
-            if (hasBeenBroken) {
-                lines.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + materialName);
-            } else {
-                lines.add(ChatColor.GREEN + materialName);
-            }
-        }
-
-        Map<Team, List<Player>> teams = new HashMap<>();
-        // TODO: Consider rendering players not on teams
-        List<Player> playersWithoutTeams = new ArrayList<>();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
-            if (team == null) {
-                playersWithoutTeams.add(player);
-            } else {
-                if (!teams.containsKey(team)) {
-                    teams.put(team, new ArrayList<>());
-                }
-                teams.get(team).add(player);
-            }
-        }
-        for (Map.Entry<Team, List<Player>> entry : teams.entrySet()) {
-            ChatColor color = entry.getKey().getColor();
-            //lines.add(ChatColor.BOLD + entry.getKey().getName() + ":");
-            for (Player player : entry.getValue()) {
-                if (this.isPlayerEliminated(player)) {
-                    lines.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + player.getName());
+        if (this.settings.displayGameTargetsSetting().isActive()) {
+            for (Material material : this.gameTargets.getTargetMaterials()) {
+                String materialName = MaterialsUtil.prettyMaterialName(material.toString());
+                boolean hasBeenBroken = this.gameTargets.hasBeenBroken(material);
+                if (hasBeenBroken) {
+                    lines.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + materialName);
                 } else {
-                    lines.add(color + player.getName());
+                    lines.add(ChatColor.GREEN + materialName);
                 }
             }
         }
 
-        int minutesLeft = timeRemaining / 60;
-        int secondsLeft = timeRemaining % 60;
-        lines.add(String.format("%sTime: %02d:%02d", ChatColor.YELLOW, minutesLeft, secondsLeft));
+        if (this.settings.displayPlayerNamesSetting().isActive()) {
+            Map<Team, List<Player>> teams = new HashMap<>();
+            // TODO: Consider rendering players not on teams
+            List<Player> playersWithoutTeams = new ArrayList<>();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
+                if (team == null) {
+                    playersWithoutTeams.add(player);
+                } else {
+                    if (!teams.containsKey(team)) {
+                        teams.put(team, new ArrayList<>());
+                    }
+                    teams.get(team).add(player);
+                }
+            }
+            for (Map.Entry<Team, List<Player>> entry : teams.entrySet()) {
+                ChatColor color = entry.getKey().getColor();
+                //lines.add(ChatColor.BOLD + entry.getKey().getName() + ":");
+                for (Player player : entry.getValue()) {
+                    if (this.isPlayerEliminated(player)) {
+                        lines.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + player.getName());
+                    } else {
+                        lines.add(color + player.getName());
+                    }
+                }
+            }
+        }
+
+        if (this.settings.displayTimeSetting().isActive()) {
+            int minutesLeft = timeRemaining / 60;
+            int secondsLeft = timeRemaining % 60;
+            lines.add(String.format("%sTime: %02d:%02d", ChatColor.YELLOW, minutesLeft, secondsLeft));
+        }
 
         return lines;
     }
