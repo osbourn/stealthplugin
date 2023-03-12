@@ -1,5 +1,6 @@
 package me.osbourn.stealthplugin;
 
+import me.osbourn.stealthplugin.commands.GiveTeamArmorCommand;
 import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import me.osbourn.stealthplugin.settingsapi.StringSetting;
@@ -179,6 +180,8 @@ public class GameManager extends BukkitRunnable implements Listener {
                 }
             }
         }
+
+        GiveTeamArmorCommand.giveTeamArmor();
     }
 
     private void copyChestToPlayer(Location chestLocation, Player player) {

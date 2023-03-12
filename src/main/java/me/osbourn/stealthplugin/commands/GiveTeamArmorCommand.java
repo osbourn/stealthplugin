@@ -19,6 +19,11 @@ public class GiveTeamArmorCommand implements CommandExecutor {
             return false;
         }
 
+        giveTeamArmor();
+        return true;
+    }
+
+    public static void giveTeamArmor() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
             if (team != null) {
@@ -31,10 +36,9 @@ public class GiveTeamArmorCommand implements CommandExecutor {
                 }
             }
         }
-        return true;
     }
 
-    private ItemStack createDyedLeatherArmor(Material leatherArmorType, Color color) {
+    private static ItemStack createDyedLeatherArmor(Material leatherArmorType, Color color) {
         ItemStack itemStack = new ItemStack(leatherArmorType);
         LeatherArmorMeta meta = (LeatherArmorMeta) itemStack.getItemMeta();
         meta.setColor(color);
@@ -42,7 +46,7 @@ public class GiveTeamArmorCommand implements CommandExecutor {
         return itemStack;
     }
 
-    private Color chatColorToColor(ChatColor color) {
+    private static Color chatColorToColor(ChatColor color) {
         return switch (color) {
             case BLACK -> Color.BLACK;
             case DARK_BLUE, BLUE -> Color.BLUE;
