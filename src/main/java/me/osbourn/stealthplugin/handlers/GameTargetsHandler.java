@@ -7,11 +7,14 @@ import me.osbourn.stealthplugin.util.MaterialsUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.type.RespawnAnchor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class GameTargetsHandler extends BooleanSetting implements Listener {
     private final GameTargets gameTargets;
@@ -48,6 +51,26 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
                 gameTargets.registerAsBroken(brokenBlockType);
                 if (this.isActive()) {
                     announceDestruction(brokenBlockType, "was blown up");
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void playerInteractEvent(PlayerInteractEvent event) {
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.RESPAWN_ANCHOR) {
+                if (gameTargets.getTargetMaterials().contains(Material.RESPAWN_ANCHOR)) {
+                    Block block = event.getClickedBlock();
+                    if (block.getBlockData() instanceof RespawnAnchor anchor) {
+                        // TODO: Fix clicking the respawn anchor several times with glowstone in the offhand counting as a break
+                        if (anchor.getCharges() > 0 && (event.getItem() == null || event.getItem().getType() != Material.GLOWSTONE)) {
+                            gameTargets.registerAsBroken(Material.RESPAWN_ANCHOR);
+                            if (this.isActive()) {
+                                announceDestruction(Material.RESPAWN_ANCHOR, "was filled with glowstone and clicked");
+                            }
+                        }
+                    }
                 }
             }
         }
