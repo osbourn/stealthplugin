@@ -5,11 +5,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-
 import org.bukkit.entity.Player;
 
 public class UnmorphCommand implements CommandExecutor {
     private final MorphManager morphManager;
+
     public UnmorphCommand(MorphManager morphManager) {
         this.morphManager = morphManager;
     }

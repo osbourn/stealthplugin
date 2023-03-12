@@ -1,18 +1,19 @@
 package me.osbourn.stealthplugin.commands;
 
-import java.sql.Array;
-import java.util.*;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.stream.IntStream;
-
 import org.bukkit.Bukkit;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 public class RandomizeTeamsCommand implements CommandExecutor {
     @Override

@@ -1,7 +1,7 @@
 package me.osbourn.stealthplugin.commands;
 
-import me.osbourn.stealthplugin.settingsapi.Setting;
 import me.osbourn.stealthplugin.StealthPlugin;
+import me.osbourn.stealthplugin.settingsapi.Setting;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,6 +15,7 @@ import java.util.Optional;
 
 public class SettingsCommand implements CommandExecutor, TabCompleter {
     private final StealthPlugin plugin;
+
     public SettingsCommand(StealthPlugin plugin) {
         this.plugin = plugin;
     }

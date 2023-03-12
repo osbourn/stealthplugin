@@ -6,10 +6,17 @@ import org.bukkit.World;
 import java.util.Optional;
 
 public class LocationSetting implements Setting {
+    private final String settingName;
     private int x;
     private int y;
     private int z;
-    private final String settingName;
+
+    public LocationSetting(String settingName, int initialX, int initialY, int initialZ) {
+        this.settingName = settingName;
+        this.x = initialX;
+        this.y = initialY;
+        this.z = initialZ;
+    }
 
     public int x() {
         return this.x;
@@ -25,13 +32,6 @@ public class LocationSetting implements Setting {
 
     public Location toLocationInWorld(World world) {
         return new Location(world, this.x(), this.y(), this.z());
-    }
-
-    public LocationSetting(String settingName, int initialX, int initialY, int initialZ) {
-        this.settingName = settingName;
-        this.x = initialX;
-        this.y = initialY;
-        this.z = initialZ;
     }
 
     @Override

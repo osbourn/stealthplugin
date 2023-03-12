@@ -13,16 +13,6 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scoreboard.Team;
 
 public class GiveTeamArmorCommand implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("stealth.manage")) {
-            return false;
-        }
-
-        giveTeamArmor();
-        return true;
-    }
-
     public static void giveTeamArmor() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
@@ -59,5 +49,15 @@ public class GiveTeamArmorCommand implements CommandExecutor {
             case WHITE -> Color.WHITE;
             default -> null;
         };
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!sender.hasPermission("stealth.manage")) {
+            return false;
+        }
+
+        giveTeamArmor();
+        return true;
     }
 }

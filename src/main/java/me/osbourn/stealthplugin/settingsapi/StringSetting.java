@@ -7,10 +7,9 @@ import java.util.function.Function;
 
 public class StringSetting implements Setting {
     private final String settingName;
-    private String value;
-
     @Nullable
     public Function<String, Boolean> validator;
+    private String value;
 
     public StringSetting(String settingName, String initialValue) {
         this(settingName, initialValue, null);

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ToggleGameScoreboardCommand implements CommandExecutor {
     private final GameManager gameManager;
+
     public ToggleGameScoreboardCommand(GameManager gameManager) {
         this.gameManager = gameManager;
     }

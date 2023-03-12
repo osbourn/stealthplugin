@@ -8,8 +8,10 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
                                   BooleanSetting displayGameTargetsSetting,
                                   BooleanSetting displayPlayerNamesSetting, BooleanSetting displayTimeSetting,
                                   StringSetting attackingTeamNameSetting, StringSetting defendingTeamNameSetting,
-                                  LocationSetting attackingTeamSpawnLocationSetting, LocationSetting defendingTeamSpawnLocationSetting,
-                                  LocationSetting attackingTeamChestLocationSetting, LocationSetting defendingTeamChestLocationSetting) {
+                                  LocationSetting attackingTeamSpawnLocationSetting,
+                                  LocationSetting defendingTeamSpawnLocationSetting,
+                                  LocationSetting attackingTeamChestLocationSetting,
+                                  LocationSetting defendingTeamChestLocationSetting) {
 
     public static GameManagerSettings makeNew() {
         IntegerSetting timePerRoundSetting = new IntegerSetting("timeperround", 600);
@@ -21,8 +23,8 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         StringSetting defendingTeamNameSetting = new StringSetting("defendingteamname", "blue");
         LocationSetting attackingTeamSpawnLocationSetting = new LocationSetting("attackingteamspawnlocation", 0, 0, 0);
         LocationSetting defendingTeamSpawnLocationSetting = new LocationSetting("defendingteamspawnlocation", 0, 0, 0);
-        LocationSetting attackingTeamChestLocationSetting = new LocationSetting("attackingteamchestlocation", 0, 0,0);
-        LocationSetting defendingTeamChestLocationSetting = new LocationSetting("defendingteamchestlocation", 0, 0,0);
+        LocationSetting attackingTeamChestLocationSetting = new LocationSetting("attackingteamchestlocation", 0, 0, 0);
+        LocationSetting defendingTeamChestLocationSetting = new LocationSetting("defendingteamchestlocation", 0, 0, 0);
         return new GameManagerSettings(timePerRoundSetting, prepTimeSetting, displayGameTargetsSetting,
                 displayPlayerNamesSetting, displayTimeSetting,
                 attackingTeamNameSetting, defendingTeamNameSetting,

@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class MorphManager implements Listener {
-    private final Map<UUID,UUID> morphs;
+    private final Map<UUID, UUID> morphs;
     private final BooleanSetting morphedPlayersCanAttackSetting;
     private final BooleanSetting morphedPlayersIgnoreArrowsSetting;
 
@@ -168,13 +168,13 @@ public class MorphManager implements Listener {
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (this.isPlayerMorphed(event.getPlayer())) {
-                final Material[] restrictedBlocks = { Material.CHEST, Material.BARREL, Material.HOPPER,
-                    Material.TRAPPED_CHEST, Material.SHULKER_BOX, Material.DISPENSER, Material.DROPPER,
-                    Material.FURNACE, Material.CAMPFIRE, Material.SOUL_CAMPFIRE };
+                final Material[] restrictedBlocks = {Material.CHEST, Material.BARREL, Material.HOPPER,
+                        Material.TRAPPED_CHEST, Material.SHULKER_BOX, Material.DISPENSER, Material.DROPPER,
+                        Material.FURNACE, Material.CAMPFIRE, Material.SOUL_CAMPFIRE};
                 Block block = event.getClickedBlock();
                 if (Arrays.asList(restrictedBlocks).contains(block.getType())) {
                     event.setCancelled(true);
-                };
+                }
             }
         }
     }

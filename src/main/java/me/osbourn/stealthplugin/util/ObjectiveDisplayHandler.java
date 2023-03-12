@@ -1,4 +1,3 @@
-
 package me.osbourn.stealthplugin.util;
 
 import org.bukkit.scoreboard.Objective;

@@ -2,7 +2,9 @@ package me.osbourn.stealthplugin;
 
 import me.osbourn.stealthplugin.commands.*;
 import me.osbourn.stealthplugin.handlers.*;
-import me.osbourn.stealthplugin.settingsapi.*;
+import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
+import me.osbourn.stealthplugin.settingsapi.LocationSetting;
+import me.osbourn.stealthplugin.settingsapi.Setting;
 import me.osbourn.stealthplugin.util.GameManagerSettings;
 import me.osbourn.stealthplugin.util.GameTargets;
 import org.bukkit.event.Listener;
