@@ -26,7 +26,7 @@ public class GameCommand implements CommandExecutor {
         }
 
         if (args[0].equals("start")) {
-            if (this.gameManager.isRoundActive()) {
+            if (this.gameManager.isTimerActive()) {
                 sender.sendMessage("Game is already active!");
                 return false;
             } else {

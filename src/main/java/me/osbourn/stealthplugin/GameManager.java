@@ -34,12 +34,12 @@ public class GameManager extends BukkitRunnable implements Listener {
     private final IntegerSetting timePerRoundSetting;
 
     private int timeRemaining;
-    private boolean isRoundActive;
+    private boolean isTimerActive;
 
     public GameManager(StealthPlugin plugin, MorphManager morphManager, IntegerSetting timePerRoundSetting) {
         this.plugin = plugin;
         this.timeRemaining = 600;
-        this.isRoundActive = false;
+        this.isTimerActive = false;
         this.morphManager = morphManager;
         this.timePerRoundSetting = timePerRoundSetting;
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -49,17 +49,15 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.scoreboardObjectiveDisplayHandler = new ObjectiveDisplayHandler(this.scoreboardObjective);
     }
 
-    public boolean isRoundActive() {
-        return this.isRoundActive;
+    public boolean isTimerActive() {
+        return this.isTimerActive;
     }
 
     @Override
     public void run() {
-        if (this.isRoundActive) {
-            this.scoreboardObjectiveDisplayHandler.updateObjective(getScoreboardLines());
+        this.scoreboardObjectiveDisplayHandler.updateObjective(getScoreboardLines());
 
-            updateGame();
-
+        if (this.isTimerActive) {
             if (timeRemaining <= 0) {
                 onTimeUp();
             } else {
@@ -105,6 +103,7 @@ public class GameManager extends BukkitRunnable implements Listener {
         int minutesLeft = timeRemaining / 60;
         int secondsLeft = timeRemaining % 60;
         lines.add(String.format("%sTime: %02d:%02d", ChatColor.YELLOW, minutesLeft, secondsLeft));
+        lines.add(String.format("%s/togglesb to hide", ChatColor.GRAY));
 
         return lines;
     }
@@ -115,11 +114,7 @@ public class GameManager extends BukkitRunnable implements Listener {
 
     private void onTimeUp() {
         announceMessage("Time's Up!");
-        this.isRoundActive = false;
-    }
-
-    private void updateGame() {
-
+        this.isTimerActive = false;
     }
 
     /**
@@ -127,7 +122,7 @@ public class GameManager extends BukkitRunnable implements Listener {
      */
     public void resetGame() {
         this.timeRemaining = this.timePerRoundSetting.getValue();
-        this.isRoundActive = true;
+        this.isTimerActive = true;
     }
 
     public Scoreboard getScoreboard() {

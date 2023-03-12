@@ -87,7 +87,7 @@ spigot {
         }
         'stealth.player' {
             description = 'Basic permissions for players'
-            defaults = 'all'
+            defaults = 'true'
         }
     }
 }
