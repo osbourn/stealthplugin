@@ -63,6 +63,10 @@ public class GameManager extends BukkitRunnable implements Listener {
         return this.isTimerActive;
     }
 
+    public void setTimerActive(boolean timerActive) {
+        this.isTimerActive = timerActive;
+    }
+
     @Override
     public void run() {
         this.scoreboardObjectiveDisplayHandler.updateObjective(getScoreboardLines());

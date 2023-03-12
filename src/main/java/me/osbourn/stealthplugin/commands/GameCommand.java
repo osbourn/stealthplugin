@@ -4,6 +4,7 @@ import me.osbourn.stealthplugin.GameManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public class GameCommand implements CommandExecutor {
@@ -25,16 +26,41 @@ public class GameCommand implements CommandExecutor {
             return false;
         }
 
-        if (args[0].equals("start")) {
-            if (this.gameManager.isTimerActive()) {
-                sender.sendMessage("Game is already active!");
-                return false;
-            } else {
+        switch (args[0]) {
+            case "start" -> {
+                if (this.gameManager.isTimerActive()) {
+                    sender.sendMessage("Game is already active!");
+                    return false;
+                } else {
+                    this.gameManager.resetGame();
+                    return true;
+                }
+            }
+            case "forcestart" -> {
                 this.gameManager.resetGame();
                 return true;
             }
+            case "pausetimer" -> {
+                if (this.gameManager.isTimerActive()) {
+                    this.gameManager.setTimerActive(false);
+                    return true;
+                } else {
+                    sender.sendMessage("Timer was already stopped!");
+                    return false;
+                }
+            }
+            case "resumetimer" -> {
+                if (!this.gameManager.isTimerActive()) {
+                    this.gameManager.setTimerActive(true);
+                    return true;
+                } else {
+                    sender.sendMessage("Timer was already active!");
+                    return false;
+                }
+            }
+            default -> {
+                return false;
+            }
         }
-
-        return false;
     }
 }
