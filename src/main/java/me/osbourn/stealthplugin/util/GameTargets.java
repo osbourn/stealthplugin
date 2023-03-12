@@ -19,6 +19,8 @@ public class GameTargets {
         this.brokenTargets = new HashSet<>();
         this.targetMaterials.add(Material.RESPAWN_ANCHOR);
         this.targetMaterials.add(Material.ENCHANTING_TABLE);
+        this.targetMaterials.add(Material.ENDER_CHEST);
+        this.targetMaterials.add(Material.CONDUIT);
     }
 
     /**
