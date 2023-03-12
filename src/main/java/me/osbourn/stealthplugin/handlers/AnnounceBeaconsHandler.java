@@ -15,7 +15,7 @@ public class AnnounceBeaconsHandler extends BooleanSetting implements Listener {
     private final MorphManager morphManager;
 
     public AnnounceBeaconsHandler(MorphManager morphManager) {
-        super("announcebeacons", true);
+        super("announcebeacons", false);
         this.morphManager = morphManager;
     }
 

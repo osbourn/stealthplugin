@@ -3,6 +3,7 @@ package me.osbourn.stealthplugin;
 import me.osbourn.stealthplugin.commands.*;
 import me.osbourn.stealthplugin.handlers.*;
 import me.osbourn.stealthplugin.settingsapi.*;
+import me.osbourn.stealthplugin.util.GameTargets;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -42,6 +43,9 @@ public final class StealthPlugin extends JavaPlugin {
         registerSetting(new MorphOnRespawnHandler(morphManager));
         registerSetting(new PlayersDropArrowsHandler(morphManager));
 
+        GameTargets gameTargets = new GameTargets();
+        registerSetting(new GameTargetsHandler(gameTargets, morphManager));
+
         IntegerSetting timePerRoundSetting = new IntegerSetting("timeperround", 300);
         StringSetting attackingTeamNameSetting = new StringSetting("attackingteamname", "red");
         StringSetting defendingTeamNameSetting = new StringSetting("defendingteamname", "blue");
@@ -56,7 +60,7 @@ public final class StealthPlugin extends JavaPlugin {
         this.settingsList.add(defendingTeamSpawnLocationSetting);
         this.settingsList.add(attackingTeamChestLocationSetting);
         this.settingsList.add(defendingTeamChestLocationSetting);
-        GameManager gameManager = new GameManager(this, morphManager, timePerRoundSetting,
+        GameManager gameManager = new GameManager(this, morphManager, gameTargets, timePerRoundSetting,
                 attackingTeamNameSetting, attackingTeamSpawnLocationSetting,
                 defendingTeamNameSetting, defendingTeamSpawnLocationSetting,
                 attackingTeamChestLocationSetting, defendingTeamChestLocationSetting);

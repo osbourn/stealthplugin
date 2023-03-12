@@ -3,6 +3,7 @@ package me.osbourn.stealthplugin;
 import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import me.osbourn.stealthplugin.settingsapi.StringSetting;
+import me.osbourn.stealthplugin.util.GameTargets;
 import me.osbourn.stealthplugin.util.ObjectiveDisplayHandler;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -28,6 +29,7 @@ import java.util.Map;
 public class GameManager extends BukkitRunnable implements Listener {
     private final StealthPlugin plugin;
     private final MorphManager morphManager;
+    private final GameTargets gameTargets;
     private final Scoreboard scoreboard;
     /**
      * The scoreboard objective which is used to render game information.
@@ -47,7 +49,7 @@ public class GameManager extends BukkitRunnable implements Listener {
     private int timeRemaining;
     private boolean isTimerActive;
 
-    public GameManager(StealthPlugin plugin, MorphManager morphManager, IntegerSetting timePerRoundSetting,
+    public GameManager(StealthPlugin plugin, MorphManager morphManager, GameTargets gameTargets, IntegerSetting timePerRoundSetting,
                        StringSetting attackingTeamNameSetting, LocationSetting attackingTeamSpawnPointSetting,
                        StringSetting defendingTeamNameSetting, LocationSetting defendingTeamSpawnPointSetting,
                        LocationSetting attackingTeamChestLocationSetting, LocationSetting defendingTeamChestLocationSetting) {
@@ -55,6 +57,7 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.timeRemaining = 600;
         this.isTimerActive = false;
         this.morphManager = morphManager;
+        this.gameTargets = gameTargets;
         this.timePerRoundSetting = timePerRoundSetting;
         this.attackingTeamNameSetting = attackingTeamNameSetting;
         this.attackingTeamSpawnPointSetting = attackingTeamSpawnPointSetting;
@@ -128,6 +131,10 @@ public class GameManager extends BukkitRunnable implements Listener {
         int secondsLeft = timeRemaining % 60;
         lines.add(String.format("%sTime: %02d:%02d", ChatColor.YELLOW, minutesLeft, secondsLeft));
         lines.add(String.format("%s/togglesb to hide", ChatColor.GRAY));
+
+        for (Material material : this.gameTargets.getTargetMaterials()) {
+            lines.add(material.toString() + " is " + this.gameTargets.hasBeenBroken(material));
+        }
 
         return lines;
     }
