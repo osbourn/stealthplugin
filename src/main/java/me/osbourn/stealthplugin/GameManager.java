@@ -199,6 +199,9 @@ public class GameManager extends BukkitRunnable implements Listener {
                     this.copyChestToPlayer(defendingTeamChestLocation, player);
                 }
             }
+
+            morphManager.unmorph(player);
+            player.setHealth(20);
         }
 
         GiveTeamArmorCommand.giveTeamArmor();
