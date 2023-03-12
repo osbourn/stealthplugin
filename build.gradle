@@ -31,6 +31,12 @@ spigot {
     apiVersion '1.18'
     depends 'WorldEdit'
     commands {
+        create('setup') {
+            description = 'Setup teams and other things, intended to be used once per world'
+            permission = 'stealth.manage'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command>'
+        }
         create('settings') {
             description = 'Set options for the StealthPlugin'
             permission = 'stealth.manage'

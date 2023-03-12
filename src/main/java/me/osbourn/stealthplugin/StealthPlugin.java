@@ -20,6 +20,7 @@ public final class StealthPlugin extends JavaPlugin {
     public void onEnable() {
         this.settingsList = new ArrayList<>();
 
+        this.getCommand("setup").setExecutor(new SetupCommand());
         this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());
         this.getCommand("randomizeteams").setExecutor(new RandomizeTeamsCommand());
         this.getCommand("swapteams").setExecutor(new SwapTeamsCommand());
