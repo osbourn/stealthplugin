@@ -129,7 +129,7 @@ public class GameManager extends BukkitRunnable implements Listener {
         }
         for (Map.Entry<Team, List<Player>> entry : teams.entrySet()) {
             ChatColor color = entry.getKey().getColor();
-            lines.add(ChatColor.BOLD + entry.getKey().getName() + ":");
+            //lines.add(ChatColor.BOLD + entry.getKey().getName() + ":");
             for (Player player : entry.getValue()) {
                 if (this.isPlayerEliminated(player)) {
                     lines.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + player.getName());
