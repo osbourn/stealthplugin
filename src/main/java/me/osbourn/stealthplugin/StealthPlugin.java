@@ -2,6 +2,7 @@ package me.osbourn.stealthplugin;
 
 import me.osbourn.stealthplugin.commands.*;
 import me.osbourn.stealthplugin.handlers.*;
+import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import me.osbourn.stealthplugin.settingsapi.Setting;
 import org.bukkit.event.Listener;
@@ -39,7 +40,9 @@ public final class StealthPlugin extends JavaPlugin {
         registerSetting(new MorphOnRespawnHandler(morphManager));
         registerSetting(new PlayersDropArrowsHandler(morphManager));
 
-        GameManager gameManager = new GameManager(this, morphManager);
+        IntegerSetting timePerRoundSetting = new IntegerSetting("timeperround", 300);
+        this.settingsList.add(timePerRoundSetting);
+        GameManager gameManager = new GameManager(this, morphManager, timePerRoundSetting);
         this.getServer().getPluginManager().registerEvents(gameManager, this);
         gameManager.runTaskTimer(this, 20, 20);
         this.getCommand("game").setExecutor(new GameCommand(gameManager));

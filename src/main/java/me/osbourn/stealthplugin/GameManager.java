@@ -1,5 +1,6 @@
 package me.osbourn.stealthplugin;
 
+import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
 import me.osbourn.stealthplugin.util.ObjectiveDisplayHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -30,15 +31,17 @@ public class GameManager extends BukkitRunnable implements Listener {
      */
     private final Objective scoreboardObjective;
     private final ObjectiveDisplayHandler scoreboardObjectiveDisplayHandler;
+    private final IntegerSetting timePerRoundSetting;
 
     private int timeRemaining;
     private boolean isRoundActive;
 
-    public GameManager(StealthPlugin plugin, MorphManager morphManager) {
+    public GameManager(StealthPlugin plugin, MorphManager morphManager, IntegerSetting timePerRoundSetting) {
         this.plugin = plugin;
         this.timeRemaining = 600;
         this.isRoundActive = false;
         this.morphManager = morphManager;
+        this.timePerRoundSetting = timePerRoundSetting;
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.scoreboardObjective = this.scoreboard.registerNewObjective("stealthgame", "dummy",
                 ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Game Info");
@@ -123,7 +126,7 @@ public class GameManager extends BukkitRunnable implements Listener {
      * Start or reset the game
      */
     public void resetGame() {
-        this.timeRemaining = 20;
+        this.timeRemaining = this.timePerRoundSetting.getValue();
         this.isRoundActive = true;
     }
 
