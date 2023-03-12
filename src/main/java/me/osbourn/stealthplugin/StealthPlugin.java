@@ -48,12 +48,14 @@ public final class StealthPlugin extends JavaPlugin {
         GameTargets gameTargets = new GameTargets();
         registerSetting(new GameTargetsHandler(gameTargets, morphManager));
 
-
         GameManagerSettings gameManagerSettings = GameManagerSettings.makeNew();
         gameManagerSettings.addAllTo(this.settingsList);
         GameManager gameManager = new GameManager(this, morphManager, gameTargets, gameManagerSettings);
         this.getServer().getPluginManager().registerEvents(gameManager, this);
         gameManager.runTaskTimer(this, 20, 20);
+
+        registerSetting(new PrepTimeHandler(gameManager));
+
         this.getCommand("game").setExecutor(new GameCommand(gameManager));
         this.getCommand("togglesb").setExecutor(new ToggleGameScoreboardCommand(gameManager));
     }

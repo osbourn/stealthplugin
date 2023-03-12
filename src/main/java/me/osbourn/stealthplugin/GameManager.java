@@ -51,11 +51,13 @@ public class GameManager extends BukkitRunnable implements Listener {
     private final LocationSetting defendingTeamChestLocationSetting;
 
     private int timeRemaining;
+    private int prepTimeRemaining;
     private boolean isTimerActive;
 
     public GameManager(StealthPlugin plugin, MorphManager morphManager, GameTargets gameTargets, GameManagerSettings settings) {
         this.plugin = plugin;
         this.timeRemaining = 600;
+        this.prepTimeRemaining = 0;
         this.isTimerActive = false;
         this.morphManager = morphManager;
         this.gameTargets = gameTargets;
@@ -87,10 +89,17 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.scoreboardObjectiveDisplayHandler.updateObjective(getScoreboardLines());
 
         if (this.isTimerActive) {
-            if (timeRemaining <= 0) {
-                onTimeUp();
+            if (this.prepTimeRemaining > 0) {
+                this.prepTimeRemaining--;
+                if (this.prepTimeRemaining == 0) {
+                    Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage("The game starts now!"));
+                }
             } else {
-                timeRemaining--;
+                if (timeRemaining <= 0) {
+                    onTimeUp();
+                } else {
+                    timeRemaining--;
+                }
             }
         }
     }
@@ -144,9 +153,15 @@ public class GameManager extends BukkitRunnable implements Listener {
         }
 
         if (this.settings.displayTimeSetting().isActive()) {
-            int minutesLeft = timeRemaining / 60;
-            int secondsLeft = timeRemaining % 60;
-            lines.add(String.format("%sTime: %02d:%02d", ChatColor.YELLOW, minutesLeft, secondsLeft));
+            if (this.isPrepTime()) {
+                int minutesLeft = prepTimeRemaining / 60;
+                int secondsLeft = prepTimeRemaining % 60;
+                lines.add(String.format("%sPrep Time: %02d:%02d", ChatColor.YELLOW, minutesLeft, secondsLeft));
+            } else {
+                int minutesLeft = timeRemaining / 60;
+                int secondsLeft = timeRemaining % 60;
+                lines.add(String.format("%sTime: %02d:%02d", ChatColor.YELLOW, minutesLeft, secondsLeft));
+            }
         }
 
         return lines;
@@ -169,15 +184,14 @@ public class GameManager extends BukkitRunnable implements Listener {
         Location defendingTeamChestLocation = this.defendingTeamChestLocationSetting.toLocationInWorld(overworld);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
-            if (team != null && team.getName().equals(this.attackingTeamNameSetting.getValue())) {
+            if (this.isOnAttackers(player)) {
                 if (this.isLocationSet(this.attackingTeamSpawnLocationSetting)) {
                     player.teleport(attackersSpawnLocation);
                 }
                 if (this.isLocationSet(this.attackingTeamChestLocationSetting)) {
                     this.copyChestToPlayer(attackingTeamChestLocation, player);
                 }
-            } else if (team != null && team.getName().equals(this.defendingTeamNameSetting.getValue())) {
+            } else if (this.isOnDefenders(player)) {
                 if (this.isLocationSet(this.defendingTeamSpawnLocationSetting)) {
                     player.teleport(defendersSpawnLocation);
                 }
@@ -188,6 +202,16 @@ public class GameManager extends BukkitRunnable implements Listener {
         }
 
         GiveTeamArmorCommand.giveTeamArmor();
+    }
+
+    public boolean isOnAttackers(Player player) {
+        Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
+        return team != null && team.getName().equals(this.attackingTeamNameSetting.getValue());
+    }
+
+    public boolean isOnDefenders(Player player) {
+        Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
+        return team != null && team.getName().equals(this.defendingTeamNameSetting.getValue());
     }
 
     private void copyChestToPlayer(Location chestLocation, Player player) {
@@ -217,6 +241,10 @@ public class GameManager extends BukkitRunnable implements Listener {
         }
     }
 
+    public boolean isPrepTime() {
+        return this.prepTimeRemaining > 0;
+    }
+
     private boolean isLocationSet(LocationSetting setting) {
         // TODO: Better way of having unset locations
         return setting.x() != 0 || setting.y() != 0 || setting.z() != 0;
@@ -227,6 +255,7 @@ public class GameManager extends BukkitRunnable implements Listener {
      */
     public void resetGame() {
         this.timeRemaining = this.timePerRoundSetting.getValue();
+        this.prepTimeRemaining = this.settings.prepTimeSetting().getValue();
         this.isTimerActive = true;
         this.gameTargets.resetBrokenTargets();
         this.readyPlayers();
