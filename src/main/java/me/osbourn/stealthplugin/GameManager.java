@@ -1,10 +1,10 @@
 package me.osbourn.stealthplugin;
 
 import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
+import me.osbourn.stealthplugin.settingsapi.LocationSetting;
+import me.osbourn.stealthplugin.settingsapi.StringSetting;
 import me.osbourn.stealthplugin.util.ObjectiveDisplayHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,16 +32,26 @@ public class GameManager extends BukkitRunnable implements Listener {
     private final Objective scoreboardObjective;
     private final ObjectiveDisplayHandler scoreboardObjectiveDisplayHandler;
     private final IntegerSetting timePerRoundSetting;
+    private final StringSetting attackingTeamNameSetting;
+    private final StringSetting defendingTeamNameSetting;
+    private final LocationSetting attackingTeamSpawnPointSetting;
+    private final LocationSetting defendingTeamSpawnPointSetting;
 
     private int timeRemaining;
     private boolean isTimerActive;
 
-    public GameManager(StealthPlugin plugin, MorphManager morphManager, IntegerSetting timePerRoundSetting) {
+    public GameManager(StealthPlugin plugin, MorphManager morphManager, IntegerSetting timePerRoundSetting,
+                       StringSetting attackingTeamNameSetting, LocationSetting attackingTeamSpawnPointSetting,
+                       StringSetting defendingTeamNameSetting, LocationSetting defendingTeamSpawnPointSetting) {
         this.plugin = plugin;
         this.timeRemaining = 600;
         this.isTimerActive = false;
         this.morphManager = morphManager;
         this.timePerRoundSetting = timePerRoundSetting;
+        this.attackingTeamNameSetting = attackingTeamNameSetting;
+        this.attackingTeamSpawnPointSetting = attackingTeamSpawnPointSetting;
+        this.defendingTeamNameSetting = defendingTeamNameSetting;
+        this.defendingTeamSpawnPointSetting = defendingTeamSpawnPointSetting;
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.scoreboardObjective = this.scoreboard.registerNewObjective("stealthgame", "dummy",
                 ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Game Info");
@@ -117,12 +127,44 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.isTimerActive = false;
     }
 
+    private void movePlayersToSpawnPoints() {
+        World overworld = Bukkit.getWorlds().get(0);
+
+        // TODO: Eliminate duplicate code
+        if (isLocationSet(this.attackingTeamSpawnPointSetting)) {
+            Location location = this.attackingTeamSpawnPointSetting.toLocationInWorld(overworld);
+            // Having one loop per team could be made more efficient, but it's fine for now
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
+                if (team != null && team.getName().equals(this.attackingTeamNameSetting.getValue())) {
+                    player.teleport(location);
+                }
+            }
+        }
+
+        if (isLocationSet(this.defendingTeamSpawnPointSetting)) {
+            Location location = this.defendingTeamSpawnPointSetting.toLocationInWorld(overworld);
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
+                if (team != null && team.getName().equals(this.defendingTeamNameSetting.getValue())) {
+                    player.teleport(location);
+                }
+            }
+        }
+    }
+
+    private boolean isLocationSet(LocationSetting setting) {
+        // TODO: Better way of having unset locations
+        return setting.x() != 0 || setting.y() != 0 || setting.z() != 0;
+    }
+
     /**
      * Start or reset the game
      */
     public void resetGame() {
         this.timeRemaining = this.timePerRoundSetting.getValue();
         this.isTimerActive = true;
+        this.movePlayersToSpawnPoints();
     }
 
     public Scoreboard getScoreboard() {

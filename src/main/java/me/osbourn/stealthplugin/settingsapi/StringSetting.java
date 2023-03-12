@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 public class StringSetting implements Setting {
     private final String settingName;
-    public String value;
+    private String value;
 
     @Nullable
     public Function<String, Boolean> validator;
@@ -30,6 +30,10 @@ public class StringSetting implements Setting {
     @Override
     public String getInfo() {
         return String.format("%s is currently set to %s", this.getName(), this.value);
+    }
+
+    public String getValue() {
+        return this.value;
     }
 
     @Override

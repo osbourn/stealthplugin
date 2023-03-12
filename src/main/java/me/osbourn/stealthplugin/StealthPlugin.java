@@ -5,6 +5,7 @@ import me.osbourn.stealthplugin.handlers.*;
 import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import me.osbourn.stealthplugin.settingsapi.Setting;
+import me.osbourn.stealthplugin.settingsapi.StringSetting;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -41,8 +42,18 @@ public final class StealthPlugin extends JavaPlugin {
         registerSetting(new PlayersDropArrowsHandler(morphManager));
 
         IntegerSetting timePerRoundSetting = new IntegerSetting("timeperround", 300);
+        StringSetting attackingTeamNameSetting = new StringSetting("attackingteamname", "red");
+        StringSetting defendingTeamNameSetting = new StringSetting("defendingteamname", "blue");
+        LocationSetting attackingTeamSpawnLocationSetting = new LocationSetting("attackingteamspawnpoint", 0, 0, 0);
+        LocationSetting defendingTeamSpawnLocationSetting = new LocationSetting("defendingteamspawnpoint", 0, 0, 0);
         this.settingsList.add(timePerRoundSetting);
-        GameManager gameManager = new GameManager(this, morphManager, timePerRoundSetting);
+        this.settingsList.add(attackingTeamNameSetting);
+        this.settingsList.add(defendingTeamNameSetting);
+        this.settingsList.add(attackingTeamSpawnLocationSetting);
+        this.settingsList.add(defendingTeamSpawnLocationSetting);
+        GameManager gameManager = new GameManager(this, morphManager, timePerRoundSetting,
+                attackingTeamNameSetting, attackingTeamSpawnLocationSetting,
+                defendingTeamNameSetting, defendingTeamSpawnLocationSetting);
         this.getServer().getPluginManager().registerEvents(gameManager, this);
         gameManager.runTaskTimer(this, 20, 20);
         this.getCommand("game").setExecutor(new GameCommand(gameManager));

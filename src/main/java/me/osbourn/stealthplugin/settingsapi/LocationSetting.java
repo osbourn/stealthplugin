@@ -1,5 +1,8 @@
 package me.osbourn.stealthplugin.settingsapi;
 
+import org.bukkit.Location;
+import org.bukkit.World;
+
 import java.util.Optional;
 
 public class LocationSetting implements Setting {
@@ -18,6 +21,10 @@ public class LocationSetting implements Setting {
 
     public int z() {
         return this.z;
+    }
+
+    public Location toLocationInWorld(World world) {
+        return new Location(world, this.x(), this.y(), this.z());
     }
 
     public LocationSetting(String settingName, int initialX, int initialY, int initialZ) {
