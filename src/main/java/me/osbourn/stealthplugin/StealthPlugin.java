@@ -3,6 +3,7 @@ package me.osbourn.stealthplugin;
 import me.osbourn.stealthplugin.commands.*;
 import me.osbourn.stealthplugin.handlers.*;
 import me.osbourn.stealthplugin.settingsapi.*;
+import me.osbourn.stealthplugin.util.GameManagerSettings;
 import me.osbourn.stealthplugin.util.GameTargets;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,24 +48,10 @@ public final class StealthPlugin extends JavaPlugin {
         GameTargets gameTargets = new GameTargets();
         registerSetting(new GameTargetsHandler(gameTargets, morphManager));
 
-        IntegerSetting timePerRoundSetting = new IntegerSetting("timeperround", 300);
-        StringSetting attackingTeamNameSetting = new StringSetting("attackingteamname", "red");
-        StringSetting defendingTeamNameSetting = new StringSetting("defendingteamname", "blue");
-        LocationSetting attackingTeamSpawnLocationSetting = new LocationSetting("attackingteamspawnpoint", 0, 0, 0);
-        LocationSetting defendingTeamSpawnLocationSetting = new LocationSetting("defendingteamspawnpoint", 0, 0, 0);
-        LocationSetting attackingTeamChestLocationSetting = new LocationSetting("attackingteamchestlocation", 0, 0,0);
-        LocationSetting defendingTeamChestLocationSetting = new LocationSetting("defendingteamchestlocation", 0, 0,0);
-        this.settingsList.add(timePerRoundSetting);
-        this.settingsList.add(attackingTeamNameSetting);
-        this.settingsList.add(defendingTeamNameSetting);
-        this.settingsList.add(attackingTeamSpawnLocationSetting);
-        this.settingsList.add(defendingTeamSpawnLocationSetting);
-        this.settingsList.add(attackingTeamChestLocationSetting);
-        this.settingsList.add(defendingTeamChestLocationSetting);
-        GameManager gameManager = new GameManager(this, morphManager, gameTargets, timePerRoundSetting,
-                attackingTeamNameSetting, attackingTeamSpawnLocationSetting,
-                defendingTeamNameSetting, defendingTeamSpawnLocationSetting,
-                attackingTeamChestLocationSetting, defendingTeamChestLocationSetting);
+
+        GameManagerSettings gameManagerSettings = GameManagerSettings.makeNew();
+        gameManagerSettings.addAllTo(this.settingsList);
+        GameManager gameManager = new GameManager(this, morphManager, gameTargets, gameManagerSettings);
         this.getServer().getPluginManager().registerEvents(gameManager, this);
         gameManager.runTaskTimer(this, 20, 20);
         this.getCommand("game").setExecutor(new GameCommand(gameManager));

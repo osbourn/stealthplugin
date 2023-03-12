@@ -4,6 +4,7 @@ import me.osbourn.stealthplugin.commands.GiveTeamArmorCommand;
 import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import me.osbourn.stealthplugin.settingsapi.StringSetting;
+import me.osbourn.stealthplugin.util.GameManagerSettings;
 import me.osbourn.stealthplugin.util.GameTargets;
 import me.osbourn.stealthplugin.util.MaterialsUtil;
 import me.osbourn.stealthplugin.util.ObjectiveDisplayHandler;
@@ -43,30 +44,27 @@ public class GameManager extends BukkitRunnable implements Listener {
     private final IntegerSetting timePerRoundSetting;
     private final StringSetting attackingTeamNameSetting;
     private final StringSetting defendingTeamNameSetting;
-    private final LocationSetting attackingTeamSpawnPointSetting;
-    private final LocationSetting defendingTeamSpawnPointSetting;
+    private final LocationSetting attackingTeamSpawnLocationSetting;
+    private final LocationSetting defendingTeamSpawnLocationSetting;
     private final LocationSetting attackingTeamChestLocationSetting;
     private final LocationSetting defendingTeamChestLocationSetting;
 
     private int timeRemaining;
     private boolean isTimerActive;
 
-    public GameManager(StealthPlugin plugin, MorphManager morphManager, GameTargets gameTargets, IntegerSetting timePerRoundSetting,
-                       StringSetting attackingTeamNameSetting, LocationSetting attackingTeamSpawnPointSetting,
-                       StringSetting defendingTeamNameSetting, LocationSetting defendingTeamSpawnPointSetting,
-                       LocationSetting attackingTeamChestLocationSetting, LocationSetting defendingTeamChestLocationSetting) {
+    public GameManager(StealthPlugin plugin, MorphManager morphManager, GameTargets gameTargets, GameManagerSettings settings) {
         this.plugin = plugin;
         this.timeRemaining = 600;
         this.isTimerActive = false;
         this.morphManager = morphManager;
         this.gameTargets = gameTargets;
-        this.timePerRoundSetting = timePerRoundSetting;
-        this.attackingTeamNameSetting = attackingTeamNameSetting;
-        this.attackingTeamSpawnPointSetting = attackingTeamSpawnPointSetting;
-        this.defendingTeamNameSetting = defendingTeamNameSetting;
-        this.defendingTeamSpawnPointSetting = defendingTeamSpawnPointSetting;
-        this.attackingTeamChestLocationSetting = attackingTeamChestLocationSetting;
-        this.defendingTeamChestLocationSetting = defendingTeamChestLocationSetting;
+        this.timePerRoundSetting = settings.timePerRoundSetting();
+        this.attackingTeamNameSetting = settings.attackingTeamNameSetting();
+        this.attackingTeamSpawnLocationSetting = settings.attackingTeamSpawnLocationSetting();
+        this.defendingTeamNameSetting = settings.defendingTeamNameSetting();
+        this.defendingTeamSpawnLocationSetting = settings.defendingTeamSpawnLocationSetting();
+        this.attackingTeamChestLocationSetting = settings.attackingTeamChestLocationSetting();
+        this.defendingTeamChestLocationSetting = settings.defendingTeamChestLocationSetting();
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.scoreboardObjective = this.scoreboard.registerNewObjective("stealthgame", "dummy",
                 ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Game Info");
@@ -157,22 +155,22 @@ public class GameManager extends BukkitRunnable implements Listener {
 
     private void readyPlayers() {
         World overworld = Bukkit.getWorlds().get(0);
-        Location attackersSpawnLocation = this.attackingTeamSpawnPointSetting.toLocationInWorld(overworld);
-        Location defendersSpawnLocation = this.defendingTeamSpawnPointSetting.toLocationInWorld(overworld);
+        Location attackersSpawnLocation = this.attackingTeamSpawnLocationSetting.toLocationInWorld(overworld);
+        Location defendersSpawnLocation = this.defendingTeamSpawnLocationSetting.toLocationInWorld(overworld);
         Location attackingTeamChestLocation = this.attackingTeamChestLocationSetting.toLocationInWorld(overworld);
         Location defendingTeamChestLocation = this.defendingTeamChestLocationSetting.toLocationInWorld(overworld);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
             if (team != null && team.getName().equals(this.attackingTeamNameSetting.getValue())) {
-                if (this.isLocationSet(this.attackingTeamSpawnPointSetting)) {
+                if (this.isLocationSet(this.attackingTeamSpawnLocationSetting)) {
                     player.teleport(attackersSpawnLocation);
                 }
                 if (this.isLocationSet(this.attackingTeamChestLocationSetting)) {
                     this.copyChestToPlayer(attackingTeamChestLocation, player);
                 }
             } else if (team != null && team.getName().equals(this.defendingTeamNameSetting.getValue())) {
-                if (this.isLocationSet(this.defendingTeamSpawnPointSetting)) {
+                if (this.isLocationSet(this.defendingTeamSpawnLocationSetting)) {
                     player.teleport(defendersSpawnLocation);
                 }
                 if (this.isLocationSet(this.defendingTeamChestLocationSetting)) {
