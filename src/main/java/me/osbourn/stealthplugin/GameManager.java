@@ -4,6 +4,7 @@ import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import me.osbourn.stealthplugin.settingsapi.StringSetting;
 import me.osbourn.stealthplugin.util.GameTargets;
+import me.osbourn.stealthplugin.util.MaterialsUtil;
 import me.osbourn.stealthplugin.util.ObjectiveDisplayHandler;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -101,6 +102,16 @@ public class GameManager extends BukkitRunnable implements Listener {
     private List<String> getScoreboardLines() {
         List<String> lines = new ArrayList<>();
 
+        for (Material material : this.gameTargets.getTargetMaterials()) {
+            String materialName = MaterialsUtil.prettyMaterialName(material.toString());
+            boolean hasBeenBroken = this.gameTargets.hasBeenBroken(material);
+            if (hasBeenBroken) {
+                lines.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + materialName);
+            } else {
+                lines.add(ChatColor.GREEN + materialName);
+            }
+        }
+
         Map<Team, List<Player>> teams = new HashMap<>();
         // TODO: Consider rendering players not on teams
         List<Player> playersWithoutTeams = new ArrayList<>();
@@ -130,11 +141,6 @@ public class GameManager extends BukkitRunnable implements Listener {
         int minutesLeft = timeRemaining / 60;
         int secondsLeft = timeRemaining % 60;
         lines.add(String.format("%sTime: %02d:%02d", ChatColor.YELLOW, minutesLeft, secondsLeft));
-        lines.add(String.format("%s/togglesb to hide", ChatColor.GRAY));
-
-        for (Material material : this.gameTargets.getTargetMaterials()) {
-            lines.add(material.toString() + " is " + this.gameTargets.hasBeenBroken(material));
-        }
 
         return lines;
     }
@@ -213,6 +219,7 @@ public class GameManager extends BukkitRunnable implements Listener {
     public void resetGame() {
         this.timeRemaining = this.timePerRoundSetting.getValue();
         this.isTimerActive = true;
+        this.gameTargets.resetBrokenTargets();
         this.readyPlayers();
     }
 

@@ -17,8 +17,8 @@ public class GameTargets {
     public GameTargets() {
         this.targetMaterials = new ArrayList<>();
         this.brokenTargets = new HashSet<>();
-        this.targetMaterials.add(Material.STONE);
-        this.targetMaterials.add(Material.SAND);
+        this.targetMaterials.add(Material.RESPAWN_ANCHOR);
+        this.targetMaterials.add(Material.ENCHANTING_TABLE);
     }
 
     /**
