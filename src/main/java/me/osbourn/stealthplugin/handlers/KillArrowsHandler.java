@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class KillArrowsHandler extends BooleanSetting implements Listener {
     public KillArrowsHandler() {
-        super(true);
+        super("killarrows", true);
     }
 
     @EventHandler
@@ -16,10 +16,5 @@ public class KillArrowsHandler extends BooleanSetting implements Listener {
         if (this.isActive() && event.getDamager().getType() == EntityType.ARROW) {
             event.setDamage(1000);
         }
-    }
-
-    @Override
-    public String getName() {
-        return "killarrows";
     }
 }

@@ -8,7 +8,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class ClearInventoryOnDeathHandler extends BooleanSetting implements Listener {
     public ClearInventoryOnDeathHandler() {
-        super(true);
+        super("clearinventoryondeath", true);
     }
 
     @EventHandler(priority = EventPriority.LOW)
@@ -16,10 +16,5 @@ public class ClearInventoryOnDeathHandler extends BooleanSetting implements List
         if (this.isActive()) {
             event.getDrops().clear();
         }
-    }
-
-    @Override
-    public String getName() {
-        return "clearinventoryondeath";
     }
 }

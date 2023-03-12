@@ -14,7 +14,7 @@ public class MorphOnRespawnHandler extends BooleanSetting implements Listener {
     private final MorphManager morphManager;
 
     public MorphOnRespawnHandler(MorphManager morphManager) {
-        super(true);
+        super("morphonrespawn", true);
         this.morphManager = morphManager;
     }
 
@@ -30,10 +30,5 @@ public class MorphOnRespawnHandler extends BooleanSetting implements Listener {
                 this.morphManager.morphAsEntity(player, target);
             }
         }
-    }
-
-    @Override
-    public String getName() {
-        return "morphonrespawn";
     }
 }

@@ -6,7 +6,7 @@ public class LocationSetting implements Setting {
     private int x;
     private int y;
     private int z;
-    private String settingName;
+    private final String settingName;
 
     public int x() {
         return this.x;

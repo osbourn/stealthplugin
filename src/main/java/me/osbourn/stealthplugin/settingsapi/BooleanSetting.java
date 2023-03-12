@@ -5,10 +5,12 @@ import me.osbourn.stealthplugin.settingsapi.Setting;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class BooleanSetting implements Setting {
+public class BooleanSetting implements Setting {
+    private final String settingName;
     private boolean active = true;
 
-    public BooleanSetting(boolean initialValue) {
+    public BooleanSetting(String settingName, boolean initialValue) {
+        this.settingName = settingName;
         this.active = initialValue;
     }
 
@@ -18,6 +20,11 @@ public abstract class BooleanSetting implements Setting {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public String getName() {
+        return this.settingName;
     }
 
     @Override

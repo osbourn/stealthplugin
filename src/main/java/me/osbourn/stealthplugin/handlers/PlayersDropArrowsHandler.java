@@ -13,7 +13,7 @@ public class PlayersDropArrowsHandler extends BooleanSetting implements Listener
     private final MorphManager morphManager;
 
     public PlayersDropArrowsHandler(MorphManager morphManager) {
-        super(true);
+        super("playersdroparrows", true);
         this.morphManager = morphManager;
     }
 
@@ -24,10 +24,5 @@ public class PlayersDropArrowsHandler extends BooleanSetting implements Listener
             ItemStack arrows = new ItemStack(Material.ARROW, 3);
             event.getDrops().add(arrows);
         }
-    }
-
-    @Override
-    public String getName() {
-        return "playersdroparrows";
     }
 }
