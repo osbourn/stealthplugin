@@ -73,11 +73,21 @@ spigot {
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command> start'
         }
+        create('togglesb') {
+            description = "Toggle the game scoreboard on and off"
+            permission = 'stealth.player'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command>'
+        }
     }
     permissions {
         'stealth.manage' {
             description = 'Allows running commands specific to the plugin'
             defaults = 'op'
+        }
+        'stealth.player' {
+            description = 'Basic permissions for players'
+            defaults = 'all'
         }
     }
 }

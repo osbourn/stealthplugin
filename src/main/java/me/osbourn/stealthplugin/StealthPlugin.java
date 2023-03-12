@@ -46,6 +46,7 @@ public final class StealthPlugin extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(gameManager, this);
         gameManager.runTaskTimer(this, 20, 20);
         this.getCommand("game").setExecutor(new GameCommand(gameManager));
+        this.getCommand("togglesb").setExecutor(new ToggleGameScoreboardCommand(gameManager));
     }
 
     public List<Setting> getSettingsList() {

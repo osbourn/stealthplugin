@@ -130,6 +130,10 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.isRoundActive = true;
     }
 
+    public Scoreboard getScoreboard() {
+        return this.scoreboard;
+    }
+
     private void announceMessage(String message) {
         Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(message));
     }
