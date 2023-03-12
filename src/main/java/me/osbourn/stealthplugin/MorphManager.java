@@ -1,5 +1,6 @@
 package me.osbourn.stealthplugin;
 
+import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,6 +14,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -27,9 +29,13 @@ import java.util.UUID;
 
 public class MorphManager implements Listener {
     private final Map<UUID,UUID> morphs;
+    private final BooleanSetting morphedPlayersCanAttackSetting;
+    private final BooleanSetting morphedPlayersIgnoreArrowsSetting;
 
-    public MorphManager() {
+    public MorphManager(BooleanSetting morphedPlayersCanAttackSetting, BooleanSetting morphedPlayersIgnoreArrowsSetting) {
         this.morphs = new HashMap<>();
+        this.morphedPlayersCanAttackSetting = morphedPlayersCanAttackSetting;
+        this.morphedPlayersIgnoreArrowsSetting = morphedPlayersIgnoreArrowsSetting;
     }
 
     public boolean isUUIDMorphed(UUID uuid) {
@@ -148,6 +154,17 @@ public class MorphManager implements Listener {
     }
 
     @EventHandler
+    public void entityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player player) {
+            if (this.isPlayerMorphed(player)) {
+                if (!this.morphedPlayersCanAttackSetting.isActive()) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (this.isPlayerMorphed(event.getPlayer())) {
@@ -164,10 +181,12 @@ public class MorphManager implements Listener {
 
     @EventHandler
     public void arrowHitEvent(ProjectileHitEvent event) {
-        if (event.getEntity().getType() == EntityType.ARROW) {
-            if (event.getHitEntity() != null && event.getHitEntity() instanceof Player player) {
-                if (this.isPlayerMorphed(player)) {
-                    event.setCancelled(true);
+        if (this.morphedPlayersIgnoreArrowsSetting.isActive()) {
+            if (event.getEntity().getType() == EntityType.ARROW) {
+                if (event.getHitEntity() != null && event.getHitEntity() instanceof Player player) {
+                    if (this.isPlayerMorphed(player)) {
+                        event.setCancelled(true);
+                    }
                 }
             }
         }

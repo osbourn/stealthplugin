@@ -2,10 +2,7 @@ package me.osbourn.stealthplugin;
 
 import me.osbourn.stealthplugin.commands.*;
 import me.osbourn.stealthplugin.handlers.*;
-import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
-import me.osbourn.stealthplugin.settingsapi.LocationSetting;
-import me.osbourn.stealthplugin.settingsapi.Setting;
-import me.osbourn.stealthplugin.settingsapi.StringSetting;
+import me.osbourn.stealthplugin.settingsapi.*;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,7 +22,11 @@ public final class StealthPlugin extends JavaPlugin {
         this.getCommand("settings").setExecutor(settingsCommand);
         this.getCommand("settings").setTabCompleter(settingsCommand);
 
-        MorphManager morphManager = new MorphManager();
+        BooleanSetting morphedPlayersCanAttackSetting = new BooleanSetting("morphedplayerscanattack", true);
+        BooleanSetting morphedPlayersIgnoreArrowsSetting = new BooleanSetting("morphedplayersignorearrows", true);
+        this.settingsList.add(morphedPlayersCanAttackSetting);
+        this.settingsList.add(morphedPlayersIgnoreArrowsSetting);
+        MorphManager morphManager = new MorphManager(morphedPlayersCanAttackSetting, morphedPlayersIgnoreArrowsSetting);
         this.getServer().getPluginManager().registerEvents(morphManager, this);
         this.getCommand("morph").setExecutor(new MorphCommand(morphManager));
         this.getCommand("unmorph").setExecutor(new UnmorphCommand(morphManager));
