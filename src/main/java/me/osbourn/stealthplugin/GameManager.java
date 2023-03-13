@@ -187,6 +187,7 @@ public class GameManager extends BukkitRunnable implements Listener {
             if (this.isOnAttackers(player)) {
                 if (this.isLocationSet(this.attackingTeamSpawnLocationSetting)) {
                     player.teleport(attackersSpawnLocation);
+                    player.setBedSpawnLocation(attackersSpawnLocation, true);
                 }
                 if (this.isLocationSet(this.attackingTeamChestLocationSetting)) {
                     this.copyChestToPlayer(attackingTeamChestLocation, player);
@@ -194,13 +195,16 @@ public class GameManager extends BukkitRunnable implements Listener {
             } else if (this.isOnDefenders(player)) {
                 if (this.isLocationSet(this.defendingTeamSpawnLocationSetting)) {
                     player.teleport(defendersSpawnLocation);
+                    player.setBedSpawnLocation(attackersSpawnLocation, true);
                 }
                 if (this.isLocationSet(this.defendingTeamChestLocationSetting)) {
                     this.copyChestToPlayer(defendingTeamChestLocation, player);
                 }
             }
 
-            morphManager.unmorph(player);
+            if (morphManager.isPlayerMorphed(player)) {
+                morphManager.unmorph(player);
+            }
             player.setHealth(20);
         }
 
