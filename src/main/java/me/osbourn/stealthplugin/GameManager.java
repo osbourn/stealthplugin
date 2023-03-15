@@ -9,6 +9,7 @@ import me.osbourn.stealthplugin.util.GameTargets;
 import me.osbourn.stealthplugin.util.MaterialsUtil;
 import me.osbourn.stealthplugin.util.ObjectiveDisplayHandler;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
@@ -24,10 +25,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameManager extends BukkitRunnable implements Listener {
     private final StealthPlugin plugin;
@@ -205,7 +203,8 @@ public class GameManager extends BukkitRunnable implements Listener {
             if (morphManager.isPlayerMorphed(player)) {
                 morphManager.unmorph(player);
             }
-            player.setHealth(20);
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
+            player.setHealth(20.0);
         }
 
         GiveTeamArmorCommand.giveTeamArmor();
