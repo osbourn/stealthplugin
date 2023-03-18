@@ -70,9 +70,8 @@ public final class StealthPlugin extends JavaPlugin {
         for (Setting setting : settingsList) {
             // TODO: Ensure that setting.configValue() is a valid type
             config.addDefault(setting.getName(), setting.configValue());
-            setting.setFromConfigValue(config.get(setting.getName()));
         }
-        this.saveConfig();
+        this.loadSettings();
     }
 
     public List<Setting> getSettingsList() {
@@ -88,12 +87,23 @@ public final class StealthPlugin extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents((Listener) setting, this);
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+    public void loadSettings() {
+        for (Setting setting : settingsList) {
+            // TODO: Ensure that setting.configValue() is a valid type
+            setting.setFromConfigValue(this.getConfig().get(setting.getName()));
+        }
+    }
+
+    public void saveSettings() {
         for (Setting setting : settingsList) {
             this.getConfig().set(setting.getName(), setting.configValue());
         }
         this.saveConfig();
+    }
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+        this.saveSettings();
     }
 }

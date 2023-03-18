@@ -32,6 +32,17 @@ public class SettingsCommand implements CommandExecutor, TabCompleter {
             return false;
         }
 
+        if (args[0].equals("save")) {
+            this.plugin.saveSettings();
+            sender.sendMessage("Saved settings to config");
+            return true;
+        }
+        if (args[0].equals("load")) {
+            this.plugin.loadSettings();
+            sender.sendMessage("Loaded settings from config");
+            return true;
+        }
+
         Optional<Setting> setting = this.plugin.getSettingsList().stream()
                 .filter(s -> s.getName().equals(args[0]))
                 .findFirst();
@@ -57,7 +68,7 @@ public class SettingsCommand implements CommandExecutor, TabCompleter {
                                       @NotNull String[] args) {
         if (args.length <= 1) {
             return this.plugin.getSettingsList().stream()
-                    .map(setting -> setting.getName())
+                    .map(Setting::getName)
                     .toList();
         } else if (args.length == 2) {
             Optional<Setting> setting = this.plugin.getSettingsList().stream()
