@@ -38,6 +38,8 @@ public class SetupCommand implements CommandExecutor {
         blueTeam.setDisplayName("Blue");
         redTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
         blueTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
+        redTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+        blueTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
 
         World overworld = Bukkit.getWorlds().get(0);
         overworld.setGameRule(GameRule.DO_MOB_SPAWNING, false);
