@@ -13,12 +13,15 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import me.osbourn.stealthplugin.StealthPlugin;
+import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -29,10 +32,12 @@ import java.io.IOException;
 public class PasteStructureCommand implements CommandExecutor {
     private final StealthPlugin plugin;
     private final LocationSetting positionSettings;
+    private final BooleanSetting killEntitiesBeforePasteSetting;
 
-    public PasteStructureCommand(StealthPlugin plugin, LocationSetting positionSettings) {
+    public PasteStructureCommand(StealthPlugin plugin, LocationSetting positionSettings, BooleanSetting killEntitiesBeforePasteSetting) {
         this.plugin = plugin;
         this.positionSettings = positionSettings;
+        this.killEntitiesBeforePasteSetting = killEntitiesBeforePasteSetting;
     }
 
     @Override
@@ -56,6 +61,16 @@ public class PasteStructureCommand implements CommandExecutor {
             sender.sendMessage("IO Exception occurred");
             e.printStackTrace();
             return false;
+        }
+
+        // Kill entities before paste
+        if (this.killEntitiesBeforePasteSetting.isActive()) {
+            World overworld = Bukkit.getWorlds().get(0);
+            for (Entity entity : overworld.getEntities()) {
+                if (entity.getType() != EntityType.PLAYER) {
+                    entity.remove();
+                }
+            }
         }
 
         World overworld = Bukkit.getWorlds().get(0);
