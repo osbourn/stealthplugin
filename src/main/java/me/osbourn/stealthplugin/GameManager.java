@@ -57,7 +57,7 @@ public class GameManager extends BukkitRunnable implements Listener {
 
     public GameManager(StealthPlugin plugin, MorphManager morphManager, GameTargets gameTargets, GameManagerSettings settings) {
         this.plugin = plugin;
-        this.timeRemaining = 600;
+        this.timeRemaining = settings.timePerRoundSetting().getValue();
         this.prepTimeRemaining = 0;
         this.isTimerActive = false;
         this.morphManager = morphManager;
