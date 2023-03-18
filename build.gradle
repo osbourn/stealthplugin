@@ -91,6 +91,12 @@ spigot {
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command> add|remove <blocktype>'
         }
+        create('revive') {
+            description = 'Revive a player'
+            permission = 'stealth.manage'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command> <playername>'
+        }
         create('togglesb') {
             description = "Toggle the game scoreboard on and off"
             permission = 'stealth.player'

@@ -181,43 +181,47 @@ public class GameManager extends BukkitRunnable implements Listener {
     }
 
     private void readyPlayers() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            readyPlayer(player);
+        }
+
+        GiveTeamArmorCommand.giveTeamArmor();
+    }
+
+    public void readyPlayer(Player player) {
         World overworld = Bukkit.getWorlds().get(0);
         Location attackersSpawnLocation = this.attackingTeamSpawnLocationSetting.toLocationInWorld(overworld);
         Location defendersSpawnLocation = this.defendingTeamSpawnLocationSetting.toLocationInWorld(overworld);
         Location attackingTeamChestLocation = this.attackingTeamChestLocationSetting.toLocationInWorld(overworld);
         Location defendingTeamChestLocation = this.defendingTeamChestLocationSetting.toLocationInWorld(overworld);
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (this.isOnAttackers(player)) {
-                if (this.isLocationSet(this.attackingTeamSpawnLocationSetting)) {
-                    player.teleport(attackersSpawnLocation);
-                    player.setBedSpawnLocation(attackersSpawnLocation, true);
-                }
-                if (this.isLocationSet(this.attackingTeamChestLocationSetting)) {
-                    this.copyChestToPlayer(attackingTeamChestLocation, player);
-                }
-            } else if (this.isOnDefenders(player)) {
-                if (this.isLocationSet(this.defendingTeamSpawnLocationSetting)) {
-                    player.teleport(defendersSpawnLocation);
-                    player.setBedSpawnLocation(attackersSpawnLocation, true);
-                }
-                if (this.isLocationSet(this.defendingTeamChestLocationSetting)) {
-                    this.copyChestToPlayer(defendingTeamChestLocation, player);
-                }
+        if (this.isOnAttackers(player)) {
+            if (this.isLocationSet(this.attackingTeamSpawnLocationSetting)) {
+                player.teleport(attackersSpawnLocation);
+                player.setBedSpawnLocation(attackersSpawnLocation, true);
             }
-
-            if (morphManager.isPlayerMorphed(player)) {
-                morphManager.unmorph(player);
+            if (this.isLocationSet(this.attackingTeamChestLocationSetting)) {
+                this.copyChestToPlayer(attackingTeamChestLocation, player);
             }
-            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
-            player.setHealth(20.0);
-
-            if (this.settings.applyInvisibilityOnStart().isActive()) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000, 0, false, false, false));
+        } else if (this.isOnDefenders(player)) {
+            if (this.isLocationSet(this.defendingTeamSpawnLocationSetting)) {
+                player.teleport(defendersSpawnLocation);
+                player.setBedSpawnLocation(attackersSpawnLocation, true);
+            }
+            if (this.isLocationSet(this.defendingTeamChestLocationSetting)) {
+                this.copyChestToPlayer(defendingTeamChestLocation, player);
             }
         }
 
-        GiveTeamArmorCommand.giveTeamArmor();
+        if (morphManager.isPlayerMorphed(player)) {
+            morphManager.unmorph(player);
+        }
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
+        player.setHealth(20.0);
+
+        if (this.settings.applyInvisibilityOnStart().isActive()) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000, 0, false, false, false));
+        }
     }
 
     public boolean isOnAttackers(Player player) {
