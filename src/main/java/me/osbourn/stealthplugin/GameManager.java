@@ -34,6 +34,7 @@ public class GameManager extends BukkitRunnable implements Listener {
     private final MorphManager morphManager;
     private final GameTargets gameTargets;
     private final Scoreboard scoreboard;
+    private final Team hideNamesTeam;
     /**
      * The scoreboard objective which is used to render game information.
      * This isn't an actual "objective" in the sense of it being a score, it is just used to draw information in the
@@ -70,6 +71,8 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.attackingTeamChestLocationSetting = settings.attackingTeamChestLocationSetting();
         this.defendingTeamChestLocationSetting = settings.defendingTeamChestLocationSetting();
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        this.hideNamesTeam = this.scoreboard.registerNewTeam("playerteam");
+        this.hideNamesTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
         this.scoreboardObjective = this.scoreboard.registerNewObjective("stealthgame", "dummy",
                 ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Game Info");
         this.scoreboardObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -107,6 +110,7 @@ public class GameManager extends BukkitRunnable implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.getPlayer().setScoreboard(this.scoreboard);
+        this.hideNamesTeam.addEntry(event.getPlayer().getName());
     }
 
     private List<String> getScoreboardLines() {
