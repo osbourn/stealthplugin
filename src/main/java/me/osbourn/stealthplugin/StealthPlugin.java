@@ -69,7 +69,8 @@ public final class StealthPlugin extends JavaPlugin {
         this.saveDefaultConfig();
         for (Setting setting : settingsList) {
             // TODO: Ensure that setting.configValue() is a valid type
-            config.set(setting.getName(), setting.configValue());
+            config.addDefault(setting.getName(), setting.configValue());
+            setting.setFromConfigValue(config.get(setting.getName()));
         }
         this.saveConfig();
     }
@@ -90,5 +91,9 @@ public final class StealthPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        for (Setting setting : settingsList) {
+            this.getConfig().set(setting.getName(), setting.configValue());
+        }
+        this.saveConfig();
     }
 }

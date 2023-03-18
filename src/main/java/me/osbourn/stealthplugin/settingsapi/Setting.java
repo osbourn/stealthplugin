@@ -1,6 +1,7 @@
 package me.osbourn.stealthplugin.settingsapi;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -36,5 +37,5 @@ public interface Setting {
 
     Object configValue();
 
-    void setFromConfigValue(Object value);
+    void setFromConfigValue(@Nullable Object value);
 }

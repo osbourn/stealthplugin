@@ -57,8 +57,9 @@ public class BooleanSetting implements Setting {
 
     @Override
     public void setFromConfigValue(Object value) {
-        if (value instanceof Boolean) {
-            this.active = (Boolean) value;
+        // Though the value is saved as a boolean, it will be read as a string
+        if (value instanceof String) {
+            this.active = Boolean.parseBoolean((String) value);
         }
     }
 }
