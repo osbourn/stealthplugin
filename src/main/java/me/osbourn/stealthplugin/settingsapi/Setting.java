@@ -1,6 +1,9 @@
 package me.osbourn.stealthplugin.settingsapi;
 
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface Setting {
@@ -31,4 +34,7 @@ public interface Setting {
         return List.of();
     }
 
+    Object configValue();
+
+    void setFromConfigValue(Object value);
 }

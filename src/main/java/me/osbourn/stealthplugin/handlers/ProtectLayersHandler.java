@@ -96,6 +96,30 @@ public class ProtectLayersHandler implements Setting, Listener {
         return List.of("disable", "enable", "0");
     }
 
+    @Override
+    public Object configValue() {
+        return String.format("%b,%d", this.isActive, this.getLayer());
+    }
+
+    @Override
+    public void setFromConfigValue(Object value) {
+        if (value instanceof String s) {
+            String[] words = s.split(",");
+            if (words.length == 2) {
+                try {
+                    // Declare variables before setting so that if the number is an invalid format it doesn't set only the boolean
+                    boolean isActive = Boolean.parseBoolean(words[0]);
+                    int layer = Integer.parseInt(words[1]);
+
+                    this.isActive = isActive;
+                    this.layer = layer;
+                } catch (NumberFormatException e) {
+                    // TODO: Log error
+                }
+            }
+        }
+    }
+
     public int getLayer() {
         return this.layer;
     }

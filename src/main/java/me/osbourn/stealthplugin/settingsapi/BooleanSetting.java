@@ -49,4 +49,16 @@ public class BooleanSetting implements Setting {
     public List<String> tabCompletionOptions() {
         return List.of("true", "false");
     }
+
+    @Override
+    public Object configValue() {
+        return Boolean.toString(this.active);
+    }
+
+    @Override
+    public void setFromConfigValue(Object value) {
+        if (value instanceof Boolean) {
+            this.active = (Boolean) value;
+        }
+    }
 }

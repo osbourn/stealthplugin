@@ -7,6 +7,7 @@ import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import me.osbourn.stealthplugin.settingsapi.Setting;
 import me.osbourn.stealthplugin.util.GameManagerSettings;
 import me.osbourn.stealthplugin.util.GameTargets;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -63,6 +64,14 @@ public final class StealthPlugin extends JavaPlugin {
 
         this.getCommand("game").setExecutor(new GameCommand(gameManager));
         this.getCommand("togglesb").setExecutor(new ToggleGameScoreboardCommand(gameManager));
+
+        FileConfiguration config = this.getConfig();
+        this.saveDefaultConfig();
+        for (Setting setting : settingsList) {
+            // TODO: Ensure that setting.configValue() is a valid type
+            config.set(setting.getName(), setting.configValue());
+        }
+        this.saveConfig();
     }
 
     public List<Setting> getSettingsList() {

@@ -30,6 +30,10 @@ public class LocationSetting implements Setting {
         return this.z;
     }
 
+    public Location toLocationWithNullWorld() {
+        return new Location(null, this.x(), this.y(), this.z());
+    }
+
     public Location toLocationInWorld(World world) {
         return new Location(world, this.x(), this.y(), this.z());
     }
@@ -56,6 +60,20 @@ public class LocationSetting implements Setting {
             return Optional.empty();
         } catch (NumberFormatException e) {
             return Optional.of("Invalid number");
+        }
+    }
+
+    @Override
+    public Object configValue() {
+        return this.toLocationWithNullWorld();
+    }
+
+    @Override
+    public void setFromConfigValue(Object value) {
+        if (value instanceof Location loc) {
+            this.x = (int) loc.getX();
+            this.y = (int) loc.getY();
+            this.z = (int) loc.getZ();
         }
     }
 }

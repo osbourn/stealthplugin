@@ -54,4 +54,16 @@ public class StringSetting implements Setting {
             }
         }
     }
+
+    @Override
+    public Object configValue() {
+        return this.value;
+    }
+
+    @Override
+    public void setFromConfigValue(Object value) {
+        if (value instanceof String) {
+            this.value = (String) value;
+        }
+    }
 }
