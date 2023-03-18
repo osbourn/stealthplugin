@@ -47,6 +47,11 @@ public class PasteStructureCommand implements CommandExecutor {
             return false;
         }
 
+        return pasteStructure(sender);
+    }
+
+    public boolean pasteStructure(@NotNull CommandSender sender) {
+
         // Load schematic
         Clipboard clipboard;
         try {

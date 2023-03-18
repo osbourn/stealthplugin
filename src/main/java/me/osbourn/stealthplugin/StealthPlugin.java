@@ -42,7 +42,8 @@ public final class StealthPlugin extends JavaPlugin {
         BooleanSetting killEntitiesBeforePasteSetting = new BooleanSetting("killentitiesbeforepaste", false);
         this.settingsList.add(structurePositionSetting);
         this.settingsList.add(killEntitiesBeforePasteSetting);
-        this.getCommand("pastestructure").setExecutor(new PasteStructureCommand(this, structurePositionSetting, killEntitiesBeforePasteSetting));
+        PasteStructureCommand pasteStructureCommand = new PasteStructureCommand(this, structurePositionSetting, killEntitiesBeforePasteSetting);
+        this.getCommand("pastestructure").setExecutor(pasteStructureCommand);
 
         registerSetting(new KillArrowsHandler());
         registerSetting(new ClearInventoryOnDeathHandler());
@@ -64,7 +65,7 @@ public final class StealthPlugin extends JavaPlugin {
 
         registerSetting(new PrepTimeHandler(gameManager));
 
-        this.getCommand("game").setExecutor(new GameCommand(gameManager));
+        this.getCommand("game").setExecutor(new GameCommand(gameManager, pasteStructureCommand));
         this.getCommand("togglesb").setExecutor(new ToggleGameScoreboardCommand(gameManager));
 
         FileConfiguration config = this.getConfig();

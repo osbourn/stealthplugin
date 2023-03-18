@@ -8,9 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class GameCommand implements CommandExecutor {
     private final GameManager gameManager;
+    private final PasteStructureCommand structurePaster;
 
-    public GameCommand(GameManager gameManager) {
+    public GameCommand(GameManager gameManager, PasteStructureCommand structurePaster) {
         this.gameManager = gameManager;
+        this.structurePaster = structurePaster;
     }
 
     @Override
@@ -36,6 +38,14 @@ public class GameCommand implements CommandExecutor {
                 }
             }
             case "forcestart" -> {
+                this.gameManager.resetGame();
+                return true;
+            }
+            case "pasteandforcestart" -> {
+                boolean pasteWasSuccess = this.structurePaster.pasteStructure(sender);
+                if (!pasteWasSuccess) {
+                    return false;
+                }
                 this.gameManager.resetGame();
                 return true;
             }
