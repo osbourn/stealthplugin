@@ -7,6 +7,7 @@ import java.util.List;
 public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSetting prepTimeSetting,
                                   BooleanSetting displayGameTargetsSetting,
                                   BooleanSetting displayPlayerNamesSetting, BooleanSetting displayTimeSetting,
+                                  BooleanSetting applyInvisibilityOnStart,
                                   StringSetting attackingTeamNameSetting, StringSetting defendingTeamNameSetting,
                                   LocationSetting attackingTeamSpawnLocationSetting,
                                   LocationSetting defendingTeamSpawnLocationSetting,
@@ -19,6 +20,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         BooleanSetting displayGameTargetsSetting = new BooleanSetting("displaygametargets", true);
         BooleanSetting displayPlayerNamesSetting = new BooleanSetting("displayplayernames", true);
         BooleanSetting displayTimeSetting = new BooleanSetting("displaytime", true);
+        BooleanSetting applyInvisibilityOnStart = new BooleanSetting("applyinvisibilityonstart", false);
         StringSetting attackingTeamNameSetting = new StringSetting("attackingteamname", "red");
         StringSetting defendingTeamNameSetting = new StringSetting("defendingteamname", "blue");
         LocationSetting attackingTeamSpawnLocationSetting = new LocationSetting("attackingteamspawnlocation", 0, 0, 0);
@@ -27,6 +29,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         LocationSetting defendingTeamChestLocationSetting = new LocationSetting("defendingteamchestlocation", 0, 0, 0);
         return new GameManagerSettings(timePerRoundSetting, prepTimeSetting, displayGameTargetsSetting,
                 displayPlayerNamesSetting, displayTimeSetting,
+                applyInvisibilityOnStart,
                 attackingTeamNameSetting, defendingTeamNameSetting,
                 attackingTeamSpawnLocationSetting, defendingTeamSpawnLocationSetting,
                 attackingTeamChestLocationSetting, defendingTeamChestLocationSetting);
@@ -38,6 +41,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         settingsList.add(displayGameTargetsSetting);
         settingsList.add(displayPlayerNamesSetting);
         settingsList.add(displayTimeSetting);
+        settingsList.add(applyInvisibilityOnStart);
         settingsList.add(attackingTeamNameSetting);
         settingsList.add(defendingTeamNameSetting);
         settingsList.add(attackingTeamSpawnLocationSetting);

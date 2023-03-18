@@ -19,6 +19,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -205,6 +207,10 @@ public class GameManager extends BukkitRunnable implements Listener {
             }
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
             player.setHealth(20.0);
+
+            if (this.settings.applyInvisibilityOnStart().isActive()) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000, 0, false, false, false));
+            }
         }
 
         GiveTeamArmorCommand.giveTeamArmor();
