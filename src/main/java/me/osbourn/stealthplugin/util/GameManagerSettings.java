@@ -15,8 +15,8 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
                                   LocationSetting defendingTeamChestLocationSetting) {
 
     public static GameManagerSettings makeNew() {
-        IntegerSetting timePerRoundSetting = new IntegerSetting("timeperround", 600);
-        IntegerSetting prepTimeSetting = new IntegerSetting("preptime", 0);
+        IntegerSetting timePerRoundSetting = new IntegerSetting("timeperround", 300);
+        IntegerSetting prepTimeSetting = new IntegerSetting("preptime", 30);
         BooleanSetting displayGameTargetsSetting = new BooleanSetting("displaygametargets", true);
         BooleanSetting displayPlayerNamesSetting = new BooleanSetting("displayplayernames", true);
         BooleanSetting displayTimeSetting = new BooleanSetting("displaytime", true);
