@@ -66,6 +66,7 @@ public final class StealthPlugin extends JavaPlugin {
         registerSetting(new PrepTimeHandler(gameManager));
 
         this.getCommand("game").setExecutor(new GameCommand(gameManager, pasteStructureCommand));
+        this.getCommand("gameobjectives").setExecutor(new GameObjectivesCommand(gameManager));
         this.getCommand("togglesb").setExecutor(new ToggleGameScoreboardCommand(gameManager));
 
         FileConfiguration config = this.getConfig();

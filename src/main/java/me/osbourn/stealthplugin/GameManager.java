@@ -281,6 +281,10 @@ public class GameManager extends BukkitRunnable implements Listener {
         return this.scoreboard;
     }
 
+    public GameTargets getGameTargets() {
+        return this.gameTargets;
+    }
+
     private void announceMessage(String message) {
         Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(message));
     }
