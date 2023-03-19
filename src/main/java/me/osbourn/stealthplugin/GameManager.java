@@ -222,6 +222,7 @@ public class GameManager extends BukkitRunnable implements Listener {
         if (morphManager.isPlayerMorphed(player)) {
             morphManager.unmorph(player);
         }
+        player.setGameMode(GameMode.SURVIVAL);
         player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
         player.setHealth(20.0);
 
