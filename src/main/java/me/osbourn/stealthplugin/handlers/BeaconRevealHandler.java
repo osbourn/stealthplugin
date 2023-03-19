@@ -3,6 +3,7 @@ package me.osbourn.stealthplugin.handlers;
 import me.osbourn.stealthplugin.MorphManager;
 import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -25,7 +26,7 @@ public class BeaconRevealHandler extends BooleanSetting implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         if (this.isActive() && event.getBlock().getType() == Material.BEACON) {
             if (!this.morphManager.isPlayerMorphed(event.getPlayer())) {
-                brieflyRevealPlayers();
+                brieflyRevealPlayers(event.getBlock().getLocation());
             }
         }
     }
@@ -35,15 +36,19 @@ public class BeaconRevealHandler extends BooleanSetting implements Listener {
         if (this.isActive()) {
             for (Block block : event.blockList()) {
                 if (block.getType() == Material.BEACON) {
-                    brieflyRevealPlayers();
+                    brieflyRevealPlayers(block.getLocation());
                 }
             }
         }
     }
 
-    private void brieflyRevealPlayers() {
+    private void brieflyRevealPlayers(Location blockLocation) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5 * 20, 0, false, true, true));
+            double distanceToBeacon = blockLocation.distance(player.getLocation());
+            final double maxDistance = 20;
+            if (distanceToBeacon < maxDistance) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5 * 20, 0, false, true, true));
+            }
         }
     }
 }
