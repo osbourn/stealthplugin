@@ -51,6 +51,7 @@ public final class StealthPlugin extends JavaPlugin {
         registerSetting(new DisableEnderChestsHandler());
         registerSetting(new DisableHungerHandler());
         registerSetting(new AnnounceBeaconsHandler(morphManager));
+        registerSetting(new BeaconRevealHandler(morphManager));
         registerSetting(new MorphOnRespawnHandler(morphManager));
         registerSetting(new PlayersDropArrowsHandler(morphManager));
 
