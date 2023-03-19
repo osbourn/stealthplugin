@@ -74,6 +74,7 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.playerTeam = this.scoreboard.registerNewTeam("playerteam");
         this.playerTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
         this.playerTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+        this.playerTeam.setCanSeeFriendlyInvisibles(false);
         this.scoreboardObjective = this.scoreboard.registerNewObjective("stealthgame", "dummy",
                 ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Game Info");
         this.scoreboardObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
