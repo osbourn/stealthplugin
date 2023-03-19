@@ -12,7 +12,8 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
                                   LocationSetting attackingTeamSpawnLocationSetting,
                                   LocationSetting defendingTeamSpawnLocationSetting,
                                   LocationSetting attackingTeamChestLocationSetting,
-                                  LocationSetting defendingTeamChestLocationSetting) {
+                                  LocationSetting defendingTeamChestLocationSetting,
+                                  LocationSetting respawnLocationSetting) {
 
     public static GameManagerSettings makeNew() {
         IntegerSetting timePerRoundSetting = new IntegerSetting("timeperround", 300);
@@ -27,12 +28,14 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         LocationSetting defendingTeamSpawnLocationSetting = new LocationSetting("defendingteamspawnlocation", 0, 0, 0);
         LocationSetting attackingTeamChestLocationSetting = new LocationSetting("attackingteamchestlocation", 0, 0, 0);
         LocationSetting defendingTeamChestLocationSetting = new LocationSetting("defendingteamchestlocation", 0, 0, 0);
+        LocationSetting respawnLocationSetting = new LocationSetting("respawnlocation", 0, 0, 0);
         return new GameManagerSettings(timePerRoundSetting, prepTimeSetting, displayGameTargetsSetting,
                 displayPlayerNamesSetting, displayTimeSetting,
                 applyInvisibilityOnStart,
                 attackingTeamNameSetting, defendingTeamNameSetting,
                 attackingTeamSpawnLocationSetting, defendingTeamSpawnLocationSetting,
-                attackingTeamChestLocationSetting, defendingTeamChestLocationSetting);
+                attackingTeamChestLocationSetting, defendingTeamChestLocationSetting,
+                respawnLocationSetting);
     }
 
     public void addAllTo(List<Setting> settingsList) {
@@ -48,5 +51,6 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         settingsList.add(defendingTeamSpawnLocationSetting);
         settingsList.add(attackingTeamChestLocationSetting);
         settingsList.add(defendingTeamChestLocationSetting);
+        settingsList.add(respawnLocationSetting);
     }
 }

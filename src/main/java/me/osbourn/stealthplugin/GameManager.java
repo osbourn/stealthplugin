@@ -195,11 +195,14 @@ public class GameManager extends BukkitRunnable implements Listener {
         Location defendersSpawnLocation = this.defendingTeamSpawnLocationSetting.toLocationInWorld(overworld);
         Location attackingTeamChestLocation = this.attackingTeamChestLocationSetting.toLocationInWorld(overworld);
         Location defendingTeamChestLocation = this.defendingTeamChestLocationSetting.toLocationInWorld(overworld);
+        Location respawnLocation = this.settings.respawnLocationSetting().toLocationInWorld(overworld);
 
         if (this.isOnAttackers(player)) {
             if (this.isLocationSet(this.attackingTeamSpawnLocationSetting)) {
                 player.teleport(attackersSpawnLocation);
-                player.setBedSpawnLocation(attackersSpawnLocation, true);
+                if (this.isLocationSet(this.settings.respawnLocationSetting())) {
+                    player.setBedSpawnLocation(respawnLocation, true);
+                }
             }
             if (this.isLocationSet(this.attackingTeamChestLocationSetting)) {
                 this.copyChestToPlayer(attackingTeamChestLocation, player);
@@ -207,7 +210,9 @@ public class GameManager extends BukkitRunnable implements Listener {
         } else if (this.isOnDefenders(player)) {
             if (this.isLocationSet(this.defendingTeamSpawnLocationSetting)) {
                 player.teleport(defendersSpawnLocation);
-                player.setBedSpawnLocation(attackersSpawnLocation, true);
+                if (this.isLocationSet(this.settings.respawnLocationSetting())) {
+                    player.setBedSpawnLocation(respawnLocation, true);
+                }
             }
             if (this.isLocationSet(this.defendingTeamChestLocationSetting)) {
                 this.copyChestToPlayer(defendingTeamChestLocation, player);
