@@ -44,10 +44,12 @@ public class BeaconRevealHandler extends BooleanSetting implements Listener {
 
     private void brieflyRevealPlayers(Location blockLocation) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            double distanceToBeacon = blockLocation.distance(player.getLocation());
-            final double maxDistance = 20;
-            if (distanceToBeacon < maxDistance) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5 * 20, 0, false, true, true));
+            if (!morphManager.isPlayerMorphed(player)) {
+                double distanceToBeacon = blockLocation.distance(player.getLocation());
+                final double maxDistance = 20;
+                if (distanceToBeacon < maxDistance) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5 * 20, 0, false, true, true));
+                }
             }
         }
     }
