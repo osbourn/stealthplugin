@@ -5,7 +5,7 @@ import me.osbourn.stealthplugin.settingsapi.*;
 import java.util.List;
 
 public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSetting prepTimeSetting,
-                                  BooleanSetting displayGameTargetsSetting,
+                                  BooleanSetting displayGameTargetsSetting, BooleanSetting displayTeamsSetting,
                                   BooleanSetting displayPlayerNamesSetting, BooleanSetting displayTimeSetting,
                                   BooleanSetting applyInvisibilityOnStart,
                                   StringSetting attackingTeamNameSetting, StringSetting defendingTeamNameSetting,
@@ -19,6 +19,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         IntegerSetting timePerRoundSetting = new IntegerSetting("timeperround", 300);
         IntegerSetting prepTimeSetting = new IntegerSetting("preptime", 30);
         BooleanSetting displayGameTargetsSetting = new BooleanSetting("displaygametargets", true);
+        BooleanSetting displayTeamsSetting = new BooleanSetting("displayteams", false);
         BooleanSetting displayPlayerNamesSetting = new BooleanSetting("displayplayernames", true);
         BooleanSetting displayTimeSetting = new BooleanSetting("displaytime", true);
         BooleanSetting applyInvisibilityOnStart = new BooleanSetting("applyinvisibilityonstart", false);
@@ -30,6 +31,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         LocationSetting defendingTeamChestLocationSetting = new LocationSetting("defendingteamchestlocation", 0, 0, 0);
         LocationSetting respawnLocationSetting = new LocationSetting("respawnlocation", 0, 0, 0);
         return new GameManagerSettings(timePerRoundSetting, prepTimeSetting, displayGameTargetsSetting,
+                displayTeamsSetting,
                 displayPlayerNamesSetting, displayTimeSetting,
                 applyInvisibilityOnStart,
                 attackingTeamNameSetting, defendingTeamNameSetting,
@@ -42,6 +44,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         settingsList.add(timePerRoundSetting);
         settingsList.add(prepTimeSetting);
         settingsList.add(displayGameTargetsSetting);
+        settingsList.add(displayTeamsSetting);
         settingsList.add(displayPlayerNamesSetting);
         settingsList.add(displayTimeSetting);
         settingsList.add(applyInvisibilityOnStart);

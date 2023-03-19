@@ -129,24 +129,29 @@ public class GameManager extends BukkitRunnable implements Listener {
             }
         }
 
-        if (this.settings.displayPlayerNamesSetting().isActive()) {
-            Map<Team, List<Player>> teams = new HashMap<>();
-            // TODO: Consider rendering players not on teams
-            List<Player> playersWithoutTeams = new ArrayList<>();
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
-                if (team == null) {
-                    playersWithoutTeams.add(player);
-                } else {
-                    if (!teams.containsKey(team)) {
-                        teams.put(team, new ArrayList<>());
-                    }
-                    teams.get(team).add(player);
+        Map<Team, List<Player>> teams = new HashMap<>();
+        // TODO: Consider rendering players not on teams
+        List<Player> playersWithoutTeams = new ArrayList<>();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
+            if (team == null) {
+                playersWithoutTeams.add(player);
+            } else {
+                if (!teams.containsKey(team)) {
+                    teams.put(team, new ArrayList<>());
                 }
+                teams.get(team).add(player);
             }
-            for (Map.Entry<Team, List<Player>> entry : teams.entrySet()) {
-                ChatColor color = entry.getKey().getColor();
-                //lines.add(ChatColor.BOLD + entry.getKey().getName() + ":");
+        }
+
+        for (Map.Entry<Team, List<Player>> entry : teams.entrySet()) {
+            ChatColor color = entry.getKey().getColor();
+            if (this.settings.displayTeamsSetting().isActive()) {
+                int numAlive = (int) entry.getValue().stream().filter(p -> !this.isPlayerEliminated(p)).count();
+                lines.add(String.format("%s%s%s:%s %d alive", entry.getKey().getColor(), ChatColor.BOLD, entry.getKey().getDisplayName(), ChatColor.RESET, numAlive));
+            }
+
+            if (this.settings.displayPlayerNamesSetting().isActive()) {
                 for (Player player : entry.getValue()) {
                     if (this.isPlayerEliminated(player)) {
                         lines.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + player.getName());
