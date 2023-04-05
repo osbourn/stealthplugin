@@ -21,6 +21,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class MorphManager implements Listener {
         return this.morphs.containsKey(player.getUniqueId());
     }
 
-    public LivingEntity getMorphedEntity(Player player) {
+    public @Nullable LivingEntity getMorphedEntity(Player player) {
         if (!isPlayerMorphed(player)) {
             throw new IllegalStateException("Player " + player.getName() + " is not morphed");
         }
@@ -95,10 +96,12 @@ public class MorphManager implements Listener {
         }
 
         LivingEntity target = this.getMorphedEntity(player);
-        target.setHealth(0.0);
         player.setInvisible(false);
-        player.getCollidableExemptions().remove(target.getUniqueId());
         player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
+        if (target != null) {
+            target.setHealth(0.0);
+            player.getCollidableExemptions().remove(target.getUniqueId());
+        }
 
         // Don't resurrect player if they unmorphed because of death
         if (player.getHealth() > 0.0) {
