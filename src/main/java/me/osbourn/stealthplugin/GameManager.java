@@ -208,6 +208,7 @@ public class GameManager extends BukkitRunnable implements Listener {
     private void checkForVictory() {
         boolean attackersAlive = false;
         boolean defendersAlive = false;
+        boolean allTargetsBroken = this.gameTargets.allTargetsBroken();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!this.isPlayerEliminated(player)) {
@@ -223,9 +224,9 @@ public class GameManager extends BukkitRunnable implements Listener {
             }
         }
 
-        if (attackersAlive && !defendersAlive) {
+        if (attackersAlive && (!defendersAlive || allTargetsBroken)) {
             declareWinner(GameResult.ATTACKER_VICTORY);
-        } else if (defendersAlive && !attackersAlive) {
+        } else if ((defendersAlive && !allTargetsBroken) && !attackersAlive) {
             declareWinner(GameResult.DEFENDER_VICTORY);
         } else if (!attackersAlive) {
             declareWinner(GameResult.DRAW);

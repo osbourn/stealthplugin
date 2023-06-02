@@ -48,4 +48,13 @@ public class GameTargets {
     public void resetBrokenTargets() {
         this.brokenTargets.clear();
     }
+
+    public int numRemaining() {
+        return targetMaterials.size() - brokenTargets.size();
+    }
+
+    public boolean allTargetsBroken() {
+        // If there are no targets in the first place, don't count it as a win for the attackers
+        return numRemaining() == 0 && targetMaterials.size() >= 1;
+    }
 }
