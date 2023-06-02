@@ -98,6 +98,12 @@ spigot {
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command> start|forcestart|pausetimer|resumetimer|pasteandforcestart'
         }
+        create('score') {
+            description = 'Manage team scores'
+            permission = 'stealth.manage'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command> reset|getdisplay\n/<command> get|unregister <teamname>\n/<command> set <teamname> <value>'
+        }
         create('gameobjectives') {
             description = 'Add or remove game objectives'
             permission = 'stealth.manage'

@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Score;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,8 @@ public final class StealthPlugin extends JavaPlugin {
         GameTargets gameTargets = new GameTargets();
         registerSetting(new GameTargetsHandler(gameTargets, morphManager));
 
+        ScoreManager scoreManager = new ScoreManager();
+
         GameManagerSettings gameManagerSettings = GameManagerSettings.makeNew();
         gameManagerSettings.addAllTo(this.settingsList);
         GameManager gameManager = new GameManager(this, morphManager, gameTargets, gameManagerSettings);
@@ -74,6 +77,7 @@ public final class StealthPlugin extends JavaPlugin {
         this.getCommand("revive").setExecutor(new ReviveCommand(gameManager));
         this.getCommand("togglesb").setExecutor(new ToggleGameScoreboardCommand(gameManager));
         this.getCommand("swaproles").setExecutor(new SwapRolesCommand(gameManager));
+        this.getCommand("score").setExecutor(new ScoreCommand(scoreManager));
 
         if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
             ProtocolIntegration protocolIntegration = new ProtocolIntegration();
