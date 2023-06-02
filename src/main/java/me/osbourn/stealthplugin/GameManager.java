@@ -298,6 +298,10 @@ public class GameManager extends BukkitRunnable implements Listener {
         return this.scoreboard;
     }
 
+    public GameManagerSettings getSettings() {
+        return this.settings;
+    }
+
     public GameTargets getGameTargets() {
         return this.gameTargets;
     }

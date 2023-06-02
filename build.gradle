@@ -61,6 +61,12 @@ spigot {
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command> <team1> <team2>'
         }
+        create('swaproles') {
+            description = 'Swaps which teams are attacking and defending (see also /swapteams)'
+            permission = 'stealth.manage'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command>'
+        }
         create('morph') {
             description = 'Morph a player into a given entity'
             permission = 'stealth.manage'

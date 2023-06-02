@@ -35,6 +35,11 @@ public class StringSetting implements Setting {
         return this.value;
     }
 
+    public void setValue(String value) {
+        // TODO: Consider validating string
+        this.value = value;
+    }
+
     @Override
     public Optional<String> trySet(String[] arguments) {
         // TODO: Support strings with spaces
