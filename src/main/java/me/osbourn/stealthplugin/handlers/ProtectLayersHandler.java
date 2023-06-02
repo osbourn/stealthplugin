@@ -1,7 +1,9 @@
 package me.osbourn.stealthplugin.handlers;
 
 import me.osbourn.stealthplugin.settingsapi.Setting;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -16,9 +18,16 @@ public class ProtectLayersHandler implements Setting, Listener {
     private int layer = 0;
     private boolean isActive = false;
 
+    /**
+     * True if the player should be able to build in the protected layer
+     */
+    private boolean isPlayerExempt(Player player) {
+        return player.getGameMode() == GameMode.CREATIVE;
+    }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (this.isActive) {
+        if (this.isActive && !this.isPlayerExempt(event.getPlayer())) {
             Location loc = event.getBlock().getLocation();
             if (loc.getBlockY() <= this.getLayer()) {
                 event.setCancelled(true);
@@ -28,7 +37,7 @@ public class ProtectLayersHandler implements Setting, Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (this.isActive) {
+        if (this.isActive && !this.isPlayerExempt(event.getPlayer())) {
             Location loc = event.getBlock().getLocation();
             if (loc.getBlockY() <= this.getLayer()) {
                 event.setCancelled(true);
