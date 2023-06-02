@@ -81,6 +81,10 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.playerTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
         this.playerTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
         this.playerTeam.setCanSeeFriendlyInvisibles(false);
+        // Prevent errors when the objective already exists (e.g. when starting the server for a second time)
+        if (Bukkit.getScoreboardManager().getMainScoreboard().getObjective("stealthgame") != null) {
+            Bukkit.getScoreboardManager().getMainScoreboard().getObjective("stealthgame").unregister();
+        }
         this.scoreboardObjective = Bukkit.getScoreboardManager().getMainScoreboard()
                 .registerNewObjective("stealthgame", "dummy",
                         ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Game Info");
@@ -305,7 +309,7 @@ public class GameManager extends BukkitRunnable implements Listener {
      * Get alternate scoreboard used for the /togglesb command
      */
     public Scoreboard getAlternateScoreboard() {
-        return this.getAlternateScoreboard();
+        return this.alternateScoreboard;
     }
 
     public GameManagerSettings getSettings() {
