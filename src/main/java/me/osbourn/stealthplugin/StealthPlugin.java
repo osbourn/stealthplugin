@@ -2,11 +2,13 @@ package me.osbourn.stealthplugin;
 
 import me.osbourn.stealthplugin.commands.*;
 import me.osbourn.stealthplugin.handlers.*;
+import me.osbourn.stealthplugin.integrations.ProtocolIntegration;
 import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import me.osbourn.stealthplugin.settingsapi.Setting;
 import me.osbourn.stealthplugin.util.GameManagerSettings;
 import me.osbourn.stealthplugin.util.GameTargets;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,6 +21,13 @@ public final class StealthPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            ProtocolIntegration protocolIntegration = new ProtocolIntegration();
+            this.getLogger().info("ProtocolLib specific features enabled");
+        } else {
+            this.getLogger().warning("ProtocolLib not found, some features will not be available");
+        }
+
         this.settingsList = new ArrayList<>();
 
         this.getCommand("setup").setExecutor(new SetupCommand());

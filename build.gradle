@@ -20,16 +20,23 @@ repositories {
         name = 'enginehub-maven'
         url = 'https://maven.enginehub.org/repo/'
     }
+    maven {
+        // For ProtocolLib
+        name = 'dmulloy2-repo'
+        url = "https://repo.dmulloy2.net/nexus/repository/public/"
+    }
 }
 
 dependencies {
     compileOnly spigot('1.18.2')
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT'
+    compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.8.0"
 }
 
 spigot {
     apiVersion '1.18'
     depends 'WorldEdit'
+    softDepends 'ProtocolLib'
     commands {
         create('setup') {
             description = 'Setup teams and other things, intended to be used once per world'
