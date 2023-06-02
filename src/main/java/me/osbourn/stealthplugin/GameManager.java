@@ -111,17 +111,15 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.scoreboardObjectiveDisplayHandler.updateObjective(getScoreboardLines());
 
         if (this.isTimerActive) {
-            if (this.prepTimeRemaining > 0) {
-                this.prepTimeRemaining--;
+            if (this.prepTimeRemaining >= 0) {
                 if (this.prepTimeRemaining == 0) {
                     Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage("The game starts now!"));
                 }
+                this.prepTimeRemaining--;
             } else {
-                if (timeRemaining <= 0) {
-                    onTimeUp();
-                } else {
+                checkForVictory();
+                if (this.isTimerActive) {
                     timeRemaining--;
-                    checkForVictory();
                 }
             }
         }
@@ -200,15 +198,15 @@ public class GameManager extends BukkitRunnable implements Listener {
         return player.getGameMode() == GameMode.SPECTATOR || this.morphManager.isPlayerMorphed(player) || player.isDead();
     }
 
-    private void onTimeUp() {
-        announceMessage("Time's Up!");
-        declareWinner(GameResult.DEFENDER_VICTORY);
-    }
-
     private void checkForVictory() {
         boolean attackersAlive = false;
         boolean defendersAlive = false;
+        boolean timeLeft = this.timeRemaining > 0;
         boolean allTargetsBroken = this.gameTargets.allTargetsBroken();
+
+        if (!timeLeft) {
+            announceMessage("Time's up");
+        }
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!this.isPlayerEliminated(player)) {
@@ -224,11 +222,14 @@ public class GameManager extends BukkitRunnable implements Listener {
             }
         }
 
-        if (attackersAlive && (!defendersAlive || allTargetsBroken)) {
+        boolean attackersMeetWinCondition = !defendersAlive || allTargetsBroken;
+        boolean defendersMeetWinCondition = !attackersAlive || !timeLeft;
+
+        if (attackersMeetWinCondition && !defendersMeetWinCondition) {
             declareWinner(GameResult.ATTACKER_VICTORY);
-        } else if ((defendersAlive && !allTargetsBroken) && !attackersAlive) {
+        } else if (defendersMeetWinCondition && !attackersMeetWinCondition) {
             declareWinner(GameResult.DEFENDER_VICTORY);
-        } else if (!attackersAlive) {
+        } else if (attackersMeetWinCondition) {
             declareWinner(GameResult.DRAW);
         }
     }
@@ -355,7 +356,7 @@ public class GameManager extends BukkitRunnable implements Listener {
     }
 
     public boolean isPrepTime() {
-        return this.prepTimeRemaining > 0;
+        return this.prepTimeRemaining >= 0;
     }
 
     private boolean isLocationSet(LocationSetting setting) {
