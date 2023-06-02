@@ -23,17 +23,6 @@ public final class StealthPlugin extends JavaPlugin {
     public void onEnable() {
         this.settingsList = new ArrayList<>();
 
-        if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-            ProtocolIntegration protocolIntegration = new ProtocolIntegration();
-            this.getLogger().info("ProtocolLib specific features enabled");
-
-            BooleanSetting glowingTeammatesSetting = new BooleanSetting("glowingteammates", false);
-            this.settingsList.add(glowingTeammatesSetting);
-            protocolIntegration.protocolManager.addPacketListener(new GlowEffectManager(this, glowingTeammatesSetting));
-        } else {
-            this.getLogger().warning("ProtocolLib not found, some features will not be available");
-        }
-
         this.getCommand("setup").setExecutor(new SetupCommand());
         this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());
         this.getCommand("randomizeteams").setExecutor(new RandomizeTeamsCommand());
@@ -85,6 +74,18 @@ public final class StealthPlugin extends JavaPlugin {
         this.getCommand("revive").setExecutor(new ReviveCommand(gameManager));
         this.getCommand("togglesb").setExecutor(new ToggleGameScoreboardCommand(gameManager));
         this.getCommand("swaproles").setExecutor(new SwapRolesCommand(gameManager));
+
+        if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            ProtocolIntegration protocolIntegration = new ProtocolIntegration();
+            this.getLogger().info("ProtocolLib specific features enabled");
+
+            BooleanSetting glowingTeammatesSetting = new BooleanSetting("glowingteammates", false);
+            this.settingsList.add(glowingTeammatesSetting);
+            protocolIntegration.protocolManager.addPacketListener(new GlowEffectManager(this,
+                    morphManager, glowingTeammatesSetting));
+        } else {
+            this.getLogger().warning("ProtocolLib not found, some features will not be available");
+        }
 
         FileConfiguration config = this.getConfig();
         this.saveDefaultConfig();

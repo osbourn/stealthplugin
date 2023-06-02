@@ -7,6 +7,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
+import me.osbourn.stealthplugin.MorphManager;
 import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,10 +16,12 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 public class GlowEffectManager extends PacketAdapter {
+    private final MorphManager morphManager;
     private final BooleanSetting glowingTeammatesSetting;
 
-    public GlowEffectManager(Plugin plugin, BooleanSetting glowingTeammatesSetting) {
+    public GlowEffectManager(Plugin plugin, MorphManager morphManager, BooleanSetting glowingTeammatesSetting) {
         super(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.ENTITY_METADATA);
+        this.morphManager = morphManager;
         this.glowingTeammatesSetting = glowingTeammatesSetting;
     }
 
@@ -31,7 +34,7 @@ public class GlowEffectManager extends PacketAdapter {
             return;
         }
 
-        Player player = event.getPlayer();
+        Player receivingPlayer = event.getPlayer();
         PacketContainer packet = event.getPacket();
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
@@ -42,37 +45,33 @@ public class GlowEffectManager extends PacketAdapter {
          */
         int id = packet.getIntegers().read(0);
 
-        /*
-         * The function shouldn't cause a player to think
-         * that they themselves are glowing
-         */
-        if (player.getEntityId() == id) {
-            return;
-        }
-
-        /*
-         * If the player is not on a team, return
-         */
-        Team team = scoreboard.getEntryTeam(player.getName());
-        if (team == null) {
-            return;
-        }
-
-        /*
-         * If the matching player is a teammate, the method should continue
-         * If the matching player is not a teammate or no matching player was found,
-         * the method should return.
-         */
-        boolean isTargetedPlayerTeammate = false;
+        Player targetedPlayer = null;
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.getEntityId() == id) {
-                if (team.equals(scoreboard.getEntryTeam(p.getName()))) {
-                    isTargetedPlayerTeammate = true;
-                }
+                targetedPlayer = p;
                 break;
             }
         }
-        if (!isTargetedPlayerTeammate) {
+
+        // If the targeted entity isn't part of the online players list, don't modify the packet
+        if (targetedPlayer == null) {
+            return;
+        }
+
+        // If either player isn't on a team or they aren't on the same team, don't modify the packet
+        Team receivingPlayerTeam = scoreboard.getEntryTeam(receivingPlayer.getName());
+        Team targetedPlayerTeam = scoreboard.getEntryTeam(targetedPlayer.getName());
+        if (receivingPlayerTeam == null || !receivingPlayerTeam.equals(targetedPlayerTeam)) {
+            return;
+        }
+
+        // If the packet is targeting the player who is receiving the packet, don't modify the packet
+        if (receivingPlayer.equals(targetedPlayer)) {
+            return;
+        }
+
+        // If the targeted player is morphed, don't modify the packet
+        if (this.morphManager.isPlayerMorphed(targetedPlayer)) {
             return;
         }
 
