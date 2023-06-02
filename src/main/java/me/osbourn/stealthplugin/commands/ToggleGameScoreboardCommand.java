@@ -25,7 +25,7 @@ public class ToggleGameScoreboardCommand implements CommandExecutor {
         }
 
         if (player.getScoreboard().equals(Bukkit.getScoreboardManager().getMainScoreboard())) {
-            player.setScoreboard(gameManager.getScoreboard());
+            player.setScoreboard(gameManager.getAlternateScoreboard());
         } else {
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         }
