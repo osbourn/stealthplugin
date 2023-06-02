@@ -4,6 +4,7 @@ import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
@@ -14,10 +15,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
@@ -29,6 +27,10 @@ import java.util.Map;
 import java.util.UUID;
 
 public class MorphManager implements Listener {
+    /**
+     * Key value pairs consisting of the UUID of the morphed player and the UUID of the entity that is tracking their
+     * position.
+     */
     private final Map<UUID, UUID> morphs;
     private final BooleanSetting morphedPlayersCanAttackSetting;
     private final BooleanSetting morphedPlayersIgnoreArrowsSetting;
@@ -180,6 +182,22 @@ public class MorphManager implements Listener {
                 }
             }
         }
+
+        // Cancel physical interactions like pressure plates when a player is morphed
+        // Note: If the entity is not a player EntityInteractEvent is used instead
+        // Since the interaction needs to be cancelled for both the player and the entity the player is morphed into,
+        // this code is split into two parts, with the second being in the entityInteractEvent method
+        if (event.getAction() == Action.PHYSICAL) {
+            if (this.isPlayerMorphed(event.getPlayer())) {
+                // event.getMaterial() doesn't work because it is the material of the held item but
+                // event.getClickedBlock() does despite it not actually being a click
+                boolean isPressurePlate = Tag.PRESSURE_PLATES.isTagged(event.getClickedBlock().getType());
+                boolean isTripwire = event.getClickedBlock().getType() == Material.TRIPWIRE;
+                if (isPressurePlate || isTripwire) {
+                    event.setCancelled(true);
+                }
+            }
+        }
     }
 
     @EventHandler
@@ -192,6 +210,19 @@ public class MorphManager implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void entityInteractEvent(EntityInteractEvent event) {
+        // This only triggers for non-player interactions, so the other half of this part of the code is in
+        // the playerInteractEvent method above.
+        // Right now, this cancels all interactions but in the future it might be better to have it only cancel specific
+        // ones, like pressure plates or tripwire.
+        boolean entityIsMorphedVessel = this.morphs.containsValue(event.getEntity().getUniqueId());
+
+        if (entityIsMorphedVessel) {
+            event.setCancelled(true);
         }
     }
 }
