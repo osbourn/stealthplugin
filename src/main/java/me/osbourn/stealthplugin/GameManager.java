@@ -30,6 +30,12 @@ import org.bukkit.scoreboard.Team;
 import java.util.*;
 
 public class GameManager extends BukkitRunnable implements Listener {
+    private enum GameResult {
+        ATTACKER_VICTORY,
+        DEFENDER_VICTORY,
+        DRAW
+    }
+
     private final StealthPlugin plugin;
     private final MorphManager morphManager;
     private final GameTargets gameTargets;
@@ -115,6 +121,7 @@ public class GameManager extends BukkitRunnable implements Listener {
                     onTimeUp();
                 } else {
                     timeRemaining--;
+                    checkForVictory();
                 }
             }
         }
@@ -195,7 +202,68 @@ public class GameManager extends BukkitRunnable implements Listener {
 
     private void onTimeUp() {
         announceMessage("Time's Up!");
+        declareWinner(GameResult.DEFENDER_VICTORY);
+    }
+
+    private void checkForVictory() {
+        boolean attackersAlive = false;
+        boolean defendersAlive = false;
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!this.isPlayerEliminated(player)) {
+                Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
+                if (team != null) {
+                    if (team.getName().equals(this.settings.attackingTeamNameSetting().getValue())) {
+                        attackersAlive = true;
+                    }
+                    if (team.getName().equals(this.settings.defendingTeamNameSetting().getValue())) {
+                        defendersAlive = true;
+                    }
+                }
+            }
+        }
+
+        if (attackersAlive && !defendersAlive) {
+            declareWinner(GameResult.ATTACKER_VICTORY);
+        } else if (defendersAlive && !attackersAlive) {
+            declareWinner(GameResult.DEFENDER_VICTORY);
+        } else if (!attackersAlive) {
+            declareWinner(GameResult.DRAW);
+        }
+    }
+
+    private void declareWinner(GameResult gameResult) {
         this.isTimerActive = false;
+
+        String title = "";
+        switch (gameResult) {
+            case ATTACKER_VICTORY -> {
+                title = "Attackers Win!";
+                Team team = Bukkit.getScoreboardManager().getMainScoreboard()
+                        .getTeam(this.settings.attackingTeamNameSetting().getValue());
+                if (team != null) {
+                    title = team.getColor() + title;
+                }
+            }
+            case DEFENDER_VICTORY -> {
+                title = "Defenders Win!";
+                Team team = Bukkit.getScoreboardManager().getMainScoreboard()
+                        .getTeam(this.settings.defendingTeamNameSetting().getValue());
+                if (team != null) {
+                    title = team.getColor() + title;
+                }
+            }
+            case DRAW -> {
+                title = "It's a draw!";
+            }
+        }
+
+        // TODO: Show current score
+        String subtitle = "";
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.sendTitle(title, subtitle, 10, 70, 20);
+        }
     }
 
     private void readyPlayers() {
