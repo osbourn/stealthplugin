@@ -7,13 +7,19 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
+import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 public class GlowEffectManager extends PacketAdapter {
-    public GlowEffectManager(Plugin plugin) {
+    private final BooleanSetting glowingTeammatesSetting;
+
+    public GlowEffectManager(Plugin plugin, BooleanSetting glowingTeammatesSetting) {
         super(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.ENTITY_METADATA);
+        this.glowingTeammatesSetting = glowingTeammatesSetting;
     }
 
     @Override
@@ -21,16 +27,16 @@ public class GlowEffectManager extends PacketAdapter {
         // The code inside this method can be a bit confusing so please read these comments!
 
         // Teammates should not be glowing if the option is set to false
-        /*if (!ManhuntManager.glowingTeammates) {
+        if (!glowingTeammatesSetting.isActive()) {
             return;
-        }*/
+        }
 
-        // Standard init stuff
         Player player = event.getPlayer();
         PacketContainer packet = event.getPacket();
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
         /*
-         * Get the first integer of the packet
+         * Get the first integer of the packet.
          * The packet is of type Play.Server.ENTITY_METADATA
          * so the first integer represents the entity id
          */
@@ -45,16 +51,22 @@ public class GlowEffectManager extends PacketAdapter {
         }
 
         /*
-         * Loop through all players and check to see if they match the entity id
+         * If the player is not on a team, return
+         */
+        Team team = scoreboard.getEntryTeam(player.getName());
+        if (team == null) {
+            return;
+        }
+
+        /*
          * If the matching player is a teammate, the method should continue
          * If the matching player is not a teammate or no matching player was found,
          * the method should return.
          */
-        /*ManhuntTeam team = ManhuntManager.getTeam(player);
         boolean isTargetedPlayerTeammate = false;
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.getEntityId() == id) {
-                if (ManhuntManager.getTeam(p) == team) {
+                if (team.equals(scoreboard.getEntryTeam(p.getName()))) {
                     isTargetedPlayerTeammate = true;
                 }
                 break;
@@ -62,7 +74,7 @@ public class GlowEffectManager extends PacketAdapter {
         }
         if (!isTargetedPlayerTeammate) {
             return;
-        }*/
+        }
 
         /*
          * Data Stuff

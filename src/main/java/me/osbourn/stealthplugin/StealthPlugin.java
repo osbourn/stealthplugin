@@ -2,6 +2,7 @@ package me.osbourn.stealthplugin;
 
 import me.osbourn.stealthplugin.commands.*;
 import me.osbourn.stealthplugin.handlers.*;
+import me.osbourn.stealthplugin.integrations.GlowEffectManager;
 import me.osbourn.stealthplugin.integrations.ProtocolIntegration;
 import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
@@ -18,17 +19,20 @@ import java.util.List;
 
 public final class StealthPlugin extends JavaPlugin {
     private List<Setting> settingsList;
-
     @Override
     public void onEnable() {
+        this.settingsList = new ArrayList<>();
+
         if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
             ProtocolIntegration protocolIntegration = new ProtocolIntegration();
             this.getLogger().info("ProtocolLib specific features enabled");
+
+            BooleanSetting glowingTeammatesSetting = new BooleanSetting("glowingteammates", false);
+            this.settingsList.add(glowingTeammatesSetting);
+            protocolIntegration.protocolManager.addPacketListener(new GlowEffectManager(this, glowingTeammatesSetting));
         } else {
             this.getLogger().warning("ProtocolLib not found, some features will not be available");
         }
-
-        this.settingsList = new ArrayList<>();
 
         this.getCommand("setup").setExecutor(new SetupCommand());
         this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());
