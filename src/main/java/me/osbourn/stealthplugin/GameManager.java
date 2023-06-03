@@ -39,6 +39,7 @@ public class GameManager extends BukkitRunnable implements Listener {
     private final StealthPlugin plugin;
     private final MorphManager morphManager;
     private final ScoreManager scoreManager;
+    private final KitManager kitManager;
     private final GameTargets gameTargets;
 
     /**
@@ -69,13 +70,14 @@ public class GameManager extends BukkitRunnable implements Listener {
     private boolean isTimerActive;
 
     public GameManager(StealthPlugin plugin, MorphManager morphManager, ScoreManager scoreManager,
-                       GameTargets gameTargets, GameManagerSettings settings) {
+                       KitManager kitManager, GameTargets gameTargets, GameManagerSettings settings) {
         this.plugin = plugin;
         this.timeRemaining = settings.timePerRoundSetting().getValue();
-        this.prepTimeRemaining = 0;
+        this.prepTimeRemaining = -1;
         this.isTimerActive = false;
         this.morphManager = morphManager;
         this.scoreManager = scoreManager;
+        this.kitManager = kitManager;
         this.gameTargets = gameTargets;
         this.settings = settings;
         this.timePerRoundSetting = settings.timePerRoundSetting();
@@ -305,6 +307,7 @@ public class GameManager extends BukkitRunnable implements Listener {
             if (this.isLocationSet(this.attackingTeamChestLocationSetting)) {
                 this.copyChestToPlayer(attackingTeamChestLocation, player);
             }
+            this.kitManager.givePlayerAttackingKit(player);
         } else if (this.isOnDefenders(player)) {
             if (this.isLocationSet(this.defendingTeamSpawnLocationSetting)) {
                 player.teleport(defendersSpawnLocation);
@@ -315,6 +318,7 @@ public class GameManager extends BukkitRunnable implements Listener {
             if (this.isLocationSet(this.defendingTeamChestLocationSetting)) {
                 this.copyChestToPlayer(defendingTeamChestLocation, player);
             }
+            this.kitManager.givePlayerDefendingKit(player);
         }
 
         if (morphManager.isPlayerMorphed(player)) {

@@ -1,15 +1,17 @@
 package me.osbourn.stealthplugin;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Tag;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -52,7 +54,7 @@ public class KitManager implements Listener {
     @EventHandler
     public void playerInteractEvent(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && player.getGameMode() != GameMode.SPECTATOR) {
             assert event.getClickedBlock() != null;
             if (Tag.WALL_SIGNS.isTagged(event.getClickedBlock().getType())) {
                 WallSign sign = (WallSign) event.getClickedBlock().getBlockData();
@@ -71,6 +73,45 @@ public class KitManager implements Listener {
                         player.sendMessage(ChatColor.AQUA + "Selected defending kit");
                     }
                 }
+            }
+        }
+    }
+
+    public void givePlayerAttackingKit(Player player) {
+        Location chestLoc = this.getAttackingKitLocation(player);
+        if (chestLoc != null) {
+            givePlayerItemsInChest(chestLoc, player);
+        } else {
+            player.sendMessage("No kit selected!");
+        }
+    }
+
+    public void givePlayerDefendingKit(Player player) {
+        Location chestLoc = this.getDefendingKitLocation(player);
+        if (chestLoc != null) {
+            givePlayerItemsInChest(chestLoc, player);
+        } else {
+            player.sendMessage("No kit selected!");
+        }
+    }
+
+    private void givePlayerItemsInChest(Location chestLocation, Player player) {
+        if (chestLocation.getBlock().getType() != Material.CHEST) {
+            player.sendMessage("The selected kit was not a chest (please contact admin)");
+            return;
+        }
+
+        Block block = chestLocation.getBlock();
+        BlockState blockState = block.getState();
+        if (!(blockState instanceof Chest chest)) {
+            player.sendMessage("Failed to give starting items, because chest doesn't have chest data (please contact admin)");
+            return;
+        }
+
+        Inventory inventory = chest.getBlockInventory();
+        for (ItemStack itemStack : inventory.getContents()) {
+            if (itemStack != null) {
+                player.getInventory().addItem(itemStack.clone());
             }
         }
     }
