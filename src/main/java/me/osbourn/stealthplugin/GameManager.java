@@ -269,13 +269,10 @@ public class GameManager extends BukkitRunnable implements Listener {
 
                 this.defendersTeam().ifPresent(this.scoreManager::incrementScore);
             }
-            case DRAW -> {
-                title = "It's a draw!";
-            }
+            case DRAW -> title = "It's a draw!";
         }
 
-        // TODO: Show current score
-        String subtitle = "";
+        String subtitle = this.scoreManager.getScoreDisplay();
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.sendTitle(title, subtitle, 10, 70, 20);

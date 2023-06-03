@@ -23,7 +23,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         BooleanSetting displayTeamsSetting = new BooleanSetting("displayteams", false);
         BooleanSetting displayPlayerNamesSetting = new BooleanSetting("displayplayernames", true);
         BooleanSetting displayTimeSetting = new BooleanSetting("displaytime", true);
-        BooleanSetting displayScoreSetting = new BooleanSetting("displayscore", true);
+        BooleanSetting displayScoreSetting = new BooleanSetting("displayscore", false);
         BooleanSetting applyInvisibilityOnStart = new BooleanSetting("applyinvisibilityonstart", false);
         StringSetting attackingTeamNameSetting = new StringSetting("attackingteamname", "red");
         StringSetting defendingTeamNameSetting = new StringSetting("defendingteamname", "blue");
