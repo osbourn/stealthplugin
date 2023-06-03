@@ -353,6 +353,7 @@ public class GameManager extends BukkitRunnable implements Listener {
                 player.removePotionEffect(effect.getType());
             }
 
+            player.getInventory().clear();
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20 * 1000000, 4, false, false, false));
         }
 
