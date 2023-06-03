@@ -324,9 +324,35 @@ public class GameManager extends BukkitRunnable implements Listener {
         player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
         player.setHealth(20.0);
 
-        if (this.settings.applyInvisibilityOnStart().isActive()) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000, 0, false, false, false));
+        for (PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
         }
+        if (this.settings.applyInvisibilityOnStart().isActive()) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 1000000, 0, false, false, false));
+        }
+    }
+
+    public void sendPlayersToLobby() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (isLocationSet(this.settings.lobbyLocationSetting())) {
+                World overworld = Bukkit.getWorlds().get(0);
+                player.teleport(this.settings.lobbyLocationSetting().toLocationInWorld(overworld));
+            }
+            if (morphManager.isPlayerMorphed(player)) {
+                morphManager.unmorph(player);
+            }
+            player.setGameMode(GameMode.ADVENTURE);
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
+            player.setHealth(20.0);
+
+            for (PotionEffect effect : player.getActivePotionEffects()) {
+                player.removePotionEffect(effect.getType());
+            }
+
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20 * 1000000, 4, false, false, false));
+        }
+
+        GiveTeamArmorCommand.giveTeamArmor();
     }
 
     public boolean isOnAttackers(Player player) {

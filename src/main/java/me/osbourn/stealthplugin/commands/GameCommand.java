@@ -67,6 +67,11 @@ public class GameCommand implements CommandExecutor {
                     return false;
                 }
             }
+            case "tolobby" -> {
+                sender.sendMessage("Sending players to lobby...");
+                this.gameManager.sendPlayersToLobby();
+                return true;
+            }
             default -> {
                 return false;
             }

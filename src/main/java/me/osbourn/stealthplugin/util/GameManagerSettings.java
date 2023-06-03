@@ -14,7 +14,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
                                   LocationSetting defendingTeamSpawnLocationSetting,
                                   LocationSetting attackingTeamChestLocationSetting,
                                   LocationSetting defendingTeamChestLocationSetting,
-                                  LocationSetting respawnLocationSetting) {
+                                  LocationSetting respawnLocationSetting, LocationSetting lobbyLocationSetting) {
 
     public static GameManagerSettings makeNew() {
         IntegerSetting timePerRoundSetting = new IntegerSetting("timeperround", 300);
@@ -32,6 +32,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         LocationSetting attackingTeamChestLocationSetting = new LocationSetting("attackingteamchestlocation", 0, 0, 0);
         LocationSetting defendingTeamChestLocationSetting = new LocationSetting("defendingteamchestlocation", 0, 0, 0);
         LocationSetting respawnLocationSetting = new LocationSetting("respawnlocation", 0, 0, 0);
+        LocationSetting lobbyLocationSetting = new LocationSetting("lobbylocation", 0, 0, 0);
         return new GameManagerSettings(timePerRoundSetting, prepTimeSetting, displayGameTargetsSetting,
                 displayTeamsSetting,
                 displayPlayerNamesSetting, displayTimeSetting,
@@ -40,7 +41,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
                 attackingTeamNameSetting, defendingTeamNameSetting,
                 attackingTeamSpawnLocationSetting, defendingTeamSpawnLocationSetting,
                 attackingTeamChestLocationSetting, defendingTeamChestLocationSetting,
-                respawnLocationSetting);
+                respawnLocationSetting, lobbyLocationSetting);
     }
 
     public void addAllTo(List<Setting> settingsList) {
@@ -59,5 +60,6 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         settingsList.add(attackingTeamChestLocationSetting);
         settingsList.add(defendingTeamChestLocationSetting);
         settingsList.add(respawnLocationSetting);
+        settingsList.add(lobbyLocationSetting);
     }
 }
