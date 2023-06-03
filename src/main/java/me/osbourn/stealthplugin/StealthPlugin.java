@@ -13,7 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Score;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +62,9 @@ public final class StealthPlugin extends JavaPlugin {
         registerSetting(new GameTargetsHandler(gameTargets, morphManager));
 
         ScoreManager scoreManager = new ScoreManager();
+
+        KitManager kitManager = new KitManager();
+        this.getServer().getPluginManager().registerEvents(kitManager, this);
 
         GameManagerSettings gameManagerSettings = GameManagerSettings.makeNew();
         gameManagerSettings.addAllTo(this.settingsList);
