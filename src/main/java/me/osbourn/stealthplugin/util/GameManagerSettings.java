@@ -7,6 +7,7 @@ import java.util.List;
 public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSetting prepTimeSetting,
                                   BooleanSetting displayGameTargetsSetting, BooleanSetting displayTeamsSetting,
                                   BooleanSetting displayPlayerNamesSetting, BooleanSetting displayTimeSetting,
+                                  BooleanSetting displayScoreSetting,
                                   BooleanSetting applyInvisibilityOnStart,
                                   StringSetting attackingTeamNameSetting, StringSetting defendingTeamNameSetting,
                                   LocationSetting attackingTeamSpawnLocationSetting,
@@ -22,6 +23,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         BooleanSetting displayTeamsSetting = new BooleanSetting("displayteams", false);
         BooleanSetting displayPlayerNamesSetting = new BooleanSetting("displayplayernames", true);
         BooleanSetting displayTimeSetting = new BooleanSetting("displaytime", true);
+        BooleanSetting displayScoreSetting = new BooleanSetting("displayscore", true);
         BooleanSetting applyInvisibilityOnStart = new BooleanSetting("applyinvisibilityonstart", false);
         StringSetting attackingTeamNameSetting = new StringSetting("attackingteamname", "red");
         StringSetting defendingTeamNameSetting = new StringSetting("defendingteamname", "blue");
@@ -33,6 +35,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         return new GameManagerSettings(timePerRoundSetting, prepTimeSetting, displayGameTargetsSetting,
                 displayTeamsSetting,
                 displayPlayerNamesSetting, displayTimeSetting,
+                displayScoreSetting,
                 applyInvisibilityOnStart,
                 attackingTeamNameSetting, defendingTeamNameSetting,
                 attackingTeamSpawnLocationSetting, defendingTeamSpawnLocationSetting,
@@ -47,6 +50,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         settingsList.add(displayTeamsSetting);
         settingsList.add(displayPlayerNamesSetting);
         settingsList.add(displayTimeSetting);
+        settingsList.add(displayScoreSetting);
         settingsList.add(applyInvisibilityOnStart);
         settingsList.add(attackingTeamNameSetting);
         settingsList.add(defendingTeamNameSetting);

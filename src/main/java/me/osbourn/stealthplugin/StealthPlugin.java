@@ -66,7 +66,8 @@ public final class StealthPlugin extends JavaPlugin {
 
         GameManagerSettings gameManagerSettings = GameManagerSettings.makeNew();
         gameManagerSettings.addAllTo(this.settingsList);
-        GameManager gameManager = new GameManager(this, morphManager, gameTargets, gameManagerSettings);
+        GameManager gameManager = new GameManager(this, morphManager, scoreManager, gameTargets,
+                gameManagerSettings);
         this.getServer().getPluginManager().registerEvents(gameManager, this);
         gameManager.runTaskTimer(this, 20, 20);
 

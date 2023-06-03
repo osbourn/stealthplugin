@@ -38,6 +38,7 @@ public class GameManager extends BukkitRunnable implements Listener {
 
     private final StealthPlugin plugin;
     private final MorphManager morphManager;
+    private final ScoreManager scoreManager;
     private final GameTargets gameTargets;
 
     /**
@@ -67,12 +68,14 @@ public class GameManager extends BukkitRunnable implements Listener {
     private int prepTimeRemaining;
     private boolean isTimerActive;
 
-    public GameManager(StealthPlugin plugin, MorphManager morphManager, GameTargets gameTargets, GameManagerSettings settings) {
+    public GameManager(StealthPlugin plugin, MorphManager morphManager, ScoreManager scoreManager,
+                       GameTargets gameTargets, GameManagerSettings settings) {
         this.plugin = plugin;
         this.timeRemaining = settings.timePerRoundSetting().getValue();
         this.prepTimeRemaining = 0;
         this.isTimerActive = false;
         this.morphManager = morphManager;
+        this.scoreManager = scoreManager;
         this.gameTargets = gameTargets;
         this.settings = settings;
         this.timePerRoundSetting = settings.timePerRoundSetting();
@@ -96,6 +99,9 @@ public class GameManager extends BukkitRunnable implements Listener {
                         ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Game Info");
         this.scoreboardObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
         this.scoreboardObjectiveDisplayHandler = new ObjectiveDisplayHandler(this.scoreboardObjective);
+
+        this.attackersTeam().ifPresent(team -> this.scoreManager.setScore(team, 0));
+        this.defendersTeam().ifPresent(team -> this.scoreManager.setScore(team, 0));
     }
 
     public boolean isTimerActive() {
@@ -133,6 +139,10 @@ public class GameManager extends BukkitRunnable implements Listener {
 
     private List<String> getScoreboardLines() {
         List<String> lines = new ArrayList<>();
+
+        if (this.settings.displayScoreSetting().isActive()) {
+            lines.add(this.scoreManager.getScoreDisplay());
+        }
 
         if (this.settings.displayGameTargetsSetting().isActive()) {
             for (Material material : this.gameTargets.getTargetMaterials()) {
@@ -246,6 +256,8 @@ public class GameManager extends BukkitRunnable implements Listener {
                 if (team != null) {
                     title = team.getColor() + title;
                 }
+
+                this.attackersTeam().ifPresent(this.scoreManager::incrementScore);
             }
             case DEFENDER_VICTORY -> {
                 title = "Defenders Win!";
@@ -254,6 +266,8 @@ public class GameManager extends BukkitRunnable implements Listener {
                 if (team != null) {
                     title = team.getColor() + title;
                 }
+
+                this.defendersTeam().ifPresent(this.scoreManager::incrementScore);
             }
             case DRAW -> {
                 title = "It's a draw!";
@@ -392,5 +406,15 @@ public class GameManager extends BukkitRunnable implements Listener {
 
     private void announceMessage(String message) {
         Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(message));
+    }
+
+    private Optional<Team> attackersTeam() {
+        return Optional.ofNullable(Bukkit.getScoreboardManager().getMainScoreboard()
+                .getTeam(this.settings.attackingTeamNameSetting().getValue()));
+    }
+
+    private Optional<Team> defendersTeam() {
+        return Optional.ofNullable(Bukkit.getScoreboardManager().getMainScoreboard()
+                .getTeam(this.settings.defendingTeamNameSetting().getValue()));
     }
 }
