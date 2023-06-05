@@ -31,7 +31,7 @@ public final class StealthPlugin extends JavaPlugin {
         this.getCommand("settings").setExecutor(settingsCommand);
         this.getCommand("settings").setTabCompleter(settingsCommand);
 
-        BooleanSetting morphedPlayersCanAttackSetting = new BooleanSetting("morphedplayerscanattack", true);
+        BooleanSetting morphedPlayersCanAttackSetting = new BooleanSetting("morphedplayerscanattack", false);
         BooleanSetting morphedPlayersIgnoreArrowsSetting = new BooleanSetting("morphedplayersignorearrows", true);
         this.settingsList.add(morphedPlayersCanAttackSetting);
         this.settingsList.add(morphedPlayersIgnoreArrowsSetting);
@@ -41,7 +41,7 @@ public final class StealthPlugin extends JavaPlugin {
         this.getCommand("unmorph").setExecutor(new UnmorphCommand(morphManager));
 
         LocationSetting structurePositionSetting = new LocationSetting("structurepastelocation", 0, 100, 0);
-        BooleanSetting killEntitiesBeforePasteSetting = new BooleanSetting("killentitiesbeforepaste", false);
+        BooleanSetting killEntitiesBeforePasteSetting = new BooleanSetting("killentitiesbeforepaste", true);
         this.settingsList.add(structurePositionSetting);
         this.settingsList.add(killEntitiesBeforePasteSetting);
         PasteStructureCommand pasteStructureCommand = new PasteStructureCommand(this, structurePositionSetting, killEntitiesBeforePasteSetting);
