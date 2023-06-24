@@ -35,16 +35,16 @@ public class GameObjectivesCommand implements CommandExecutor {
 
         GameTargets gameTargets = this.gameManager.getGameTargets();
         if (args[0].equals("add")) {
-            if (gameTargets.getTargetMaterials().contains(material)) {
+            if (gameTargets.getAvailableTargets().contains(material)) {
                 sender.sendMessage("Objective is already registered as a game target");
                 return false;
             } else {
-                gameTargets.getTargetMaterials().add(material);
+                gameTargets.getAvailableTargets().add(material);
                 return true;
             }
         } else if (args[0].equals("remove")) {
-            if (gameTargets.getTargetMaterials().contains(material)) {
-                gameTargets.getTargetMaterials().remove(material);
+            if (gameTargets.getAvailableTargets().contains(material)) {
+                gameTargets.getAvailableTargets().remove(material);
                 return true;
             } else {
                 sender.sendMessage("Objective is not registered as a game target");

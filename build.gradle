@@ -105,7 +105,7 @@ spigot {
             usage = '/<command> reset|getdisplay\n/<command> get|unregister <teamname>\n/<command> set <teamname> <value>'
         }
         create('gameobjectives') {
-            description = 'Add or remove game objectives'
+            description = 'Add or remove game available objectives'
             permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command> add|remove <blocktype>'
@@ -115,6 +115,12 @@ spigot {
             permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
             usage = '/<command> <playername>'
+        }
+        create('selecttarget') {
+            description = 'Choose a game target for this game'
+            permission = 'stealth.player'
+            permissionMessage = 'You do not have permission to use this command'
+            usage = '/<command> <objectivename>'
         }
         create('togglesb') {
             description = "Toggle the game scoreboard on and off"

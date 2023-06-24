@@ -37,7 +37,7 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         if (!event.isCancelled()) {
             Material brokenBlockType = event.getBlock().getType();
-            if (gameTargets.getTargetMaterials().contains(brokenBlockType)) {
+            if (gameTargets.getAvailableTargets().contains(brokenBlockType)) {
                 gameTargets.registerAsBroken(brokenBlockType);
                 if (this.isActive()) {
                     announceDestruction(brokenBlockType, "was broken");
@@ -50,7 +50,7 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
     public void onBlockExplode(EntityExplodeEvent event) {
         for (Block block : event.blockList()) {
             Material brokenBlockType = block.getType();
-            if (gameTargets.getTargetMaterials().contains(brokenBlockType)) {
+            if (gameTargets.getAvailableTargets().contains(brokenBlockType)) {
                 gameTargets.registerAsBroken(brokenBlockType);
                 if (this.isActive()) {
                     announceDestruction(brokenBlockType, "was blown up");
@@ -63,7 +63,7 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.RESPAWN_ANCHOR) {
-                if (gameTargets.getTargetMaterials().contains(Material.RESPAWN_ANCHOR)) {
+                if (gameTargets.getAvailableTargets().contains(Material.RESPAWN_ANCHOR)) {
                     Block block = event.getClickedBlock();
                     if (block.getBlockData() instanceof RespawnAnchor anchor) {
                         // TODO: Fix clicking the respawn anchor several times with glowstone in the offhand counting as a break

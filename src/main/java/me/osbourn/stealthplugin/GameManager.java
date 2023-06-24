@@ -147,7 +147,7 @@ public class GameManager extends BukkitRunnable implements Listener {
         }
 
         if (this.settings.displayGameTargetsSetting().isActive()) {
-            for (Material material : this.gameTargets.getTargetMaterials()) {
+            for (Material material : this.gameTargets.getActiveTargets()) {
                 String materialName = MaterialsUtil.prettyMaterialName(material.toString());
                 boolean hasBeenBroken = this.gameTargets.hasBeenBroken(material);
                 if (hasBeenBroken) {
@@ -409,7 +409,7 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.timeRemaining = this.timePerRoundSetting.getValue();
         this.prepTimeRemaining = this.settings.prepTimeSetting().getValue();
         this.isTimerActive = true;
-        this.gameTargets.resetBrokenTargets();
+        this.gameTargets.resetSelectedTargets();
         this.readyPlayers();
     }
 

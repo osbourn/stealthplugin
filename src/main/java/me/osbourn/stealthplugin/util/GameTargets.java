@@ -9,28 +9,42 @@ import java.util.Set;
 
 public class GameTargets {
     /**
-     * Set of target blocks (persists through game sessions)
+     * List of targets that the defending team can choose (persists through game rounds)
      */
-    private final List<Material> targetMaterials;
+    private final List<Material> availableTargets;
+
     /**
-     * Set of found blocks (resets every game session)
+     * List of the targets that the defending team has chosen for this game (resets every game round)
+     */
+    private final List<Material> activeTargets;
+
+    /**
+     * Set of found blocks (resets every game round)
      */
     private final Set<Material> brokenTargets;
 
     public GameTargets() {
-        this.targetMaterials = new ArrayList<>();
+        this.availableTargets = new ArrayList<>();
+        this.activeTargets = new ArrayList<>();
         this.brokenTargets = new HashSet<>();
-        this.targetMaterials.add(Material.RESPAWN_ANCHOR);
-        this.targetMaterials.add(Material.ENCHANTING_TABLE);
-        this.targetMaterials.add(Material.ENDER_CHEST);
-        this.targetMaterials.add(Material.CONDUIT);
+        this.availableTargets.add(Material.RESPAWN_ANCHOR);
+        this.availableTargets.add(Material.ENCHANTING_TABLE);
+        this.availableTargets.add(Material.ENDER_CHEST);
+        this.availableTargets.add(Material.CONDUIT);
     }
 
     /**
-     * A Map associating target blocks to whether or not they have been broken (true if they have been broken)
+     * List of targets that the defenders can choose from
      */
-    public List<Material> getTargetMaterials() {
-        return this.targetMaterials;
+    public List<Material> getAvailableTargets() {
+        return this.availableTargets;
+    }
+
+    /**
+     * List of targets to be used in this game session
+     */
+    public List<Material> getActiveTargets() {
+        return this.activeTargets;
     }
 
     public boolean hasBeenBroken(Material material) {
@@ -38,11 +52,16 @@ public class GameTargets {
     }
 
     public void registerAsBroken(Material material) {
-        if (this.targetMaterials.contains(material)) {
+        if (this.activeTargets.contains(material)) {
             this.brokenTargets.add(material);
         } else {
             throw new IllegalArgumentException("Invalid material");
         }
+    }
+
+    public void resetSelectedTargets() {
+        this.activeTargets.clear();
+        this.resetBrokenTargets();
     }
 
     public void resetBrokenTargets() {
@@ -50,11 +69,11 @@ public class GameTargets {
     }
 
     public int numRemaining() {
-        return targetMaterials.size() - brokenTargets.size();
+        return activeTargets.size() - brokenTargets.size();
     }
 
     public boolean allTargetsBroken() {
         // If there are no targets in the first place, don't count it as a win for the attackers
-        return numRemaining() == 0 && targetMaterials.size() >= 1;
+        return numRemaining() == 0 && activeTargets.size() >= 1;
     }
 }
