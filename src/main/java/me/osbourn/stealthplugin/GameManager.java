@@ -304,10 +304,10 @@ public class GameManager extends BukkitRunnable implements Listener {
                     player.setBedSpawnLocation(respawnLocation, true);
                 }
             }
+            this.kitManager.givePlayerAttackingKit(player);
             if (this.isLocationSet(this.attackingTeamChestLocationSetting)) {
                 this.copyChestToPlayer(attackingTeamChestLocation, player);
             }
-            this.kitManager.givePlayerAttackingKit(player);
         } else if (this.isOnDefenders(player)) {
             if (this.isLocationSet(this.defendingTeamSpawnLocationSetting)) {
                 player.teleport(defendersSpawnLocation);
@@ -315,10 +315,10 @@ public class GameManager extends BukkitRunnable implements Listener {
                     player.setBedSpawnLocation(respawnLocation, true);
                 }
             }
+            this.kitManager.givePlayerDefendingKit(player);
             if (this.isLocationSet(this.defendingTeamChestLocationSetting)) {
                 this.copyChestToPlayer(defendingTeamChestLocation, player);
             }
-            this.kitManager.givePlayerDefendingKit(player);
         }
 
         if (morphManager.isPlayerMorphed(player)) {
@@ -384,15 +384,9 @@ public class GameManager extends BukkitRunnable implements Listener {
         }
 
         Inventory inventory = chest.getBlockInventory();
-        player.getInventory().clear();
-        int i = 0;
         for (ItemStack itemStack : inventory.getContents()) {
             if (itemStack != null) {
-                player.getInventory().setItem(i, itemStack.clone());
-            }
-            i++;
-            if (i > 35) {
-                player.sendMessage("Ran out of inventory space (please contact admin)");
+                player.getInventory().addItem(itemStack.clone());
             }
         }
     }

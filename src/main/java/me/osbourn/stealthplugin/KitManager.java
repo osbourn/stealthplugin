@@ -108,11 +108,18 @@ public class KitManager implements Listener {
             return;
         }
 
+        player.getInventory().clear();
         Inventory inventory = chest.getBlockInventory();
+        int i = 0;
         for (ItemStack itemStack : inventory.getContents()) {
             if (itemStack != null) {
-                player.getInventory().addItem(itemStack.clone());
+                player.getInventory().setItem(i, itemStack.clone());
+            }
+            i++;
+            if (i > 35) {
+                player.sendMessage("Ran out of inventory space (please contact admin)");
             }
         }
+
     }
 }
