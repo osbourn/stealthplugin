@@ -80,9 +80,6 @@ public class SelectTargetsCommand implements CommandExecutor {
             } else if (gameManager.isOnDefenders(player)) {
                 player.sendMessage(String.format("%s%s has selected %s as a target",
                         ChatColor.GRAY, selector.getName(), targetName));
-            } else if (gameManager.isOnAttackers(player)) {
-                player.sendMessage(String.format("%sDefenders have selected %s as a target",
-                        ChatColor.GRAY, targetName));
             }
         }
     }

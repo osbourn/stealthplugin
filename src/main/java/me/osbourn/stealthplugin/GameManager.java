@@ -147,7 +147,7 @@ public class GameManager extends BukkitRunnable implements Listener {
             lines.add(this.scoreManager.getScoreDisplay());
         }
 
-        if (this.settings.displayGameTargetsSetting().isActive()) {
+        if (this.settings.displayGameTargetsSetting().isActive() && !this.isPrepTime()) {
             for (Material material : this.gameTargets.getActiveTargets()) {
                 String materialName = MaterialsUtil.prettyMaterialName(material.toString());
                 boolean hasBeenBroken = this.gameTargets.hasBeenBroken(material);
