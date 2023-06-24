@@ -72,6 +72,20 @@ public class GameCommand implements CommandExecutor {
                 this.gameManager.sendPlayersToLobby();
                 return true;
             }
+            case "readynext" -> {
+                sender.sendMessage("Sending players to lobby...");
+                this.gameManager.sendPlayersToLobby();
+                sender.sendMessage("Swapping roles...");
+                SwapRolesCommand.swapRoles(this.gameManager);
+                sender.sendMessage("Pasting structure...");
+                boolean pasteWasSuccess = this.structurePaster.pasteStructure(sender);
+                if (pasteWasSuccess) {
+                    sender.sendMessage("Structure pasted");
+                } else {
+                    sender.sendMessage("Paste was unsuccessful");
+                }
+                return true;
+            }
             default -> {
                 return false;
             }

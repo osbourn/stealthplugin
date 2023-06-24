@@ -19,13 +19,19 @@ public class SwapRolesCommand implements CommandExecutor {
             return false;
         }
 
+        SwapRolesCommand.swapRoles(this.gameManager);
         String attackingTeamName = this.gameManager.getSettings().attackingTeamNameSetting().getValue();
         String defendingTeamName = this.gameManager.getSettings().defendingTeamNameSetting().getValue();
-        this.gameManager.getSettings().attackingTeamNameSetting().setValue(defendingTeamName);
-        this.gameManager.getSettings().defendingTeamNameSetting().setValue(attackingTeamName);
-        sender.sendMessage(String.format("Changed %s from attackers to defenders and %s from defenders to attackers",
+        sender.sendMessage(String.format("%s is now attacking and %s and is now defending",
                 attackingTeamName, defendingTeamName));
 
         return true;
+    }
+
+    public static void swapRoles(GameManager gameManager) {
+        String attackingTeamName = gameManager.getSettings().attackingTeamNameSetting().getValue();
+        String defendingTeamName = gameManager.getSettings().defendingTeamNameSetting().getValue();
+        gameManager.getSettings().attackingTeamNameSetting().setValue(defendingTeamName);
+        gameManager.getSettings().defendingTeamNameSetting().setValue(attackingTeamName);
     }
 }
