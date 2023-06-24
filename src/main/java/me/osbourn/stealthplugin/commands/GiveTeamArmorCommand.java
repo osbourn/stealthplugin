@@ -36,6 +36,7 @@ public class GiveTeamArmorCommand implements CommandExecutor {
         ItemStack itemStack = new ItemStack(leatherArmorType);
         LeatherArmorMeta meta = (LeatherArmorMeta) itemStack.getItemMeta();
         meta.setColor(color);
+        meta.setUnbreakable(true);
         itemStack.setItemMeta(meta);
         return itemStack;
     }
