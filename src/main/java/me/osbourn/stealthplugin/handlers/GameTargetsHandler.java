@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.type.RespawnAnchor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -32,13 +33,15 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent event) {
-        Material brokenBlockType = event.getBlock().getType();
-        if (gameTargets.getTargetMaterials().contains(brokenBlockType)) {
-            gameTargets.registerAsBroken(brokenBlockType);
-            if (this.isActive()) {
-                announceDestruction(brokenBlockType, "was broken");
+        if (!event.isCancelled()) {
+            Material brokenBlockType = event.getBlock().getType();
+            if (gameTargets.getTargetMaterials().contains(brokenBlockType)) {
+                gameTargets.registerAsBroken(brokenBlockType);
+                if (this.isActive()) {
+                    announceDestruction(brokenBlockType, "was broken");
+                }
             }
         }
     }
