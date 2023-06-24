@@ -64,5 +64,6 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         settingsList.add(defendingTeamChestLocationSetting);
         settingsList.add(respawnLocationSetting);
         settingsList.add(lobbyLocationSetting);
+        settingsList.add(numberOfTargetsSetting);
     }
 }

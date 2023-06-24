@@ -122,6 +122,17 @@ public class GameManager extends BukkitRunnable implements Listener {
         if (this.isTimerActive) {
             if (this.prepTimeRemaining >= 0) {
                 if (this.prepTimeRemaining == 0) {
+                    List<String> addedTargets = this.gameTargets.fillRemainingTargetSlots(
+                            this.settings.numberOfTargetsSetting().getValue());
+                    if (!addedTargets.isEmpty()) {
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            if (this.isOnDefenders(player)) {
+                                player.sendMessage(String.format(
+                                        "%sNot all targets were selected, so the following were added at random: %s",
+                                        ChatColor.GRAY, String.join(", ", addedTargets)));
+                            }
+                        }
+                    }
                     Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage("The game starts now!"));
                 }
                 this.prepTimeRemaining--;

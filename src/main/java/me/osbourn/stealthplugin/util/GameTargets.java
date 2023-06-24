@@ -7,10 +7,8 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameTargets {
     /**
@@ -96,5 +94,33 @@ public class GameTargets {
             builder.append(textComponent).append(" ");
         }
         return builder.create();
+    }
+
+    /**
+     * If defenders have not selected all their objectives, choose random objectives from the remaining ones available
+     * to use for this round.
+     *
+     * @param numTargets The number of targets to use in this game. Should probably be the same value as the
+     *                   numberoftargets setting.
+     * @return A list of the targets that were randomly selected (empty if defenders manually selected all their targets)
+     */
+    public List<String> fillRemainingTargetSlots(int numTargets) {
+        if (this.activeTargets.size() < numTargets) {
+            Set<Material> currentlyActiveTargets = new HashSet<>(this.activeTargets);
+            // The list returned from the stream is unmodifiable, so we make a copy of it
+            List<Material> unchosenTargets = new ArrayList<>(this.availableTargets.stream()
+                    .filter(target -> !currentlyActiveTargets.contains(target))
+                    .toList());
+            // This could probably be made more efficient, but it doesn't matter too much if there aren't that many
+            // available objectives.
+            Collections.shuffle(unchosenTargets);
+            // min is needed in some cases to prevent subList from throwing an IndexOutOfBoundsException
+            int numToAdd = Integer.min(numTargets - currentlyActiveTargets.size(), unchosenTargets.size());
+            List<Material> toAdd = unchosenTargets.subList(0, numToAdd);
+            this.activeTargets.addAll(toAdd);
+            return toAdd.stream().map(target -> MaterialsUtil.prettyMaterialName(target.toString())).toList();
+        } else {
+            return List.of();
+        }
     }
 }
