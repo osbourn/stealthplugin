@@ -34,6 +34,8 @@ public class GameTargets {
         this.availableTargets.add(Material.ENCHANTING_TABLE);
         this.availableTargets.add(Material.ENDER_CHEST);
         this.availableTargets.add(Material.CONDUIT);
+        this.availableTargets.add(Material.LODESTONE);
+        this.availableTargets.add(Material.JUKEBOX);
     }
 
     /**
