@@ -285,8 +285,6 @@ public class GameManager extends BukkitRunnable implements Listener {
         for (Player player : Bukkit.getOnlinePlayers()) {
             readyPlayer(player);
         }
-
-        GiveTeamArmorCommand.giveTeamArmor();
     }
 
     public void readyPlayer(Player player) {
@@ -300,10 +298,12 @@ public class GameManager extends BukkitRunnable implements Listener {
         if (this.isOnAttackers(player)) {
             if (this.isLocationSet(this.attackingTeamSpawnLocationSetting)) {
                 player.teleport(attackersSpawnLocation);
-                if (this.isLocationSet(this.settings.respawnLocationSetting())) {
-                    player.setBedSpawnLocation(respawnLocation, true);
-                }
             }
+            if (this.isLocationSet(this.settings.respawnLocationSetting())) {
+                player.setBedSpawnLocation(respawnLocation, true);
+            }
+            player.getInventory().clear();
+            GiveTeamArmorCommand.giveTeamArmor(player);
             this.kitManager.givePlayerAttackingKit(player);
             if (this.isLocationSet(this.attackingTeamChestLocationSetting)) {
                 this.copyChestToPlayer(attackingTeamChestLocation, player);
@@ -311,10 +311,12 @@ public class GameManager extends BukkitRunnable implements Listener {
         } else if (this.isOnDefenders(player)) {
             if (this.isLocationSet(this.defendingTeamSpawnLocationSetting)) {
                 player.teleport(defendersSpawnLocation);
-                if (this.isLocationSet(this.settings.respawnLocationSetting())) {
-                    player.setBedSpawnLocation(respawnLocation, true);
-                }
             }
+            if (this.isLocationSet(this.settings.respawnLocationSetting())) {
+                player.setBedSpawnLocation(respawnLocation, true);
+            }
+            player.getInventory().clear();
+            GiveTeamArmorCommand.giveTeamArmor(player);
             this.kitManager.givePlayerDefendingKit(player);
             if (this.isLocationSet(this.defendingTeamChestLocationSetting)) {
                 this.copyChestToPlayer(defendingTeamChestLocation, player);
@@ -357,7 +359,7 @@ public class GameManager extends BukkitRunnable implements Listener {
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20 * 1000000, 4, false, false, false));
         }
 
-        GiveTeamArmorCommand.giveTeamArmor();
+        GiveTeamArmorCommand.giveAllPlayersTeamArmor();
     }
 
     public boolean isOnAttackers(Player player) {

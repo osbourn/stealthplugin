@@ -13,18 +13,22 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scoreboard.Team;
 
 public class GiveTeamArmorCommand implements CommandExecutor {
-    public static void giveTeamArmor() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
-            if (team != null) {
-                Color color = chatColorToColor(team.getColor());
-                if (color != null) {
-                    player.getInventory().setHelmet(createDyedLeatherArmor(Material.LEATHER_HELMET, color));
-                    player.getInventory().setChestplate(createDyedLeatherArmor(Material.LEATHER_CHESTPLATE, color));
-                    player.getInventory().setLeggings(createDyedLeatherArmor(Material.LEATHER_LEGGINGS, color));
-                    player.getInventory().setBoots(createDyedLeatherArmor(Material.LEATHER_BOOTS, color));
-                }
+    public static void giveTeamArmor(Player player) {
+        Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
+        if (team != null) {
+            Color color = chatColorToColor(team.getColor());
+            if (color != null) {
+                player.getInventory().setHelmet(createDyedLeatherArmor(Material.LEATHER_HELMET, color));
+                player.getInventory().setChestplate(createDyedLeatherArmor(Material.LEATHER_CHESTPLATE, color));
+                player.getInventory().setLeggings(createDyedLeatherArmor(Material.LEATHER_LEGGINGS, color));
+                player.getInventory().setBoots(createDyedLeatherArmor(Material.LEATHER_BOOTS, color));
             }
+        }
+    }
+
+    public static void giveAllPlayersTeamArmor() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            giveTeamArmor(player);
         }
     }
 
@@ -57,7 +61,7 @@ public class GiveTeamArmorCommand implements CommandExecutor {
             return false;
         }
 
-        giveTeamArmor();
+        giveAllPlayersTeamArmor();
         return true;
     }
 }

@@ -108,12 +108,15 @@ public class KitManager implements Listener {
             return;
         }
 
-        player.getInventory().clear();
         Inventory inventory = chest.getBlockInventory();
         int i = 0;
         for (ItemStack itemStack : inventory.getContents()) {
             if (itemStack != null) {
-                player.getInventory().setItem(i, itemStack.clone());
+                if (itemStack.getType() == Material.ELYTRA) {
+                    player.getInventory().setChestplate(itemStack.clone());
+                } else {
+                    player.getInventory().setItem(i, itemStack.clone());
+                }
             }
             i++;
             if (i > 35) {

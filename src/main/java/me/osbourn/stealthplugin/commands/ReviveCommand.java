@@ -32,7 +32,7 @@ public class ReviveCommand implements CommandExecutor {
         }
 
         gameManager.readyPlayer(player);
-        GiveTeamArmorCommand.giveTeamArmor();
+        GiveTeamArmorCommand.giveTeamArmor(player);
         sender.sendMessage("Reset player " + args[0]);
         return true;
     }
