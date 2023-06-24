@@ -341,6 +341,11 @@ public class GameManager extends BukkitRunnable implements Listener {
         player.setGameMode(GameMode.SURVIVAL);
         player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
         player.setHealth(20.0);
+        player.setFireTicks(0);
+        player.setArrowsInBody(0);
+        player.setLevel(0);
+        player.setExp(0.0F);
+        player.setFallDistance(0.0F);
 
         for (PotionEffect effect : player.getActivePotionEffects()) {
             player.removePotionEffect(effect.getType());
