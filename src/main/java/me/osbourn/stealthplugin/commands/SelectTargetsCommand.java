@@ -2,11 +2,13 @@ package me.osbourn.stealthplugin.commands;
 
 import me.osbourn.stealthplugin.GameManager;
 import me.osbourn.stealthplugin.util.MaterialsUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class SelectTargetsCommand implements CommandExecutor {
@@ -31,6 +33,11 @@ public class SelectTargetsCommand implements CommandExecutor {
             return true;
         }
 
+        if (sender instanceof Player p && !this.gameManager.isOnDefenders(p)) {
+            sender.sendMessage(ChatColor.RED + "Only defenders can select objectives!");
+            return true;
+        }
+
         Material material;
         try {
             material = Material.valueOf(args[0].toUpperCase());
@@ -51,8 +58,32 @@ public class SelectTargetsCommand implements CommandExecutor {
             return true;
         }
 
+        if (this.gameManager.getGameTargets().getActiveTargets().size() >=
+                this.gameManager.getSettings().numberOfTargetsSetting().getValue()) {
+            sender.sendMessage(ChatColor.RED + "Yeu have already selected all your objectives!");
+            return true;
+        }
+
         this.gameManager.getGameTargets().getActiveTargets().add(material);
+        if (sender instanceof Player p) {
+            broadcastSelection(p, MaterialsUtil.prettyMaterialName(material.toString()));
+        }
 
         return true;
+    }
+
+    private void broadcastSelection(Player selector, String targetName) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (selector.getUniqueId().equals(player.getUniqueId())) {
+                player.sendMessage(String.format("%sYou selected %s as a target",
+                        ChatColor.GRAY, targetName));
+            } else if (gameManager.isOnDefenders(player)) {
+                player.sendMessage(String.format("%s%s has selected %s as a target",
+                        ChatColor.GRAY, selector.getName(), targetName));
+            } else if (gameManager.isOnAttackers(player)) {
+                player.sendMessage(String.format("%sDefenders have selected %s as a target",
+                        ChatColor.GRAY, targetName));
+            }
+        }
     }
 }

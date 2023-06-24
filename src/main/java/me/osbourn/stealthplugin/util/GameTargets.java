@@ -1,5 +1,10 @@
 package me.osbourn.stealthplugin.util;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
@@ -75,5 +80,21 @@ public class GameTargets {
     public boolean allTargetsBroken() {
         // If there are no targets in the first place, don't count it as a win for the attackers
         return numRemaining() == 0 && activeTargets.size() >= 1;
+    }
+
+    /**
+     * The chat message that should be sent to defenders at the start of the game
+     */
+    public BaseComponent[] getSelectionMessage() {
+        var builder =  new ComponentBuilder("Which targets would you like?\n");
+        for (Material material : this.getAvailableTargets()) {
+            String prettyMaterialName = MaterialsUtil.prettyMaterialName(material.toString());
+            TextComponent textComponent = new TextComponent("[" + prettyMaterialName + "]");
+            String command = "selecttarget " + material;
+            textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + command));
+            textComponent.setColor(ChatColor.GREEN);
+            builder.append(textComponent).append(" ");
+        }
+        return builder.create();
     }
 }

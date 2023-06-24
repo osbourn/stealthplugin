@@ -8,6 +8,7 @@ import me.osbourn.stealthplugin.util.GameManagerSettings;
 import me.osbourn.stealthplugin.util.GameTargets;
 import me.osbourn.stealthplugin.util.MaterialsUtil;
 import me.osbourn.stealthplugin.util.ObjectiveDisplayHandler;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -411,6 +412,13 @@ public class GameManager extends BukkitRunnable implements Listener {
         this.isTimerActive = true;
         this.gameTargets.resetSelectedTargets();
         this.readyPlayers();
+
+        BaseComponent[] targetSelectionPrompt = this.gameTargets.getSelectionMessage();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (this.isOnDefenders(player)) {
+                player.spigot().sendMessage(targetSelectionPrompt);
+            }
+        }
     }
 
     /**

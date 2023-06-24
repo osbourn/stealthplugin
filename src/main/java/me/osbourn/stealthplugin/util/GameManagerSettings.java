@@ -14,7 +14,8 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
                                   LocationSetting defendingTeamSpawnLocationSetting,
                                   LocationSetting attackingTeamChestLocationSetting,
                                   LocationSetting defendingTeamChestLocationSetting,
-                                  LocationSetting respawnLocationSetting, LocationSetting lobbyLocationSetting) {
+                                  LocationSetting respawnLocationSetting, LocationSetting lobbyLocationSetting,
+                                  IntegerSetting numberOfTargetsSetting) {
 
     public static GameManagerSettings makeNew() {
         IntegerSetting timePerRoundSetting = new IntegerSetting("timeperround", 300);
@@ -33,6 +34,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         LocationSetting defendingTeamChestLocationSetting = new LocationSetting("defendingteamchestlocation", 0, 0, 0);
         LocationSetting respawnLocationSetting = new LocationSetting("respawnlocation", 0, 0, 0);
         LocationSetting lobbyLocationSetting = new LocationSetting("lobbylocation", 0, 0, 0);
+        IntegerSetting numberOfTargetsSetting = new IntegerSetting("numberoftargets", 3);
         return new GameManagerSettings(timePerRoundSetting, prepTimeSetting, displayGameTargetsSetting,
                 displayTeamsSetting,
                 displayPlayerNamesSetting, displayTimeSetting,
@@ -41,7 +43,8 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
                 attackingTeamNameSetting, defendingTeamNameSetting,
                 attackingTeamSpawnLocationSetting, defendingTeamSpawnLocationSetting,
                 attackingTeamChestLocationSetting, defendingTeamChestLocationSetting,
-                respawnLocationSetting, lobbyLocationSetting);
+                respawnLocationSetting, lobbyLocationSetting,
+                numberOfTargetsSetting);
     }
 
     public void addAllTo(List<Setting> settingsList) {
