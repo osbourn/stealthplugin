@@ -19,7 +19,7 @@ public class GameLoop {
     private final GameManager gameManager;
     private final PasteStructureCommand structurePaster;
     private final IntegerSetting timeInLobbySetting;
-    private boolean active = true;
+    private boolean active = false;
     private @Nullable BukkitRunnable currentRunnable = null;
 
     public GameLoop(JavaPlugin plugin, GameManager gameManager, PasteStructureCommand structurePaster, IntegerSetting timeInLobbySetting) {
@@ -34,8 +34,10 @@ public class GameLoop {
     }
 
     public void setActive(boolean active) {
+        if (!active) {
+            this.cancelOnce();
+        }
         this.active = active;
-        this.cancelOnce();
     }
 
     /**
@@ -44,9 +46,12 @@ public class GameLoop {
      * @return true if the start was cancelled, false if the game was not set to start automatically soon.
      */
     public boolean cancelOnce() {
-        if (!active && this.currentRunnable != null) {
+        if (active && this.currentRunnable != null) {
             this.currentRunnable.cancel();
             this.currentRunnable = null;
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.sendMessage(ChatColor.RED + "Game start cancelled");
+            }
             return true;
         }
         return false;
@@ -54,17 +59,13 @@ public class GameLoop {
 
     /**
      * Sets up a runnable to send players to the lobby and start the next game. As an implementation detail, a new
-     * runnable is made every time this is called.
-     *
-     * @throws IllegalStateException If the runnable was already running.
+     * runnable is made every time this is called. If a start is already scheduled, cancel it and reschedule it.
      */
     public void runRunnable() {
         if (this.currentRunnable != null) {
-            throw new IllegalStateException("Runnable was already running");
+            this.cancelOnce();
         }
-        this.currentRunnable = new GameLoopRunnable(gameManager, structurePaster, timeInLobbySetting, () -> {
-            this.currentRunnable = null;
-        });
+        this.currentRunnable = new GameLoopRunnable(gameManager, structurePaster, timeInLobbySetting, () -> this.currentRunnable = null);
         this.currentRunnable.runTaskTimer(this.plugin, 20, 20);
     }
 

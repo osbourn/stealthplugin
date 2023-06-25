@@ -1,6 +1,7 @@
 package me.osbourn.stealthplugin.commands;
 
 import me.osbourn.stealthplugin.GameManager;
+import me.osbourn.stealthplugin.util.GameLoop;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,10 +10,12 @@ import org.jetbrains.annotations.NotNull;
 public class GameCommand implements CommandExecutor {
     private final GameManager gameManager;
     private final PasteStructureCommand structurePaster;
+    private final GameLoop gameLoop;
 
-    public GameCommand(GameManager gameManager, PasteStructureCommand structurePaster) {
+    public GameCommand(GameManager gameManager, PasteStructureCommand structurePaster, GameLoop gameLoop) {
         this.gameManager = gameManager;
         this.structurePaster = structurePaster;
+        this.gameLoop = gameLoop;
     }
 
     @Override
@@ -85,6 +88,33 @@ public class GameCommand implements CommandExecutor {
                     sender.sendMessage("Paste was unsuccessful");
                 }
                 return true;
+            }
+            case "auto" -> {
+                if (args.length < 2) {
+                    return false;
+                }
+                switch (args[1]) {
+                    case "on" -> {
+                        this.gameLoop.setActive(true);
+                        sender.sendMessage("Automatic game loop is now on");
+                        return true;
+                    }
+                    case "off" -> {
+                        this.gameLoop.setActive(false);
+                        sender.sendMessage("Automatic game loop is now off");
+                        return true;
+                    }
+                    case "cancel" -> {
+                        boolean didCancel = this.gameLoop.cancelOnce();
+                        if (!didCancel) {
+                            sender.sendMessage("Game start was not currently scheduled");
+                        }
+                        return true;
+                    }
+                    default -> {
+                        return false;
+                    }
+                }
             }
             default -> {
                 return false;
