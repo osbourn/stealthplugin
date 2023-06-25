@@ -23,6 +23,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,7 +51,12 @@ public class PasteStructureCommand implements CommandExecutor {
         return pasteStructure(sender);
     }
 
-    public boolean pasteStructure(@NotNull CommandSender sender) {
+    /**
+     * Pastes the structure at location specified in settings
+     * @param sender Source to send error messages to if pasting the structure fails
+     * @return true if the structure pasted correctly, false if there were errors
+     */
+    public boolean pasteStructure(@Nullable CommandSender sender) {
 
         // Load schematic
         Clipboard clipboard;
@@ -60,10 +66,14 @@ public class PasteStructureCommand implements CommandExecutor {
             ClipboardReader reader = format.getReader(new FileInputStream(file));
             clipboard = reader.read();
         } catch (FileNotFoundException e) {
-            sender.sendMessage("File not found");
+            if (sender != null) {
+                sender.sendMessage("File not found");
+            }
             return false;
         } catch (IOException e) {
-            sender.sendMessage("IO Exception occurred");
+            if (sender != null) {
+                sender.sendMessage("IO Exception occurred");
+            }
             e.printStackTrace();
             return false;
         }
@@ -90,7 +100,9 @@ public class PasteStructureCommand implements CommandExecutor {
                     .build();
             Operations.complete(operation);
         } catch (WorldEditException e) {
-            sender.sendMessage("WorldEdit threw an exception");
+            if (sender != null) {
+                sender.sendMessage("WorldEdit threw an exception");
+            }
             e.printStackTrace();
             return false;
         }

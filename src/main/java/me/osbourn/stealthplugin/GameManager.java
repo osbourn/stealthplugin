@@ -27,6 +27,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -69,6 +70,7 @@ public class GameManager extends BukkitRunnable implements Listener {
     private int timeRemaining;
     private int prepTimeRemaining;
     private boolean isTimerActive;
+    private @Nullable Runnable runAfterGame = null;
 
     public GameManager(StealthPlugin plugin, MorphManager morphManager, ScoreManager scoreManager,
                        KitManager kitManager, GameTargets gameTargets, GameManagerSettings settings) {
@@ -256,6 +258,10 @@ public class GameManager extends BukkitRunnable implements Listener {
         } else if (attackersMeetWinCondition) {
             declareWinner(GameResult.DRAW);
         }
+
+        if (this.runAfterGame != null) {
+            this.runAfterGame.run();
+        }
     }
 
     private void declareWinner(GameResult gameResult) {
@@ -417,6 +423,13 @@ public class GameManager extends BukkitRunnable implements Listener {
     private boolean isLocationSet(LocationSetting setting) {
         // TODO: Better way of having unset locations
         return setting.x() != 0 || setting.y() != 0 || setting.z() != 0;
+    }
+
+    /**
+     * Set code to run every time the game finishes.
+     */
+    public void setRunAfterGame(Runnable runAfterGame) {
+        this.runAfterGame = runAfterGame;
     }
 
     /**

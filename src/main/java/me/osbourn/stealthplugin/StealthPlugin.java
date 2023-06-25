@@ -5,8 +5,10 @@ import me.osbourn.stealthplugin.handlers.*;
 import me.osbourn.stealthplugin.integrations.GlowEffectManager;
 import me.osbourn.stealthplugin.integrations.ProtocolIntegration;
 import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
+import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import me.osbourn.stealthplugin.settingsapi.Setting;
+import me.osbourn.stealthplugin.util.GameLoop;
 import me.osbourn.stealthplugin.util.GameManagerSettings;
 import me.osbourn.stealthplugin.util.GameTargets;
 import org.bukkit.Bukkit;
@@ -73,6 +75,10 @@ public final class StealthPlugin extends JavaPlugin {
                 gameManagerSettings);
         this.getServer().getPluginManager().registerEvents(gameManager, this);
         gameManager.runTaskTimer(this, 20, 20);
+
+        IntegerSetting timeInLobbySetting = new IntegerSetting("timeinlobby", 30);
+        GameLoop gameLoop = new GameLoop(this, gameManager, pasteStructureCommand, timeInLobbySetting);
+        gameManager.setRunAfterGame(gameLoop::runRunnableIfActive);
 
         registerSetting(new PrepTimeHandler(gameManager));
 
