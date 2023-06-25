@@ -93,7 +93,7 @@ public class GameLoop {
 
     private static class GameLoopRunnable extends BukkitRunnable {
         private LoopAction nextAction = LoopAction.SEND_PLAYERS_TO_LOBBY;
-        private int timeUntilNextAction = 15;
+        private int timeUntilNextAction = 10;
         private final GameManager gameManager;
         private final PasteStructureCommand structurePaster;
         private final IntegerSetting timeInLobbySetting;
@@ -131,6 +131,8 @@ public class GameLoop {
                         this.afterFinishCode.run();
                     }
                 }
+                Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(String.format("%s%s in %d seconds",
+                        ChatColor.GREEN, this.nextAction.actionText(), this.timeUntilNextAction)));
             } else if (this.timeUntilNextAction <= 5 || this.timeUntilNextAction == 10) {
                 Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(String.format("%s%s in %d seconds",
                         ChatColor.GREEN, this.nextAction.actionText(), this.timeUntilNextAction)));
