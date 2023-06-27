@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
@@ -47,6 +48,16 @@ public class ProtectLayersHandler implements Setting, Listener {
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
+        if (this.isActive) {
+            event.blockList().removeIf(block -> block.getLocation().getBlockY() <= this.getLayer());
+        }
+    }
+
+    /*
+     * For things like respawn anchor explosions. TNT explosions are handled under "onEntityExplode".
+     */
+    @EventHandler
+    public void onBlockExplode(BlockExplodeEvent event) {
         if (this.isActive) {
             event.blockList().removeIf(block -> block.getLocation().getBlockY() <= this.getLayer());
         }
