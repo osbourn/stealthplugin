@@ -40,8 +40,10 @@ public class PreventPrematureTargetDestructionHandler extends BooleanSetting imp
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
         if (this.isActive()) {
-            event.blockList().removeIf(b -> shouldPreventDestruction(b.getType()));
-            AnnouncementUtils.announceToDefenders(gameManager, ChatColor.RED + "You cannot destroy objectives during prep time!");
+            boolean didRemove = event.blockList().removeIf(b -> shouldPreventDestruction(b.getType()));
+            if (didRemove) {
+                AnnouncementUtils.announceToDefenders(gameManager, ChatColor.RED + "You cannot destroy objectives during prep time!");
+            }
         }
     }
 
@@ -51,17 +53,23 @@ public class PreventPrematureTargetDestructionHandler extends BooleanSetting imp
     @EventHandler
     public void onBlockExplode(BlockExplodeEvent event) {
         if (this.isActive()) {
-            event.blockList().removeIf(b -> shouldPreventDestruction(b.getType()));
-            AnnouncementUtils.announceToDefenders(gameManager, ChatColor.RED + "You cannot destroy objectives during prep time!");
+            boolean didRemove = event.blockList().removeIf(b -> shouldPreventDestruction(b.getType()));
+            if (didRemove) {
+                AnnouncementUtils.announceToDefenders(gameManager, ChatColor.RED + "You cannot destroy objectives during prep time!");
+            }
         }
     }
 
     @EventHandler
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (this.isActive() && event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
-            if (shouldPreventDestruction(event.getClickedBlock().getType())) {
-                event.setCancelled(true);
-                AnnouncementUtils.announceToDefenders(gameManager, ChatColor.RED + "You cannot interact with objectives during prep time!");
+            Material material = event.getClickedBlock().getType();
+            if (shouldPreventDestruction(material)) {
+                // Only disable interactions with specific blocks because you can't build off the target if interactions are disabled
+                if (material == Material.RESPAWN_ANCHOR || material == Material.DRAGON_EGG) {
+                    event.setCancelled(true);
+                    AnnouncementUtils.announceToDefenders(gameManager, ChatColor.RED + "You cannot interact with objectives during prep time!");
+                }
             }
         }
     }
