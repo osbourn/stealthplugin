@@ -17,6 +17,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -49,8 +50,29 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
         }
     }
 
+    /*
+     * For explosions caused by TNT and other entities.
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockExplode(EntityExplodeEvent event) {
+    public void onEntityExplode(EntityExplodeEvent event) {
+        if (!event.isCancelled()) {
+            for (Block block : event.blockList()) {
+                Material brokenBlockType = block.getType();
+                if (gameTargets.getAvailableTargets().contains(brokenBlockType)) {
+                    gameTargets.registerAsBroken(brokenBlockType);
+                    if (this.isActive()) {
+                        announceDestruction(brokenBlockType, "was blown up");
+                    }
+                }
+            }
+        }
+    }
+
+    /*
+     * For explosions caused by Respawn Anchor and other blocks.
+     */
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onBlockExplode(BlockExplodeEvent event) {
         if (!event.isCancelled()) {
             for (Block block : event.blockList()) {
                 Material brokenBlockType = block.getType();
