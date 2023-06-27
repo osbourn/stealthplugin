@@ -60,7 +60,7 @@ public class SelectTargetsCommand implements CommandExecutor {
 
         if (this.gameManager.getGameTargets().getActiveTargets().size() >=
                 this.gameManager.getSettings().numberOfTargetsSetting().getValue()) {
-            sender.sendMessage(ChatColor.RED + "Yeu have already selected all your objectives!");
+            sender.sendMessage(ChatColor.RED + "You have already selected all your objectives!");
             return true;
         }
 
