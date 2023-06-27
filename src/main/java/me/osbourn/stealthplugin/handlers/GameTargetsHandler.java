@@ -2,6 +2,7 @@ package me.osbourn.stealthplugin.handlers;
 
 import me.osbourn.stealthplugin.MorphManager;
 import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
+import me.osbourn.stealthplugin.util.AnnouncementUtils;
 import me.osbourn.stealthplugin.util.GameTargets;
 import me.osbourn.stealthplugin.util.MaterialsUtil;
 import org.bukkit.Bukkit;
@@ -32,9 +33,7 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
     }
 
     private void announceDestruction(Material material, String adjective) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(String.format("%s %s", MaterialsUtil.prettyMaterialName(material.toString()), adjective));
-        }
+        AnnouncementUtils.announce(String.format("%s %s", MaterialsUtil.prettyMaterialName(material.toString()), adjective));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

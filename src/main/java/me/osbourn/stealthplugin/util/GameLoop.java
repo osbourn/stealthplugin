@@ -49,9 +49,7 @@ public class GameLoop {
         if (active && this.currentRunnable != null) {
             this.currentRunnable.cancel();
             this.currentRunnable = null;
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(ChatColor.RED + "Game start cancelled");
-            }
+            AnnouncementUtils.announce(ChatColor.RED + "Game start cancelled");
             return true;
         }
         return false;
@@ -131,11 +129,11 @@ public class GameLoop {
                         this.afterFinishCode.run();
                     }
                 }
-                Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(String.format("%s%s in %d seconds",
-                        ChatColor.GREEN, this.nextAction.actionText(), this.timeUntilNextAction)));
+                AnnouncementUtils.announce(String.format("%s%s in %d seconds",
+                        ChatColor.GREEN, this.nextAction.actionText(), this.timeUntilNextAction));
             } else if (this.timeUntilNextAction <= 5 || this.timeUntilNextAction == 10) {
-                Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(String.format("%s%s in %d seconds",
-                        ChatColor.GREEN, this.nextAction.actionText(), this.timeUntilNextAction)));
+                AnnouncementUtils.announce(String.format("%s%s in %d seconds",
+                        ChatColor.GREEN, this.nextAction.actionText(), this.timeUntilNextAction));
             }
         }
 

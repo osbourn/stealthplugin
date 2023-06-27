@@ -4,10 +4,7 @@ import me.osbourn.stealthplugin.commands.GiveTeamArmorCommand;
 import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import me.osbourn.stealthplugin.settingsapi.StringSetting;
-import me.osbourn.stealthplugin.util.GameManagerSettings;
-import me.osbourn.stealthplugin.util.GameTargets;
-import me.osbourn.stealthplugin.util.MaterialsUtil;
-import me.osbourn.stealthplugin.util.ObjectiveDisplayHandler;
+import me.osbourn.stealthplugin.util.*;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -127,13 +124,9 @@ public class GameManager extends BukkitRunnable implements Listener {
                     List<String> addedTargets = this.gameTargets.fillRemainingTargetSlots(
                             this.settings.numberOfTargetsSetting().getValue());
                     if (!addedTargets.isEmpty()) {
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            if (this.isOnDefenders(player)) {
-                                player.sendMessage(String.format(
+                        AnnouncementUtils.announceToDefenders(this, String.format(
                                         "%sNot all targets were selected, so the following were added at random: %s",
                                         ChatColor.GRAY, String.join(", ", addedTargets)));
-                            }
-                        }
                     }
                     Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage("The game starts now!"));
                 }
@@ -231,7 +224,7 @@ public class GameManager extends BukkitRunnable implements Listener {
         boolean allTargetsBroken = this.gameTargets.allTargetsBroken();
 
         if (!timeLeft) {
-            announceMessage("Time's up");
+            AnnouncementUtils.announce("Time's up");
         }
 
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -463,10 +456,6 @@ public class GameManager extends BukkitRunnable implements Listener {
 
     public GameTargets getGameTargets() {
         return this.gameTargets;
-    }
-
-    private void announceMessage(String message) {
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(message));
     }
 
     private Optional<Team> attackersTeam() {
