@@ -81,6 +81,7 @@ public final class StealthPlugin extends JavaPlugin {
         gameManager.setRunAfterGame(gameLoop::runRunnableIfActive);
 
         registerSetting(new PrepTimeHandler(gameManager));
+        registerSetting(new PreventPrematureTargetDestructionHandler(gameManager));
 
         this.getCommand("game").setExecutor(new GameCommand(gameManager, pasteStructureCommand, gameLoop));
         this.getCommand("gameobjectives").setExecutor(new GameObjectivesCommand(gameManager));
