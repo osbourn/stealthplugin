@@ -5,10 +5,13 @@ import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import me.osbourn.stealthplugin.util.GameTargets;
 import me.osbourn.stealthplugin.util.MaterialsUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.RespawnAnchor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -46,33 +49,48 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockExplode(EntityExplodeEvent event) {
-        for (Block block : event.blockList()) {
-            Material brokenBlockType = block.getType();
-            if (gameTargets.getAvailableTargets().contains(brokenBlockType)) {
-                gameTargets.registerAsBroken(brokenBlockType);
-                if (this.isActive()) {
-                    announceDestruction(brokenBlockType, "was blown up");
+        if (!event.isCancelled()) {
+            for (Block block : event.blockList()) {
+                Material brokenBlockType = block.getType();
+                if (gameTargets.getAvailableTargets().contains(brokenBlockType)) {
+                    gameTargets.registerAsBroken(brokenBlockType);
+                    if (this.isActive()) {
+                        announceDestruction(brokenBlockType, "was blown up");
+                    }
                 }
             }
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void playerInteractEvent(PlayerInteractEvent event) {
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.useInteractedBlock() != Event.Result.DENY) {
             if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.RESPAWN_ANCHOR) {
                 if (gameTargets.getAvailableTargets().contains(Material.RESPAWN_ANCHOR)) {
                     Block block = event.getClickedBlock();
                     if (block.getBlockData() instanceof RespawnAnchor anchor) {
                         // TODO: Fix clicking the respawn anchor several times with glowstone in the offhand counting as a break
                         if (anchor.getCharges() > 0 && (event.getItem() == null || event.getItem().getType() != Material.GLOWSTONE)) {
-                            gameTargets.registerAsBroken(Material.RESPAWN_ANCHOR);
-                            if (this.isActive()) {
-                                announceDestruction(Material.RESPAWN_ANCHOR, "was filled with glowstone and clicked");
+                            if(gameTargets.getActiveTargets().contains(Material.RESPAWN_ANCHOR)) {
+                                gameTargets.registerAsBroken(Material.RESPAWN_ANCHOR);
+                                if (this.isActive()) {
+                                    announceDestruction(Material.RESPAWN_ANCHOR, "was filled with glowstone and clicked");
+                                }
                             }
                         }
+                    }
+                }
+            }
+
+            if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.DRAGON_EGG) {
+                if (this.gameTargets.getActiveTargets().contains(Material.DRAGON_EGG)) {
+                    gameTargets.registerAsBroken(Material.DRAGON_EGG);
+                    event.setUseInteractedBlock(Event.Result.DENY);
+                    event.getClickedBlock().setType(Material.AIR);
+                    if (this.isActive()) {
+                        announceDestruction(Material.DRAGON_EGG, "was teleported out of existence");
                     }
                 }
             }

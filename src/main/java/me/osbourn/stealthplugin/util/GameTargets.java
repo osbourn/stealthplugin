@@ -64,6 +64,15 @@ public class GameTargets {
         }
     }
 
+    /**
+     * Like #registerAsBroken, but doesn't throw an exception if the material isn't active
+     */
+    public void registerAsBrokenIfActive(Material material) {
+        if (this.activeTargets.contains(material)) {
+            this.registerAsBroken(material);
+        }
+    }
+
     public void resetSelectedTargets() {
         this.activeTargets.clear();
         this.resetBrokenTargets();

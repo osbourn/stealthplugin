@@ -173,9 +173,12 @@ public class MorphManager implements Listener {
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (this.isPlayerMorphed(event.getPlayer())) {
-                final Material[] restrictedBlocks = {Material.CHEST, Material.BARREL, Material.HOPPER,
+                final Material[] restrictedBlocks = {
+                        Material.CHEST, Material.BARREL, Material.HOPPER,
                         Material.TRAPPED_CHEST, Material.SHULKER_BOX, Material.DISPENSER, Material.DROPPER,
-                        Material.FURNACE, Material.CAMPFIRE, Material.SOUL_CAMPFIRE};
+                        Material.FURNACE, Material.CAMPFIRE, Material.SOUL_CAMPFIRE, Material.RESPAWN_ANCHOR,
+                        Material.DRAGON_EGG
+                };
                 Block block = event.getClickedBlock();
                 if (Arrays.asList(restrictedBlocks).contains(block.getType())) {
                     event.setCancelled(true);
