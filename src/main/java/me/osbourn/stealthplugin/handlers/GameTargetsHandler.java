@@ -87,10 +87,11 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void playerInteractEvent(PlayerInteractEvent event) {
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.useInteractedBlock() != Event.Result.DENY) {
-            if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.RESPAWN_ANCHOR) {
+        Action action = event.getAction();
+        Block block = event.getClickedBlock();
+        if (event.useInteractedBlock() != Event.Result.DENY && block != null) {
+            if (action == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.RESPAWN_ANCHOR) {
                 if (gameTargets.getAvailableTargets().contains(Material.RESPAWN_ANCHOR)) {
-                    Block block = event.getClickedBlock();
                     if (block.getBlockData() instanceof RespawnAnchor anchor) {
                         // TODO: Fix clicking the respawn anchor several times with glowstone in the offhand counting as a break
                         if (anchor.getCharges() > 0 && (event.getItem() == null || event.getItem().getType() != Material.GLOWSTONE)) {
@@ -105,7 +106,8 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
                 }
             }
 
-            if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.DRAGON_EGG) {
+            if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) &&
+                    block.getType() == Material.DRAGON_EGG) {
                 if (this.gameTargets.getActiveTargets().contains(Material.DRAGON_EGG)) {
                     gameTargets.registerAsBroken(Material.DRAGON_EGG);
                     event.setUseInteractedBlock(Event.Result.DENY);

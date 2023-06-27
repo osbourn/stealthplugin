@@ -62,7 +62,8 @@ public class PreventPrematureTargetDestructionHandler extends BooleanSetting imp
 
     @EventHandler
     public void playerInteractEvent(PlayerInteractEvent event) {
-        if (this.isActive() && event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
+        if (this.isActive() && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK)
+                && event.getClickedBlock() != null) {
             Material material = event.getClickedBlock().getType();
             if (shouldPreventDestruction(material)) {
                 // Only disable interactions with specific blocks because you can't build off the target if interactions are disabled
