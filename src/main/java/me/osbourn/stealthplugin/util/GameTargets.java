@@ -36,6 +36,9 @@ public class GameTargets {
         this.availableTargets.add(Material.CONDUIT);
         this.availableTargets.add(Material.LODESTONE);
         this.availableTargets.add(Material.JUKEBOX);
+        this.availableTargets.add(Material.DRAGON_EGG);
+        this.availableTargets.add(Material.BUDDING_AMETHYST);
+        this.availableTargets.add(Material.GILDED_BLACKSTONE);
     }
 
     /**
