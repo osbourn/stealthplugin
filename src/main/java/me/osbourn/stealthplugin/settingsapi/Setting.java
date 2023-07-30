@@ -1,10 +1,8 @@
 package me.osbourn.stealthplugin.settingsapi;
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface Setting {

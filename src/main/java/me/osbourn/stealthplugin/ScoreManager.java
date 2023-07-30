@@ -3,7 +3,10 @@ package me.osbourn.stealthplugin;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Team;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ScoreManager {
