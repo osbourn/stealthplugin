@@ -34,7 +34,7 @@ public record GameManagerSettings(IntegerSetting timePerRoundSetting, IntegerSet
         LocationSetting defendingTeamChestLocationSetting = new LocationSetting("defendingteamchestlocation", 0, 0, 0);
         LocationSetting respawnLocationSetting = new LocationSetting("respawnlocation", 0, 0, 0);
         LocationSetting lobbyLocationSetting = new LocationSetting("lobbylocation", 0, 0, 0);
-        IntegerSetting numberOfTargetsSetting = new IntegerSetting("numberoftargets", 3);
+        IntegerSetting numberOfTargetsSetting = new IntegerSetting("numberoftargets", 2);
         return new GameManagerSettings(timePerRoundSetting, prepTimeSetting, displayGameTargetsSetting,
                 displayTeamsSetting,
                 displayPlayerNamesSetting, displayTimeSetting,
