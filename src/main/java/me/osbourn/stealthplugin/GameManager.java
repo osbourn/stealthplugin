@@ -243,16 +243,20 @@ public class GameManager extends BukkitRunnable implements Listener {
 
         boolean attackersMeetWinCondition = !defendersAlive || allTargetsBroken;
         boolean defendersMeetWinCondition = !attackersAlive || !timeLeft;
+        boolean didGameEnd = false;
 
         if (attackersMeetWinCondition && !defendersMeetWinCondition) {
             declareWinner(GameResult.ATTACKER_VICTORY);
+            didGameEnd = true;
         } else if (defendersMeetWinCondition && !attackersMeetWinCondition) {
             declareWinner(GameResult.DEFENDER_VICTORY);
+            didGameEnd = true;
         } else if (attackersMeetWinCondition) {
             declareWinner(GameResult.DRAW);
+            didGameEnd = true;
         }
 
-        if (this.runAfterGame != null) {
+        if (didGameEnd && this.runAfterGame != null) {
             this.runAfterGame.run();
         }
     }
