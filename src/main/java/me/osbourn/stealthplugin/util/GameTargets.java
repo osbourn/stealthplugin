@@ -39,6 +39,8 @@ public class GameTargets {
         this.availableTargets.add(Material.DRAGON_EGG);
         this.availableTargets.add(Material.BUDDING_AMETHYST);
         this.availableTargets.add(Material.GILDED_BLACKSTONE);
+        this.availableTargets.add(Material.JACK_O_LANTERN);
+        this.availableTargets.add(Material.CAKE);
     }
 
     /**
