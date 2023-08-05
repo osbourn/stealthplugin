@@ -13,11 +13,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class CommandTests {
     private ServerMock server;
     private StealthPlugin plugin;
+    private PlayerMock opPlayer;
+    private PlayerMock nonOpPlayer;
 
     @BeforeEach
     public void setUp() {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(StealthPlugin.class);
+        opPlayer = server.addPlayer();
+        opPlayer.setOp(true);
+        nonOpPlayer = server.addPlayer();
     }
 
     @AfterEach
@@ -26,15 +31,15 @@ class CommandTests {
     }
 
     @Test
-    public void setupCommand() {
-        PlayerMock player = server.addPlayer();
-
-        assertTrue(server.dispatchCommand(player, "setup"));
+    public void setupCommandNonOp() {
+        assertTrue(nonOpPlayer.performCommand("setup"));
         assertTrue(server.getScoreboardManager().getMainScoreboard().getTeams().isEmpty(),
                 "No teams should be created when player does not have permissions");
+    }
 
-        player.setOp(true);
-        assertTrue(server.dispatchCommand(player, "setup"));
+    @Test
+    public void setupCommand() {
+        assertTrue(opPlayer.performCommand("setup"));
 
         assertEquals(2, server.getScoreboardManager().getMainScoreboard().getTeams().size(),
                 "Two teams should have been created");
