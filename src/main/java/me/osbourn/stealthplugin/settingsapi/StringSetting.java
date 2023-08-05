@@ -27,8 +27,8 @@ public class StringSetting implements Setting {
     }
 
     @Override
-    public String getInfo() {
-        return String.format("%s is currently set to %s", this.getName(), this.value);
+    public String valueAsString() {
+        return this.value;
     }
 
     public String getValue() {

@@ -17,8 +17,8 @@ public class IntegerSetting implements Setting {
     }
 
     @Override
-    public final String getInfo() {
-        return String.format("%s is currently set to %d", this.getName(), this.value);
+    public final String valueAsString() {
+        return String.valueOf(this.value);
     }
 
     public int getValue() {

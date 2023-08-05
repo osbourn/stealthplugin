@@ -44,8 +44,8 @@ public class LocationSetting implements Setting {
     }
 
     @Override
-    public String getInfo() {
-        return String.format(this.getName() + " is currently set to %d %d %d", this.x(), this.y(), this.z());
+    public String valueAsString() {
+        return String.format("%d %d %d", this.x(), this.y(), this.z());
     }
 
     @Override

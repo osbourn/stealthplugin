@@ -26,8 +26,8 @@ public class BooleanSetting implements Setting {
     }
 
     @Override
-    public String getInfo() {
-        return String.format("%s is currently set to %b", this.getName(), this.isActive());
+    public String valueAsString() {
+        return String.valueOf(this.isActive());
     }
 
     @Override

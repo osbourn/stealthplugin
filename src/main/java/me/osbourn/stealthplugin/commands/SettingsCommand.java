@@ -53,11 +53,12 @@ public class SettingsCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1) {
-            sender.sendMessage(setting.get().getInfo());
+            sender.sendMessage(setting.get().getInfoMessage());
         } else {
             String[] passedArgs = Arrays.copyOfRange(args, 1, args.length);
             Optional<String> result = setting.get().trySet(passedArgs);
-            result.ifPresent(s -> sender.sendMessage("Error: " + s));
+            result.ifPresentOrElse(s -> sender.sendMessage("Error: " + s),
+                    () -> sender.sendMessage(setting.get().getSetMessage()));
         }
         return true;
     }

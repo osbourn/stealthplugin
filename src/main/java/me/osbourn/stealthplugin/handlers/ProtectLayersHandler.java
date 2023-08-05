@@ -78,12 +78,29 @@ public class ProtectLayersHandler implements Setting, Listener {
     }
 
     @Override
-    public String getInfo() {
+    public String valueAsString() {
         if (this.isActive) {
-            return "protectedlayer is enabled and set to " + this.layer;
+            return "enabled and set to " + this.layer;
         } else {
+            return "disabled and set to " + this.layer;
+        }
+    }
 
-            return "protectedlayer is disabled, but is set to " + this.layer;
+    @Override
+    public String getInfoMessage() {
+        if (this.isActive) {
+            return "protectedlayer is currently enabled and set to " + this.layer;
+        } else {
+            return "protectedlayer is currently disabled and set to " + this.layer;
+        }
+    }
+
+    @Override
+    public String getSetMessage() {
+        if (this.isActive) {
+            return "protectedlayer is now enabled and set to " + this.layer;
+        } else {
+            return "protectedlayer is now disabled and set to " + this.layer;
         }
     }
 

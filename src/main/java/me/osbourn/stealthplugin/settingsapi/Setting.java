@@ -12,11 +12,23 @@ public interface Setting {
     String getName();
 
     /**
-     * The string to be displayed when the user runs the settings command without providing a value
-     *
-     * @return
+     * Convert the data stored in the setting to a user-friendly string
      */
-    String getInfo();
+    String valueAsString();
+
+    /**
+     * The string to be displayed when the user runs the settings command without providing a value
+     */
+    default String getInfoMessage() {
+        return String.format("%s is currently set to %s", this.getName(), this.valueAsString());
+    };
+
+    /**
+     * The string to be displayed when the user sets the value of the setting using the /settings command
+     */
+    default String getSetMessage() {
+        return String.format("%s is now set to %s", this.getName(), this.valueAsString());
+    }
 
     /**
      * Set the setting to the specified value. Pass in an array containing the final arguments of a command.
