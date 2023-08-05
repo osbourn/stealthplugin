@@ -39,6 +39,6 @@ public class SwapTeamsCommand implements CommandExecutor {
             }
         }
 
-        return false;
+        return true;
     }
 }
