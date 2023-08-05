@@ -21,6 +21,11 @@ repositories {
         url = 'https://maven.enginehub.org/repo/'
     }
     maven {
+        // For MockBukkit
+        name = 'papermc-repo'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+    maven {
         // For ProtocolLib
         name = 'dmulloy2-repo'
         url = "https://repo.dmulloy2.net/nexus/repository/public/"
@@ -38,6 +43,8 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.20:3.19.0'
 }
 
 spigot {
