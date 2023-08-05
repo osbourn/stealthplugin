@@ -3,6 +3,7 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.osbourn.stealthplugin.StealthPlugin;
 import org.bukkit.Material;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scoreboard.Team;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,5 +71,15 @@ class CommandTests {
         assertNull(player2.getEquipment().getChestplate());
         assertNull(player2.getEquipment().getLeggings());
         assertNull(player2.getEquipment().getBoots());
+    }
+
+    @Test
+    public void togglesbCommand() {
+        // For some reason this doesn't work with non-op players even though I think it does in-game
+        assertEquals(server.getScoreboardManager().getMainScoreboard(), opPlayer.getScoreboard());
+        assertTrue(opPlayer.performCommand("togglesb"));
+        assertNotEquals(server.getScoreboardManager().getMainScoreboard(), opPlayer.getScoreboard());
+        assertTrue(opPlayer.performCommand("togglesb"));
+        assertEquals(server.getScoreboardManager().getMainScoreboard(), opPlayer.getScoreboard());
     }
 }
