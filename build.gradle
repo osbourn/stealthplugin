@@ -27,10 +27,17 @@ repositories {
     }
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
     compileOnly spigot('1.18.2')
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT'
     compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.8.0"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
 }
 
 spigot {
