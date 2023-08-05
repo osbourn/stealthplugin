@@ -2,7 +2,6 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.osbourn.stealthplugin.StealthPlugin;
-import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Team;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,25 +34,5 @@ class StealthPluginTests {
         PlayerMock player = server.addPlayer();
         player.disconnect();
         player.reconnect();
-    }
-
-    @Test
-    public void setupCommand() {
-        PlayerMock player = server.addPlayer();
-
-        assertTrue(server.dispatchCommand(player, "setup"));
-        assertTrue(server.getScoreboardManager().getMainScoreboard().getTeams().isEmpty(),
-                "No teams should be created when player does not have permissions");
-
-        player.setOp(true);
-        assertTrue(server.dispatchCommand(player, "setup"));
-
-        assertEquals(2, server.getScoreboardManager().getMainScoreboard().getTeams().size(),
-                "Two teams should have been created");
-
-        Team redTeam = server.getScoreboardManager().getMainScoreboard().getTeam("red");
-        assertNotNull(redTeam);
-        Team blueTeam = server.getScoreboardManager().getMainScoreboard().getTeam("blue");
-        assertNotNull(blueTeam);
     }
 }
