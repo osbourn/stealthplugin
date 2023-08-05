@@ -9,4 +9,8 @@ import com.comphenix.protocol.ProtocolManager;
  */
 public class ProtocolIntegration {
     public final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
+
+    public void setup(GlowEffectManager glowEffectManager) {
+        this.protocolManager.addPacketListener(glowEffectManager);
+    }
 }

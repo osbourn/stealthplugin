@@ -98,8 +98,9 @@ public class StealthPlugin extends JavaPlugin {
 
             BooleanSetting glowingTeammatesSetting = new BooleanSetting("glowingteammates", false);
             this.settingsList.add(glowingTeammatesSetting);
-            protocolIntegration.protocolManager.addPacketListener(new GlowEffectManager(this,
-                    morphManager, glowingTeammatesSetting));
+            GlowEffectManager glowEffectManager = new GlowEffectManager(this, morphManager, glowingTeammatesSetting);
+
+            protocolIntegration.setup(glowEffectManager);
         } else {
             this.getLogger().warning("ProtocolLib not found, some features will not be available");
         }
