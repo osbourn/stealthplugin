@@ -2,6 +2,8 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import me.osbourn.stealthplugin.StealthPlugin;
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Material;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scoreboard.Team;
@@ -51,10 +53,18 @@ class CommandTests {
         assertNotNull(blueTeam);
     }
 
-    @Test
-    public void giveTeamArmorCommand() {
+    private Pair<Team, Team> setUpDefaultTeams() {
         opPlayer.performCommand("setup");
         Team redTeam = server.getScoreboardManager().getMainScoreboard().getTeam("red");
+        Team blueTeam = server.getScoreboardManager().getMainScoreboard().getTeam("blue");
+        return new MutablePair<>(redTeam, blueTeam);
+    }
+
+
+    @Test
+    public void giveTeamArmorCommand() {
+        var teams = setUpDefaultTeams();
+        Team redTeam = teams.getLeft();
 
         PlayerMock player1 = server.addPlayer();
         PlayerMock player2 = server.addPlayer();
@@ -81,5 +91,31 @@ class CommandTests {
         assertNotEquals(server.getScoreboardManager().getMainScoreboard(), opPlayer.getScoreboard());
         assertTrue(opPlayer.performCommand("togglesb"));
         assertEquals(server.getScoreboardManager().getMainScoreboard(), opPlayer.getScoreboard());
+    }
+
+    @Test
+    public void swapTeamsCommandOnPlayersNotOnTeam() {
+        setUpDefaultTeams();
+        PlayerMock player = server.addPlayer();
+        assertTrue(opPlayer.performCommand("swapteams red blue"));
+        assertNull(server.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName()),
+                "Players not on a team should not get swapped onto a team");
+    }
+
+    @Test
+    public void swapTeamCommand() {
+        var teams = setUpDefaultTeams();
+        Team redTeam = teams.getLeft();
+        Team blueTeam = teams.getRight();
+
+        PlayerMock player1 = server.addPlayer();
+        PlayerMock player2 = server.addPlayer();
+        redTeam.addEntry(player1.getName());
+        blueTeam.addEntry(player2.getName());
+
+        assertTrue(opPlayer.performCommand("swapteams red blue"));
+
+        assertEquals(blueTeam, server.getScoreboardManager().getMainScoreboard().getEntryTeam(player1.getName()));
+        assertEquals(redTeam, server.getScoreboardManager().getMainScoreboard().getEntryTeam(player2.getName()));
     }
 }
