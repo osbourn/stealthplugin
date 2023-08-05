@@ -19,7 +19,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class StealthPlugin extends JavaPlugin {
+public class StealthPlugin extends JavaPlugin {
+
     private List<Setting> settingsList;
     @Override
     public void onEnable() {
