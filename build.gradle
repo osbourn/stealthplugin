@@ -37,6 +37,9 @@ test {
 }
 
 dependencies {
+    // Must be above Spigot to work around a PotionEffectType bug
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.20:3.19.0'
+
     compileOnly spigot('1.18.2')
 
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.0-SNAPSHOT'
@@ -49,8 +52,6 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
-
-    testImplementation 'com.github.seeseemelk:MockBukkit-v1.20:3.19.0'
 }
 
 spigot {
