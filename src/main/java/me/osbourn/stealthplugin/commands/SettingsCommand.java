@@ -1,6 +1,7 @@
 package me.osbourn.stealthplugin.commands;
 
 import me.osbourn.stealthplugin.StealthPlugin;
+import me.osbourn.stealthplugin.newsettings.SettingsManager;
 import me.osbourn.stealthplugin.settingsapi.Setting;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,10 +15,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class SettingsCommand implements CommandExecutor, TabCompleter {
-    private final StealthPlugin plugin;
+    private final SettingsManager settingsManager;
 
-    public SettingsCommand(StealthPlugin plugin) {
-        this.plugin = plugin;
+    public SettingsCommand(SettingsManager settingsManager) {
+        this.settingsManager = settingsManager;
     }
 
     @Override
@@ -33,34 +34,26 @@ public class SettingsCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args[0].equals("save")) {
-            this.plugin.saveSettings();
+            settingsManager.saveSettings();
             sender.sendMessage("Saved settings to config");
             return true;
         }
         if (args[0].equals("load")) {
-            this.plugin.loadSettings();
+            settingsManager.loadSettings();
             sender.sendMessage("Loaded settings from config");
             return true;
         }
 
-        Optional<Setting> setting = this.plugin.getSettingsList().stream()
-                .filter(s -> s.getName().equals(args[0]))
-                .findFirst();
-
-        if (setting.isEmpty()) {
-            sender.sendMessage("Unknown setting " + args[0]);
-            return false;
-        }
-
         if (args.length == 1) {
-            sender.sendMessage(setting.get().getInfoMessage());
+            sender.sendMessage(settingsManager.getInfoMessage(args[0]));
+            return true;
         } else {
             String[] passedArgs = Arrays.copyOfRange(args, 1, args.length);
-            Optional<String> result = setting.get().trySet(passedArgs);
-            result.ifPresentOrElse(s -> sender.sendMessage("Error: " + s),
-                    () -> sender.sendMessage(setting.get().getSetMessage()));
+            String valueToSet = String.join(" ", passedArgs);
+            var result = settingsManager.changeSetting(args[0], valueToSet);
+            sender.sendMessage(result.message());
+            return result.wasSuccessful();
         }
-        return true;
     }
 
     @Nullable
@@ -68,16 +61,10 @@ public class SettingsCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
                                       @NotNull String[] args) {
         if (args.length <= 1) {
-            return this.plugin.getSettingsList().stream()
-                    .map(Setting::getName)
-                    .toList();
+            return this.settingsManager.getSettingNames();
         } else if (args.length == 2) {
-            Optional<Setting> setting = this.plugin.getSettingsList().stream()
-                    .filter(s -> s.getName().equals(args[0]))
-                    .findFirst();
-            if (setting.isPresent()) {
-                return setting.get().tabCompletionOptions();
-            }
+            // TODO: Tab complete for setting values
+            return List.of();
         }
         return List.of();
     }

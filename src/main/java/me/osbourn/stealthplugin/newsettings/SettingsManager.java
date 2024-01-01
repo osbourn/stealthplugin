@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class SettingsManager {
@@ -103,6 +104,14 @@ public class SettingsManager {
         } else {
             return "No such setting \"" + settingName + "\"";
         }
+    }
+
+    public List<String> getSettingNames() {
+         return Arrays.stream(clazz.getDeclaredFields())
+                .filter(f -> Modifier.isStatic(f.getModifiers()))
+                .filter(f -> f.isAnnotationPresent(Setting.class))
+                .map(f -> f.getAnnotation(Setting.class).name())
+                .toList();
     }
 
     public void printDebugInfo() {

@@ -30,17 +30,20 @@ public class StealthPlugin extends JavaPlugin {
      * since it is a static field set from a non-static method.
      */
     public static Logger LOGGER = null;
+    private SettingsManager settingsManager;
 
     @Override
     public void onEnable() {
         StealthPlugin.LOGGER = this.getLogger();
         this.settingsList = new ArrayList<>();
+        this.settingsManager = new SettingsManager(Settings.class, this);
+        this.settingsManager.loadSettings();
 
         this.getCommand("setup").setExecutor(new SetupCommand());
         this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());
         this.getCommand("randomizeteams").setExecutor(new RandomizeTeamsCommand());
         this.getCommand("swapteams").setExecutor(new SwapTeamsCommand());
-        SettingsCommand settingsCommand = new SettingsCommand(this);
+        SettingsCommand settingsCommand = new SettingsCommand(this.settingsManager);
         this.getCommand("settings").setExecutor(settingsCommand);
         this.getCommand("settings").setTabCompleter(settingsCommand);
 
@@ -121,20 +124,7 @@ public class StealthPlugin extends JavaPlugin {
             // TODO: Ensure that setting.configValue() is a valid type
             config.addDefault(setting.getName(), setting.configValue());
         }
-        this.loadSettings();
-
-        SettingsManager settingsManager = new SettingsManager(Settings.class, this);
-        getLogger().info(settingsManager.getInfoMessage("prepTime"));
-        getLogger().info(settingsManager.getInfoMessage("displayGameTargetsOnScoreboard"));
-        getLogger().info(settingsManager.getInfoMessage("attackingTeamName"));
-        getLogger().info(settingsManager.changeSetting("prepTime", "10").message());
-        getLogger().info(settingsManager.changeSetting("displayGameTargetsOnScoreboard", "false").message());
-        getLogger().info(settingsManager.changeSetting("attackingTeamName", "green").message());
-        getLogger().info(settingsManager.getInfoMessage("prepTime"));
-        getLogger().info(settingsManager.getInfoMessage("displayGameTargetsOnScoreboard"));
-        getLogger().info(settingsManager.getInfoMessage("attackingTeamName"));
-        settingsManager.loadSettings();
-        settingsManager.saveSettings();
+        //this.loadSettings();
     }
 
     public List<Setting> getSettingsList() {
@@ -150,23 +140,9 @@ public class StealthPlugin extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents((Listener) setting, this);
     }
 
-    public void loadSettings() {
-        for (Setting setting : settingsList) {
-            // TODO: Ensure that setting.configValue() is a valid type
-            setting.setFromConfigValue(this.getConfig().get(setting.getName()));
-        }
-    }
-
-    public void saveSettings() {
-        for (Setting setting : settingsList) {
-            this.getConfig().set(setting.getName(), setting.configValue());
-        }
-        this.saveConfig();
-    }
-
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        this.saveSettings();
+        this.settingsManager.saveSettings();
     }
 }
