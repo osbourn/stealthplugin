@@ -1,5 +1,7 @@
 package me.osbourn.stealthplugin.newsettings;
 
+import me.osbourn.stealthplugin.util.NullableBlockPosition;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -27,6 +29,8 @@ public class SettingsManager {
             return new WrappedBooleanSetting(field);
         } else if (field.getType().equals(String.class)) {
             return new WrappedStringSetting(field);
+        } else if (field.getType().equals(NullableBlockPosition.class)) {
+            return new WrappedNullableBlockPositionSetting(field);
         } else {
             throw new IllegalArgumentException("Setting field is not of a valid type");
         }
