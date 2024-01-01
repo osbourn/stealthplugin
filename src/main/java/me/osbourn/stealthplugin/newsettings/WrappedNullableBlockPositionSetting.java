@@ -1,7 +1,7 @@
 package me.osbourn.stealthplugin.newsettings;
 
+import me.osbourn.stealthplugin.StealthPlugin;
 import me.osbourn.stealthplugin.util.NullableBlockPosition;
-import org.apache.commons.lang.ObjectUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -57,28 +57,31 @@ public class WrappedNullableBlockPositionSetting implements WrappedSetting {
             }
         }
 
-        try {
-            field.set(null, pos);
-            return SettingChangeResult.success(String.format(
-                    "Changed \"%s\" to \"%s\"", this.getName(), pos.toStringWithSpaces()));
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        this.set(pos);
+        return SettingChangeResult.success(String.format(
+                "Changed \"%s\" to \"%s\"", this.getName(), pos.toStringWithSpaces()));
+
     }
 
     @Override
     public String valueAsString() {
         return this.value().toStringWithSpaces();
-
     }
 
     @Override
     public Object toConfigValue() {
-        return this.value();
+        return this.value().toStringWithSpaces();
     }
 
     @Override
     public void setFromConfigValue(@Nullable Object value) {
+        if (value instanceof String s) {
+            var result = this.setFromString(s);
+            if (result.wasSuccessful()) {
+                return;
+            }
+        }
 
+        StealthPlugin.LOGGER.warning("Setting \"" + this.getName() + "\" failed to load from config");
     }
 }

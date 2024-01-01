@@ -61,6 +61,23 @@ public class SettingsManager {
         this.plugin.saveConfig();
     }
 
+    private void loadSetting(Field field) {
+        WrappedSetting wrapper = getWrappedSettingFromField(field);
+        String settingName = field.getAnnotation(Setting.class).name();
+        Object valueInConfig = this.plugin.getConfig().get(settingName);
+        wrapper.setFromConfigValue(valueInConfig);
+    }
+
+    public void loadSettings() {
+        for (Field field : clazz.getDeclaredFields()) {
+            if (field.isAnnotationPresent(Setting.class)) {
+                if (Modifier.isStatic(field.getModifiers())) {
+                    this.loadSetting(field);
+                }
+            }
+        }
+    }
+
     public Optional<WrappedSetting> getWrappedSetting(String name) {
         Optional<Field> foundField = Arrays.stream(clazz.getDeclaredFields())
                 .filter(f -> Modifier.isStatic(f.getModifiers()))

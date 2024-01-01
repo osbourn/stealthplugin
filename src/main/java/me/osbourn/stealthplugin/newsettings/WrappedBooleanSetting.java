@@ -1,6 +1,6 @@
 package me.osbourn.stealthplugin.newsettings;
 
-import org.apache.commons.lang.NotImplementedException;
+import me.osbourn.stealthplugin.StealthPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -60,11 +60,25 @@ public class WrappedBooleanSetting implements WrappedSetting {
 
     @Override
     public Object toConfigValue() {
-        return Boolean.valueOf(this.value());
+        return this.value();
     }
 
     @Override
     public void setFromConfigValue(@Nullable Object value) {
-        throw new NotImplementedException();
+        // Though the value is saved as a boolean, it might be read as a string
+        if (value instanceof Boolean b) {
+            this.set(b);
+            return;
+        } else if (value instanceof String s) {
+            if (s.equals("true")) {
+                this.set(true);
+                return;
+            } else if (s.equals("false")) {
+                this.set(false);
+                return;
+            }
+        }
+
+        StealthPlugin.LOGGER.warning("Setting \"" + this.getName() + "\" failed to load from config");
     }
 }

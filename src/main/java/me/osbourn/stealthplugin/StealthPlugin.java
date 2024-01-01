@@ -133,6 +133,7 @@ public class StealthPlugin extends JavaPlugin {
         getLogger().info(settingsManager.getInfoMessage("prepTime"));
         getLogger().info(settingsManager.getInfoMessage("displayGameTargetsOnScoreboard"));
         getLogger().info(settingsManager.getInfoMessage("attackingTeamName"));
+        settingsManager.loadSettings();
         settingsManager.saveSettings();
     }
 

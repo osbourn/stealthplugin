@@ -1,5 +1,6 @@
 package me.osbourn.stealthplugin.newsettings;
 
+import me.osbourn.stealthplugin.StealthPlugin;
 import org.apache.commons.lang.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,6 +59,10 @@ public class WrappedStringSetting implements WrappedSetting {
 
     @Override
     public void setFromConfigValue(@Nullable Object value) {
-        throw new NotImplementedException();
+        if (value instanceof String s) {
+            this.set(s);
+        } else {
+            StealthPlugin.LOGGER.warning("Setting \"" + this.getName() + "\" failed to load from config");
+        }
     }
 }
