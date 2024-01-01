@@ -20,8 +20,25 @@ public class WrappedIntSetting implements WrappedSetting {
     }
 
     @Override
-    public void setFromString() {
-        throw new NotImplementedException();
+    public SettingChangeResult setFromString(String s) {
+        try {
+            int x = Integer.parseInt(s);
+            this.field.setInt(null, x);
+            return new SettingChangeResult(true, "Changed \"" + this.getName() + "\" to \"" + x + "\"");
+        } catch(NumberFormatException e) {
+            return new SettingChangeResult(false, "\"" + s + "\" is not a valid integer");
+        } catch(IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String valueAsString() {
+        try {
+            return Integer.toString(this.field.getInt(null));
+        } catch(IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

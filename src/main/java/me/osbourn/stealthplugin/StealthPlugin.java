@@ -116,8 +116,11 @@ public class StealthPlugin extends JavaPlugin {
         this.loadSettings();
 
         SettingsManager settingsManager = new SettingsManager(Settings.class);
-        //settingsManager.printDebugInfo();
-        System.out.println(settingsManager.getWrappedSetting("timePerRound").get().getName());
+        System.out.println(Settings.timePerRound);
+        System.out.println(settingsManager.getInfoMessage("timePerRound"));
+        System.out.println(settingsManager.changeSetting("timePerRound", "10").message());
+        System.out.println(Settings.timePerRound);
+        System.out.println(settingsManager.getInfoMessage("timePerRound"));
     }
 
     public List<Setting> getSettingsList() {
