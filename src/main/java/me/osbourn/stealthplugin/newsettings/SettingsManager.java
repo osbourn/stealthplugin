@@ -23,8 +23,13 @@ public class SettingsManager {
 
         if (field.getType().equals(Integer.TYPE)) {
             return new WrappedIntSetting(field);
+        } else if (field.getType().equals(Boolean.TYPE)) {
+            return new WrappedBooleanSetting(field);
+        } else if (field.getType().equals(String.class)) {
+            return new WrappedStringSetting(field);
+        } else {
+            throw new IllegalArgumentException("Setting field is not of a valid type");
         }
-        throw new IllegalArgumentException("Setting field is not of a valid type");
     }
 
     public Optional<WrappedSetting> getWrappedSetting(String name) {

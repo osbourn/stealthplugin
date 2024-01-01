@@ -116,11 +116,15 @@ public class StealthPlugin extends JavaPlugin {
         this.loadSettings();
 
         SettingsManager settingsManager = new SettingsManager(Settings.class);
-        System.out.println(Settings.timePerRound);
-        System.out.println(settingsManager.getInfoMessage("timePerRound"));
-        System.out.println(settingsManager.changeSetting("timePerRound", "10").message());
-        System.out.println(Settings.timePerRound);
-        System.out.println(settingsManager.getInfoMessage("timePerRound"));
+        getLogger().info(settingsManager.getInfoMessage("prepTime"));
+        getLogger().info(settingsManager.getInfoMessage("displayGameTargetsOnScoreboard"));
+        getLogger().info(settingsManager.getInfoMessage("attackingTeamName"));
+        getLogger().info(settingsManager.changeSetting("prepTime", "10").message());
+        getLogger().info(settingsManager.changeSetting("displayGameTargetsOnScoreboard", "false").message());
+        getLogger().info(settingsManager.changeSetting("attackingTeamName", "green").message());
+        getLogger().info(settingsManager.getInfoMessage("prepTime"));
+        getLogger().info(settingsManager.getInfoMessage("displayGameTargetsOnScoreboard"));
+        getLogger().info(settingsManager.getInfoMessage("attackingTeamName"));
     }
 
     public List<Setting> getSettingsList() {
