@@ -1,6 +1,7 @@
 package me.osbourn.stealthplugin.newsettings;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -12,6 +13,22 @@ public class WrappedBooleanSetting implements WrappedSetting {
         this.field = field;
         assert field.isAnnotationPresent(Setting.class);
         assert Modifier.isStatic(field.getModifiers());
+    }
+
+    private boolean value() {
+        try {
+            return this.field.getBoolean(null);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void set(boolean newValue) {
+        try {
+            this.field.setBoolean(null, newValue);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -38,20 +55,16 @@ public class WrappedBooleanSetting implements WrappedSetting {
 
     @Override
     public String valueAsString() {
-        try {
-            return Boolean.toString(this.field.getBoolean(null));
-        } catch(IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return Boolean.toString(this.value());
     }
 
     @Override
     public Object toConfigValue() {
-        throw new NotImplementedException();
+        return Boolean.valueOf(this.value());
     }
 
     @Override
-    public void setFromConfigValue() {
+    public void setFromConfigValue(@Nullable Object value) {
         throw new NotImplementedException();
     }
 }

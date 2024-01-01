@@ -20,12 +20,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class StealthPlugin extends JavaPlugin {
 
     private List<Setting> settingsList;
+    /**
+     * Logger for StealthPlugin. Be a bit careful using this early on in plugin initialization
+     * since it is a static field set from a non-static method.
+     */
+    public static Logger LOGGER = null;
+
     @Override
     public void onEnable() {
+        StealthPlugin.LOGGER = this.getLogger();
         this.settingsList = new ArrayList<>();
 
         this.getCommand("setup").setExecutor(new SetupCommand());
@@ -115,7 +123,7 @@ public class StealthPlugin extends JavaPlugin {
         }
         this.loadSettings();
 
-        SettingsManager settingsManager = new SettingsManager(Settings.class);
+        SettingsManager settingsManager = new SettingsManager(Settings.class, this);
         getLogger().info(settingsManager.getInfoMessage("prepTime"));
         getLogger().info(settingsManager.getInfoMessage("displayGameTargetsOnScoreboard"));
         getLogger().info(settingsManager.getInfoMessage("attackingTeamName"));
@@ -125,6 +133,7 @@ public class StealthPlugin extends JavaPlugin {
         getLogger().info(settingsManager.getInfoMessage("prepTime"));
         getLogger().info(settingsManager.getInfoMessage("displayGameTargetsOnScoreboard"));
         getLogger().info(settingsManager.getInfoMessage("attackingTeamName"));
+        settingsManager.saveSettings();
     }
 
     public List<Setting> getSettingsList() {

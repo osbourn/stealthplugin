@@ -1,6 +1,8 @@
 package me.osbourn.stealthplugin.newsettings;
 
 import me.osbourn.stealthplugin.util.NullableBlockPosition;
+import org.apache.commons.lang.ObjectUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -12,6 +14,22 @@ public class WrappedNullableBlockPositionSetting implements WrappedSetting {
         this.field = field;
         assert field.isAnnotationPresent(Setting.class);
         assert Modifier.isStatic(field.getModifiers());
+    }
+
+    private NullableBlockPosition value() {
+        try {
+            return (NullableBlockPosition) this.field.get(null);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void set(NullableBlockPosition newValue) {
+        try {
+            this.field.set(null, newValue);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -50,20 +68,17 @@ public class WrappedNullableBlockPositionSetting implements WrappedSetting {
 
     @Override
     public String valueAsString() {
-        try {
-            return ((NullableBlockPosition) this.field.get(null)).toStringWithSpaces();
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return this.value().toStringWithSpaces();
+
     }
 
     @Override
     public Object toConfigValue() {
-        return null;
+        return this.value();
     }
 
     @Override
-    public void setFromConfigValue() {
+    public void setFromConfigValue(@Nullable Object value) {
 
     }
 }

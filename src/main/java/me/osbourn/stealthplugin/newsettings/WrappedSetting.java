@@ -1,5 +1,7 @@
 package me.osbourn.stealthplugin.newsettings;
 
+import org.jetbrains.annotations.Nullable;
+
 public interface WrappedSetting {
     String getName();
     SettingChangeResult setFromString(String s);
@@ -8,5 +10,5 @@ public interface WrappedSetting {
         return String.format("\"%s\" is currently set to \"%s\"", this.getName(), this.valueAsString());
     }
     Object toConfigValue();
-    void setFromConfigValue();
+    void setFromConfigValue(@Nullable Object value);
 }

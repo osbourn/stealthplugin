@@ -1,18 +1,21 @@
 package me.osbourn.stealthplugin.newsettings;
 
 import me.osbourn.stealthplugin.util.NullableBlockPosition;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.Set;
 
 public class SettingsManager {
-    private Class<?> clazz;
+    private final Class<?> clazz;
+    private final JavaPlugin plugin;
 
-    public SettingsManager(Class<?> clazz) {
+    public SettingsManager(Class<?> clazz, JavaPlugin plugin) {
         this.clazz = clazz;
+        this.plugin = plugin;
     }
 
     private static WrappedSetting getWrappedSettingFromField(Field field) {
@@ -34,6 +37,28 @@ public class SettingsManager {
         } else {
             throw new IllegalArgumentException("Setting field is not of a valid type");
         }
+    }
+
+    /**
+     * Saves a setting associated with a given field.
+     * Remember to save the config after all writing to the settings has been done.
+     */
+    private void saveSetting(Field field) {
+        WrappedSetting wrapper = getWrappedSettingFromField(field);
+        String settingName = field.getAnnotation(Setting.class).name();
+        Object valueToStore = wrapper.toConfigValue();
+        this.plugin.getConfig().set(settingName, valueToStore);
+    }
+
+    public void saveSettings() {
+        for (Field field : clazz.getDeclaredFields()) {
+            if (field.isAnnotationPresent(Setting.class)) {
+                if (Modifier.isStatic(field.getModifiers())) {
+                    this.saveSetting(field);
+                }
+            }
+        }
+        this.plugin.saveConfig();
     }
 
     public Optional<WrappedSetting> getWrappedSetting(String name) {

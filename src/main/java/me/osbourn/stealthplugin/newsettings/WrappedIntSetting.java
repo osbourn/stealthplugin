@@ -1,6 +1,8 @@
 package me.osbourn.stealthplugin.newsettings;
 
+import me.osbourn.stealthplugin.StealthPlugin;
 import org.apache.commons.lang.NotImplementedException;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -12,6 +14,22 @@ public class WrappedIntSetting implements WrappedSetting {
         this.field = field;
         assert field.isAnnotationPresent(Setting.class);
         assert Modifier.isStatic(field.getModifiers());
+    }
+
+    private int value() {
+        try {
+            return this.field.getInt(null);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void set(int newValue) {
+        try {
+            this.field.setInt(null, newValue);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -34,20 +52,20 @@ public class WrappedIntSetting implements WrappedSetting {
 
     @Override
     public String valueAsString() {
-        try {
-            return Integer.toString(this.field.getInt(null));
-        } catch(IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return Integer.toString(this.value());
     }
 
     @Override
     public Object toConfigValue() {
-        throw new NotImplementedException();
+        return this.value();
     }
 
     @Override
-    public void setFromConfigValue() {
-        throw new NotImplementedException();
+    public void setFromConfigValue(@Nullable Object value) {
+        if (value instanceof Integer x) {
+            this.set(x);
+        } else {
+            StealthPlugin.LOGGER.warning("Setting \"" + this.getName() + "\" failed to load from config");
+        }
     }
 }

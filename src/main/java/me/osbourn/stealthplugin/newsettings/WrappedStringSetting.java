@@ -1,12 +1,29 @@
 package me.osbourn.stealthplugin.newsettings;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class WrappedStringSetting implements WrappedSetting {
     private final Field field;
+
+    private String value() {
+        try {
+            return (String) this.field.get(null);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void set(String newValue) {
+        try {
+            this.field.set(null, newValue);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public WrappedStringSetting(Field field) {
         this.field = field;
@@ -31,20 +48,16 @@ public class WrappedStringSetting implements WrappedSetting {
 
     @Override
     public String valueAsString() {
-        try {
-            return (String) field.get(null);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return this.value();
     }
 
     @Override
     public Object toConfigValue() {
-        throw new NotImplementedException();
+        return this.value();
     }
 
     @Override
-    public void setFromConfigValue() {
+    public void setFromConfigValue(@Nullable Object value) {
         throw new NotImplementedException();
     }
 }
