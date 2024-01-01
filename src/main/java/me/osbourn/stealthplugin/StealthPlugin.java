@@ -4,6 +4,8 @@ import me.osbourn.stealthplugin.commands.*;
 import me.osbourn.stealthplugin.handlers.*;
 import me.osbourn.stealthplugin.integrations.GlowEffectManager;
 import me.osbourn.stealthplugin.integrations.ProtocolIntegration;
+import me.osbourn.stealthplugin.newsettings.Settings;
+import me.osbourn.stealthplugin.newsettings.SettingsManager;
 import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
@@ -112,6 +114,9 @@ public class StealthPlugin extends JavaPlugin {
             config.addDefault(setting.getName(), setting.configValue());
         }
         this.loadSettings();
+
+        SettingsManager settingsManager = new SettingsManager(Settings.class);
+        settingsManager.printDebugInfo();
     }
 
     public List<Setting> getSettingsList() {
