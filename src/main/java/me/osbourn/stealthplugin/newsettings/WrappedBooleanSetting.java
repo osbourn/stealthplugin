@@ -65,20 +65,10 @@ public class WrappedBooleanSetting implements WrappedSetting {
 
     @Override
     public void setFromConfigValue(@Nullable Object value) {
-        // Though the value is saved as a boolean, it might be read as a string
         if (value instanceof Boolean b) {
             this.set(b);
-            return;
-        } else if (value instanceof String s) {
-            if (s.equals("true")) {
-                this.set(true);
-                return;
-            } else if (s.equals("false")) {
-                this.set(false);
-                return;
-            }
+        } else {
+            StealthPlugin.LOGGER.warning("Setting \"" + this.getName() + "\" failed to load from config");
         }
-
-        StealthPlugin.LOGGER.warning("Setting \"" + this.getName() + "\" failed to load from config");
     }
 }
