@@ -79,7 +79,7 @@ public class GameCommand implements CommandExecutor {
                 sender.sendMessage("Sending players to lobby...");
                 this.gameManager.sendPlayersToLobby();
                 sender.sendMessage("Swapping roles...");
-                SwapRolesCommand.swapRoles(this.gameManager);
+                SwapRolesCommand.swapRoles();
                 sender.sendMessage("Pasting structure...");
                 boolean pasteWasSuccess = this.structurePaster.pasteStructure(sender);
                 if (pasteWasSuccess) {

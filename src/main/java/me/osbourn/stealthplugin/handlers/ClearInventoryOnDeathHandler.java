@@ -1,19 +1,18 @@
 package me.osbourn.stealthplugin.handlers;
 
-import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-public class ClearInventoryOnDeathHandler extends BooleanSetting implements Listener {
+public class ClearInventoryOnDeathHandler implements Listener {
     public ClearInventoryOnDeathHandler() {
-        super("clearinventoryondeath", true);
     }
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (this.isActive()) {
+        if (Settings.clearInventoryOnDeath) {
             event.getDrops().clear();
         }
     }

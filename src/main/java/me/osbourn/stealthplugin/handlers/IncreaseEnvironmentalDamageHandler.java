@@ -1,20 +1,19 @@
 package me.osbourn.stealthplugin.handlers;
 
-import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
-public class IncreaseEnvironmentalDamageHandler extends BooleanSetting implements Listener {
+public class IncreaseEnvironmentalDamageHandler implements Listener {
     public IncreaseEnvironmentalDamageHandler() {
-        super("increaseenvironmentaldamage", true);
     }
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        if (this.isActive() && event.getEntity() instanceof Player player) {
+        if (Settings.increaseEnvironmentalDamage && event.getEntity() instanceof Player player) {
             DamageCause damageCause = event.getCause();
             if (damageCause != DamageCause.ENTITY_ATTACK
                 && damageCause != DamageCause.ENTITY_SWEEP_ATTACK

@@ -1,7 +1,7 @@
 package me.osbourn.stealthplugin.handlers;
 
 import me.osbourn.stealthplugin.GameManager;
-import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
+import me.osbourn.stealthplugin.settings.Settings;
 import me.osbourn.stealthplugin.util.AnnouncementUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,11 +13,10 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class PreventPrematureTargetDestructionHandler extends BooleanSetting implements Listener {
+public class PreventPrematureTargetDestructionHandler implements Listener {
     private final GameManager gameManager;
 
     public PreventPrematureTargetDestructionHandler(GameManager gameManager) {
-        super("preventprematuretargetdestruction", true);
         this.gameManager = gameManager;
     }
 
@@ -28,7 +27,7 @@ public class PreventPrematureTargetDestructionHandler extends BooleanSetting imp
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (this.isActive() && shouldPreventDestruction(event.getBlock().getType())) {
+        if (Settings.preventPrematureTargetDestruction && shouldPreventDestruction(event.getBlock().getType())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "You cannot break objectives during prep time!");
         }
@@ -39,7 +38,7 @@ public class PreventPrematureTargetDestructionHandler extends BooleanSetting imp
      */
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
-        if (this.isActive()) {
+        if (Settings.preventPrematureTargetDestruction) {
             boolean didRemove = event.blockList().removeIf(b -> shouldPreventDestruction(b.getType()));
             if (didRemove) {
                 AnnouncementUtils.announceToDefenders(gameManager, ChatColor.RED + "You cannot destroy objectives during prep time!");
@@ -52,7 +51,7 @@ public class PreventPrematureTargetDestructionHandler extends BooleanSetting imp
      */
     @EventHandler
     public void onBlockExplode(BlockExplodeEvent event) {
-        if (this.isActive()) {
+        if (Settings.preventPrematureTargetDestruction) {
             boolean didRemove = event.blockList().removeIf(b -> shouldPreventDestruction(b.getType()));
             if (didRemove) {
                 AnnouncementUtils.announceToDefenders(gameManager, ChatColor.RED + "You cannot destroy objectives during prep time!");
@@ -62,7 +61,7 @@ public class PreventPrematureTargetDestructionHandler extends BooleanSetting imp
 
     @EventHandler
     public void playerInteractEvent(PlayerInteractEvent event) {
-        if (this.isActive() && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK)
+        if (Settings.preventPrematureTargetDestruction && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK)
                 && event.getClickedBlock() != null) {
             Material material = event.getClickedBlock().getType();
             if (shouldPreventDestruction(material)) {

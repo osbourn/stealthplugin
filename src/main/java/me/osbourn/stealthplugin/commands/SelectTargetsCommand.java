@@ -1,6 +1,7 @@
 package me.osbourn.stealthplugin.commands;
 
 import me.osbourn.stealthplugin.GameManager;
+import me.osbourn.stealthplugin.settings.Settings;
 import me.osbourn.stealthplugin.util.MaterialsUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -58,8 +59,7 @@ public class SelectTargetsCommand implements CommandExecutor {
             return true;
         }
 
-        if (this.gameManager.getGameTargets().getActiveTargets().size() >=
-                this.gameManager.getSettings().numberOfTargetsSetting().getValue()) {
+        if (this.gameManager.getGameTargets().getActiveTargets().size() >= Settings.numberOfTargets) {
             sender.sendMessage(ChatColor.RED + "You have already selected all your objectives!");
             return true;
         }

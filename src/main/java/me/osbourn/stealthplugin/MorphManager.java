@@ -1,6 +1,6 @@
 package me.osbourn.stealthplugin;
 
-import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,13 +32,9 @@ public class MorphManager implements Listener {
      * position.
      */
     private final Map<UUID, UUID> morphs;
-    private final BooleanSetting morphedPlayersCanAttackSetting;
-    private final BooleanSetting morphedPlayersIgnoreArrowsSetting;
 
-    public MorphManager(BooleanSetting morphedPlayersCanAttackSetting, BooleanSetting morphedPlayersIgnoreArrowsSetting) {
+    public MorphManager() {
         this.morphs = new HashMap<>();
-        this.morphedPlayersCanAttackSetting = morphedPlayersCanAttackSetting;
-        this.morphedPlayersIgnoreArrowsSetting = morphedPlayersIgnoreArrowsSetting;
     }
 
     public boolean isUUIDMorphed(UUID uuid) {
@@ -162,7 +158,7 @@ public class MorphManager implements Listener {
     public void entityDamageByEntityEvent(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player player) {
             if (this.isPlayerMorphed(player)) {
-                if (!this.morphedPlayersCanAttackSetting.isActive()) {
+                if (!Settings.morphedPlayersCanAttack) {
                     event.setCancelled(true);
                 }
             }
@@ -205,7 +201,7 @@ public class MorphManager implements Listener {
 
     @EventHandler
     public void arrowHitEvent(ProjectileHitEvent event) {
-        if (this.morphedPlayersIgnoreArrowsSetting.isActive()) {
+        if (Settings.morphedPlayersIgnoreArrows) {
             if (event.getEntity().getType() == EntityType.ARROW) {
                 if (event.getHitEntity() != null && event.getHitEntity() instanceof Player player) {
                     if (this.isPlayerMorphed(player)) {

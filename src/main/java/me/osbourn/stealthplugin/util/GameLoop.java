@@ -3,7 +3,7 @@ package me.osbourn.stealthplugin.util;
 import me.osbourn.stealthplugin.GameManager;
 import me.osbourn.stealthplugin.commands.PasteStructureCommand;
 import me.osbourn.stealthplugin.commands.SwapRolesCommand;
-import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -18,15 +18,13 @@ public class GameLoop {
     private final JavaPlugin plugin;
     private final GameManager gameManager;
     private final PasteStructureCommand structurePaster;
-    private final IntegerSetting timeInLobbySetting;
     private boolean active = false;
     private @Nullable BukkitRunnable currentRunnable = null;
 
-    public GameLoop(JavaPlugin plugin, GameManager gameManager, PasteStructureCommand structurePaster, IntegerSetting timeInLobbySetting) {
+    public GameLoop(JavaPlugin plugin, GameManager gameManager, PasteStructureCommand structurePaster) {
         this.plugin = plugin;
         this.gameManager = gameManager;
         this.structurePaster = structurePaster;
-        this.timeInLobbySetting = timeInLobbySetting;
     }
 
     public boolean isActive() {
@@ -63,7 +61,7 @@ public class GameLoop {
         if (this.currentRunnable != null) {
             this.cancelOnce();
         }
-        this.currentRunnable = new GameLoopRunnable(gameManager, structurePaster, timeInLobbySetting, () -> this.currentRunnable = null);
+        this.currentRunnable = new GameLoopRunnable(gameManager, structurePaster, () -> this.currentRunnable = null);
         this.currentRunnable.runTaskTimer(this.plugin, 20, 20);
     }
 
@@ -94,7 +92,6 @@ public class GameLoop {
         private int timeUntilNextAction = 10;
         private final GameManager gameManager;
         private final PasteStructureCommand structurePaster;
-        private final IntegerSetting timeInLobbySetting;
         private final Runnable afterFinishCode;
 
         /**
@@ -102,14 +99,12 @@ public class GameLoop {
          *
          * @param gameManager The game manager to affect
          * @param structurePaster Used to paste the structure as if the /pastestructure command was run
-         * @param timeInLobbySetting Stores the amount of time between sending players to the lobby and starting the game
          * @param afterFinishCode The code that should be run after this runnable finishes all its actions.
          */
         public GameLoopRunnable(GameManager gameManager, PasteStructureCommand structurePaster,
-                                IntegerSetting timeInLobbySetting, Runnable afterFinishCode) {
+                                Runnable afterFinishCode) {
             this.gameManager = gameManager;
             this.structurePaster = structurePaster;
-            this.timeInLobbySetting = timeInLobbySetting;
             this.afterFinishCode = afterFinishCode;
         }
 
@@ -121,7 +116,7 @@ public class GameLoop {
                     case SEND_PLAYERS_TO_LOBBY -> {
                         this.sendPlayersToLobby();
                         this.nextAction = LoopAction.START_GAME;
-                        this.timeUntilNextAction = this.timeInLobbySetting.getValue();
+                        this.timeUntilNextAction = Settings.timeInLobby;
                     }
                     case START_GAME -> {
                         this.startGame();
@@ -139,7 +134,7 @@ public class GameLoop {
 
         private void sendPlayersToLobby() {
             this.gameManager.sendPlayersToLobby();
-            SwapRolesCommand.swapRoles(this.gameManager);
+            SwapRolesCommand.swapRoles();
             boolean pasteStructureResult = this.structurePaster.pasteStructure(null);
             if (!pasteStructureResult) {
                 for (Player player : Bukkit.getOnlinePlayers()) {

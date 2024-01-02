@@ -1,7 +1,7 @@
 package me.osbourn.stealthplugin.handlers;
 
 import me.osbourn.stealthplugin.MorphManager;
-import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,17 +14,16 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class BeaconRevealHandler extends BooleanSetting implements Listener {
+public class BeaconRevealHandler implements Listener {
     private final MorphManager morphManager;
 
     public BeaconRevealHandler(MorphManager morphManager) {
-        super("beaconsrevealplayers", true);
         this.morphManager = morphManager;
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (this.isActive() && event.getBlock().getType() == Material.BEACON) {
+        if (Settings.beaconsRevealPlayers && event.getBlock().getType() == Material.BEACON) {
             if (!this.morphManager.isPlayerMorphed(event.getPlayer())) {
                 brieflyRevealPlayers(event.getBlock().getLocation());
             }
@@ -33,7 +32,7 @@ public class BeaconRevealHandler extends BooleanSetting implements Listener {
 
     @EventHandler
     public void onBlockExplode(EntityExplodeEvent event) {
-        if (this.isActive()) {
+        if (Settings.beaconsRevealPlayers) {
             for (Block block : event.blockList()) {
                 if (block.getType() == Material.BEACON) {
                     brieflyRevealPlayers(block.getLocation());

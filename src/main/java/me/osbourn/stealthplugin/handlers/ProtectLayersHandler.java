@@ -1,6 +1,6 @@
 package me.osbourn.stealthplugin.handlers;
 
-import me.osbourn.stealthplugin.settingsapi.Setting;
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -12,13 +12,7 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import java.util.List;
-import java.util.Optional;
-
-public class ProtectLayersHandler implements Setting, Listener {
-    private int layer = 0;
-    private boolean isActive = false;
-
+public class ProtectLayersHandler implements Listener {
     /**
      * True if the player should be able to build in the protected layer
      */
@@ -28,9 +22,9 @@ public class ProtectLayersHandler implements Setting, Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (this.isActive && !this.isPlayerExempt(event.getPlayer())) {
+        if (Settings.protectedLayerEnabled && !this.isPlayerExempt(event.getPlayer())) {
             Location loc = event.getBlock().getLocation();
-            if (loc.getBlockY() <= this.getLayer()) {
+            if (loc.getBlockY() <= Settings.protectedLayerLevel) {
                 event.setCancelled(true);
             }
         }
@@ -38,9 +32,9 @@ public class ProtectLayersHandler implements Setting, Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (this.isActive && !this.isPlayerExempt(event.getPlayer())) {
+        if (Settings.protectedLayerEnabled && !this.isPlayerExempt(event.getPlayer())) {
             Location loc = event.getBlock().getLocation();
-            if (loc.getBlockY() <= this.getLayer()) {
+            if (loc.getBlockY() <= Settings.protectedLayerLevel) {
                 event.setCancelled(true);
             }
         }
@@ -48,8 +42,8 @@ public class ProtectLayersHandler implements Setting, Listener {
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
-        if (this.isActive) {
-            event.blockList().removeIf(block -> block.getLocation().getBlockY() <= this.getLayer());
+        if (Settings.protectedLayerEnabled) {
+            event.blockList().removeIf(block -> block.getLocation().getBlockY() <= Settings.protectedLayerLevel);
         }
     }
 
@@ -58,110 +52,17 @@ public class ProtectLayersHandler implements Setting, Listener {
      */
     @EventHandler
     public void onBlockExplode(BlockExplodeEvent event) {
-        if (this.isActive) {
-            event.blockList().removeIf(block -> block.getLocation().getBlockY() <= this.getLayer());
+        if (Settings.protectedLayerEnabled) {
+            event.blockList().removeIf(block -> block.getLocation().getBlockY() <= Settings.protectedLayerLevel);
         }
     }
 
     @EventHandler
     public void onBlockBurn(BlockBurnEvent event) {
-        if (this.isActive) {
-            if (event.getBlock().getLocation().getBlockY() <= this.getLayer()) {
+        if (Settings.protectedLayerEnabled) {
+            if (event.getBlock().getLocation().getBlockY() <= Settings.protectedLayerLevel) {
                 event.setCancelled(true);
             }
         }
-    }
-
-    @Override
-    public String getName() {
-        return "protectedlayer";
-    }
-
-    @Override
-    public String valueAsString() {
-        if (this.isActive) {
-            return "enabled and set to " + this.layer;
-        } else {
-            return "disabled and set to " + this.layer;
-        }
-    }
-
-    @Override
-    public String getInfoMessage() {
-        if (this.isActive) {
-            return "protectedlayer is currently enabled and set to " + this.layer;
-        } else {
-            return "protectedlayer is currently disabled and set to " + this.layer;
-        }
-    }
-
-    @Override
-    public String getSetMessage() {
-        if (this.isActive) {
-            return "protectedlayer is now enabled and set to " + this.layer;
-        } else {
-            return "protectedlayer is now disabled and set to " + this.layer;
-        }
-    }
-
-    @Override
-    public Optional<String> trySet(String[] args) {
-        if (args.length != 1) {
-            return Optional.of("Incorrect number of arguments");
-        }
-
-        if (args[0].equals("disable")) {
-            this.isActive = false;
-            return Optional.empty();
-        } else if (args[0].equals("enable")) {
-            this.isActive = true;
-            return Optional.empty();
-        } else {
-            try {
-                int layer = Integer.parseInt(args[0]);
-                this.setLayer(layer);
-                this.isActive = true;
-                return Optional.empty();
-            } catch (NumberFormatException e) {
-                return Optional.of("Expected \"enable\", \"disable\", or a number");
-            }
-        }
-    }
-
-    @Override
-    public List<String> tabCompletionOptions() {
-        return List.of("disable", "enable", "0");
-    }
-
-    @Override
-    public Object configValue() {
-        return String.format("%b,%d", this.isActive, this.getLayer());
-    }
-
-    @Override
-    public void setFromConfigValue(Object value) {
-        if (value instanceof String s) {
-            String[] words = s.split(",");
-            if (words.length == 2) {
-                try {
-                    // Declare variables before setting so that if the number is an invalid format it doesn't set only the boolean
-                    boolean isActive = Boolean.parseBoolean(words[0]);
-                    int layer = Integer.parseInt(words[1]);
-
-                    this.isActive = isActive;
-                    this.layer = layer;
-                } catch (NumberFormatException e) {
-                    // TODO: Log error
-                }
-            }
-        }
-    }
-
-    public int getLayer() {
-        return this.layer;
-    }
-
-    public void setLayer(int layer) {
-        this.layer = layer;
     }
 }
