@@ -81,4 +81,6 @@ public final class Settings {
     public static boolean preventPrematureTargetDestruction = true;
     @Setting(name = "glowingTeammates")
     public static boolean glowingTeammates = false;
+    @Setting(name = "timeInLobby")
+    public static int timeInLobby = 30;
 }

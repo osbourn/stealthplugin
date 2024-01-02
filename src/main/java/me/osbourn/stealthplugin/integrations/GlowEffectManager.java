@@ -8,6 +8,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import me.osbourn.stealthplugin.MorphManager;
+import me.osbourn.stealthplugin.newsettings.Settings;
 import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,12 +18,10 @@ import org.bukkit.scoreboard.Team;
 
 public class GlowEffectManager extends PacketAdapter {
     private final MorphManager morphManager;
-    private final BooleanSetting glowingTeammatesSetting;
 
-    public GlowEffectManager(Plugin plugin, MorphManager morphManager, BooleanSetting glowingTeammatesSetting) {
+    public GlowEffectManager(Plugin plugin, MorphManager morphManager) {
         super(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.ENTITY_METADATA);
         this.morphManager = morphManager;
-        this.glowingTeammatesSetting = glowingTeammatesSetting;
     }
 
     @Override
@@ -30,7 +29,7 @@ public class GlowEffectManager extends PacketAdapter {
         // The code inside this method can be a bit confusing so please read these comments!
 
         // Teammates should not be glowing if the option is set to false
-        if (!glowingTeammatesSetting.isActive()) {
+        if (!Settings.glowingTeammates) {
             return;
         }
 

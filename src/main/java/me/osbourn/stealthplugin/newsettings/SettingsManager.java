@@ -1,7 +1,6 @@
 package me.osbourn.stealthplugin.newsettings;
 
 import me.osbourn.stealthplugin.util.NullableBlockPosition;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
