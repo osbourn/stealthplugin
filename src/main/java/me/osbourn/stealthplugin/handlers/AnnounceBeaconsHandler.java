@@ -1,6 +1,7 @@
 package me.osbourn.stealthplugin.handlers;
 
 import me.osbourn.stealthplugin.MorphManager;
+import me.osbourn.stealthplugin.newsettings.Settings;
 import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import me.osbourn.stealthplugin.util.AnnouncementUtils;
 import org.bukkit.Material;
@@ -10,11 +11,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-public class AnnounceBeaconsHandler extends BooleanSetting implements Listener {
+public class AnnounceBeaconsHandler implements Listener {
     private final MorphManager morphManager;
 
     public AnnounceBeaconsHandler(MorphManager morphManager) {
-        super("announcebeacons", false);
         this.morphManager = morphManager;
     }
 
@@ -33,7 +33,7 @@ public class AnnounceBeaconsHandler extends BooleanSetting implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (this.isActive() && event.getBlock().getType() == Material.BEACON) {
+        if (Settings.announceBeacons && event.getBlock().getType() == Material.BEACON) {
             if (!this.morphManager.isPlayerMorphed(event.getPlayer())) {
                 announceDestruction(event.getBlock(), "was broken");
             }
@@ -42,7 +42,7 @@ public class AnnounceBeaconsHandler extends BooleanSetting implements Listener {
 
     @EventHandler
     public void onBlockExplode(EntityExplodeEvent event) {
-        if (this.isActive()) {
+        if (Settings.announceBeacons) {
             for (Block block : event.blockList()) {
                 if (block.getType() == Material.BEACON) {
                     announceDestruction(block, "was blown up");

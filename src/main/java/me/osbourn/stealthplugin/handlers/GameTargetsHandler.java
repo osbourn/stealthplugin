@@ -1,6 +1,7 @@
 package me.osbourn.stealthplugin.handlers;
 
 import me.osbourn.stealthplugin.MorphManager;
+import me.osbourn.stealthplugin.newsettings.Settings;
 import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import me.osbourn.stealthplugin.util.AnnouncementUtils;
 import me.osbourn.stealthplugin.util.GameTargets;
@@ -18,12 +19,11 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class GameTargetsHandler extends BooleanSetting implements Listener {
+public class GameTargetsHandler implements Listener {
     private final GameTargets gameTargets;
     private final MorphManager morphManager;
 
     public GameTargetsHandler(GameTargets gameTargets, MorphManager morphManager) {
-        super("announcebrokentargets", true);
         this.gameTargets = gameTargets;
         this.morphManager = morphManager;
     }
@@ -38,7 +38,7 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
             Material brokenBlockType = event.getBlock().getType();
             if (gameTargets.getAvailableTargets().contains(brokenBlockType)) {
                 gameTargets.registerAsBroken(brokenBlockType);
-                if (this.isActive()) {
+                if (Settings.announceBrokenTargets) {
                     announceDestruction(brokenBlockType, "was broken");
                 }
             }
@@ -55,7 +55,7 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
                 Material brokenBlockType = block.getType();
                 if (gameTargets.getAvailableTargets().contains(brokenBlockType)) {
                     gameTargets.registerAsBroken(brokenBlockType);
-                    if (this.isActive()) {
+                    if (Settings.announceBrokenTargets) {
                         announceDestruction(brokenBlockType, "was blown up");
                     }
                 }
@@ -73,7 +73,7 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
                 Material brokenBlockType = block.getType();
                 if (gameTargets.getAvailableTargets().contains(brokenBlockType)) {
                     gameTargets.registerAsBroken(brokenBlockType);
-                    if (this.isActive()) {
+                    if (Settings.announceBrokenTargets) {
                         announceDestruction(brokenBlockType, "was blown up");
                     }
                 }
@@ -93,7 +93,7 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
                         if (anchor.getCharges() > 0 && (event.getItem() == null || event.getItem().getType() != Material.GLOWSTONE)) {
                             if(gameTargets.getActiveTargets().contains(Material.RESPAWN_ANCHOR)) {
                                 gameTargets.registerAsBroken(Material.RESPAWN_ANCHOR);
-                                if (this.isActive()) {
+                                if (Settings.announceBrokenTargets) {
                                     announceDestruction(Material.RESPAWN_ANCHOR, "was filled with glowstone and clicked");
                                 }
                             }
@@ -108,7 +108,7 @@ public class GameTargetsHandler extends BooleanSetting implements Listener {
                     gameTargets.registerAsBroken(Material.DRAGON_EGG);
                     event.setUseInteractedBlock(Event.Result.DENY);
                     event.getClickedBlock().setType(Material.AIR);
-                    if (this.isActive()) {
+                    if (Settings.announceBrokenTargets) {
                         announceDestruction(Material.DRAGON_EGG, "was teleported out of existence");
                     }
                 }
