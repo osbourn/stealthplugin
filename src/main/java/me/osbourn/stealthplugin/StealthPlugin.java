@@ -11,7 +11,6 @@ import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
 import me.osbourn.stealthplugin.settingsapi.LocationSetting;
 import me.osbourn.stealthplugin.settingsapi.Setting;
 import me.osbourn.stealthplugin.util.GameLoop;
-import me.osbourn.stealthplugin.util.GameManagerSettings;
 import me.osbourn.stealthplugin.util.GameTargets;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -83,10 +82,7 @@ public class StealthPlugin extends JavaPlugin {
         KitManager kitManager = new KitManager();
         this.getServer().getPluginManager().registerEvents(kitManager, this);
 
-        GameManagerSettings gameManagerSettings = GameManagerSettings.makeNew();
-        gameManagerSettings.addAllTo(this.settingsList);
-        GameManager gameManager = new GameManager(this, morphManager, scoreManager, kitManager, gameTargets,
-                gameManagerSettings);
+        GameManager gameManager = new GameManager(this, morphManager, scoreManager, kitManager, gameTargets);
         this.getServer().getPluginManager().registerEvents(gameManager, this);
         gameManager.runTaskTimer(this, 20, 20);
 

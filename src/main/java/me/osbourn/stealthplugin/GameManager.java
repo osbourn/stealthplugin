@@ -1,9 +1,7 @@
 package me.osbourn.stealthplugin;
 
 import me.osbourn.stealthplugin.commands.GiveTeamArmorCommand;
-import me.osbourn.stealthplugin.settingsapi.IntegerSetting;
-import me.osbourn.stealthplugin.settingsapi.LocationSetting;
-import me.osbourn.stealthplugin.settingsapi.StringSetting;
+import me.osbourn.stealthplugin.newsettings.Settings;
 import me.osbourn.stealthplugin.util.*;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.*;
@@ -55,38 +53,21 @@ public class GameManager extends BukkitRunnable implements Listener {
      */
     private final Objective scoreboardObjective;
     private final ObjectiveDisplayHandler scoreboardObjectiveDisplayHandler;
-    private final GameManagerSettings settings;
-    private final IntegerSetting timePerRoundSetting;
-    private final StringSetting attackingTeamNameSetting;
-    private final StringSetting defendingTeamNameSetting;
-    private final LocationSetting attackingTeamSpawnLocationSetting;
-    private final LocationSetting defendingTeamSpawnLocationSetting;
-    private final LocationSetting attackingTeamChestLocationSetting;
-    private final LocationSetting defendingTeamChestLocationSetting;
-
     private int timeRemaining;
     private int prepTimeRemaining;
     private boolean isTimerActive;
     private @Nullable Runnable runAfterGame = null;
 
     public GameManager(StealthPlugin plugin, MorphManager morphManager, ScoreManager scoreManager,
-                       KitManager kitManager, GameTargets gameTargets, GameManagerSettings settings) {
+                       KitManager kitManager, GameTargets gameTargets) {
         this.plugin = plugin;
-        this.timeRemaining = settings.timePerRoundSetting().getValue();
+        this.timeRemaining = Settings.timePerRound;
         this.prepTimeRemaining = -1;
         this.isTimerActive = false;
         this.morphManager = morphManager;
         this.scoreManager = scoreManager;
         this.kitManager = kitManager;
         this.gameTargets = gameTargets;
-        this.settings = settings;
-        this.timePerRoundSetting = settings.timePerRoundSetting();
-        this.attackingTeamNameSetting = settings.attackingTeamNameSetting();
-        this.attackingTeamSpawnLocationSetting = settings.attackingTeamSpawnLocationSetting();
-        this.defendingTeamNameSetting = settings.defendingTeamNameSetting();
-        this.defendingTeamSpawnLocationSetting = settings.defendingTeamSpawnLocationSetting();
-        this.attackingTeamChestLocationSetting = settings.attackingTeamChestLocationSetting();
-        this.defendingTeamChestLocationSetting = settings.defendingTeamChestLocationSetting();
         this.alternateScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.playerTeam = this.alternateScoreboard.registerNewTeam("playerteam");
         this.playerTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
@@ -122,7 +103,7 @@ public class GameManager extends BukkitRunnable implements Listener {
             if (this.prepTimeRemaining >= 0) {
                 if (this.prepTimeRemaining == 0) {
                     List<String> addedTargets = this.gameTargets.fillRemainingTargetSlots(
-                            this.settings.numberOfTargetsSetting().getValue());
+                            Settings.numberOfTargets);
                     if (!addedTargets.isEmpty()) {
                         AnnouncementUtils.announceToDefenders(this, String.format(
                                         "%sNot all targets were selected, so the following were added at random: %s",
@@ -149,11 +130,11 @@ public class GameManager extends BukkitRunnable implements Listener {
     private List<String> getScoreboardLines() {
         List<String> lines = new ArrayList<>();
 
-        if (this.settings.displayScoreSetting().isActive()) {
+        if (Settings.displayScoreOnScoreboard) {
             lines.add(this.scoreManager.getScoreDisplay());
         }
 
-        if (this.settings.displayGameTargetsSetting().isActive() && !this.isPrepTime()) {
+        if (Settings.displayGameTargetsOnScoreboard && !this.isPrepTime()) {
             for (Material material : this.gameTargets.getActiveTargets()) {
                 String materialName = MaterialsUtil.prettyMaterialName(material.toString());
                 boolean hasBeenBroken = this.gameTargets.hasBeenBroken(material);
@@ -182,12 +163,12 @@ public class GameManager extends BukkitRunnable implements Listener {
 
         for (Map.Entry<Team, List<Player>> entry : teams.entrySet()) {
             ChatColor color = entry.getKey().getColor();
-            if (this.settings.displayTeamsSetting().isActive()) {
+            if (Settings.displayTeamsOnScoreboard) {
                 int numAlive = (int) entry.getValue().stream().filter(p -> !this.isPlayerEliminated(p)).count();
                 lines.add(String.format("%s%s%s:%s %d alive", entry.getKey().getColor(), ChatColor.BOLD, entry.getKey().getDisplayName(), ChatColor.RESET, numAlive));
             }
 
-            if (this.settings.displayPlayerNamesSetting().isActive()) {
+            if (Settings.displayPlayerNamesOnScoreboard) {
                 for (Player player : entry.getValue()) {
                     if (this.isPlayerEliminated(player)) {
                         lines.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + player.getName());
@@ -198,7 +179,7 @@ public class GameManager extends BukkitRunnable implements Listener {
             }
         }
 
-        if (this.settings.displayTimeSetting().isActive()) {
+        if (Settings.displayTimeOnScoreboard) {
             if (this.isPrepTime()) {
                 int minutesLeft = prepTimeRemaining / 60;
                 int secondsLeft = prepTimeRemaining % 60;
@@ -231,10 +212,10 @@ public class GameManager extends BukkitRunnable implements Listener {
             if (!this.isPlayerEliminated(player)) {
                 Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
                 if (team != null) {
-                    if (team.getName().equals(this.settings.attackingTeamNameSetting().getValue())) {
+                    if (team.getName().equals(Settings.attackingTeamName)) {
                         attackersAlive = true;
                     }
-                    if (team.getName().equals(this.settings.defendingTeamNameSetting().getValue())) {
+                    if (team.getName().equals(Settings.defendingTeamName)) {
                         defendersAlive = true;
                     }
                 }
@@ -269,7 +250,7 @@ public class GameManager extends BukkitRunnable implements Listener {
             case ATTACKER_VICTORY -> {
                 title = "Attackers Win!";
                 Team team = Bukkit.getScoreboardManager().getMainScoreboard()
-                        .getTeam(this.settings.attackingTeamNameSetting().getValue());
+                        .getTeam(Settings.attackingTeamName);
                 if (team != null) {
                     title = team.getColor() + title;
                 }
@@ -279,7 +260,7 @@ public class GameManager extends BukkitRunnable implements Listener {
             case DEFENDER_VICTORY -> {
                 title = "Defenders Win!";
                 Team team = Bukkit.getScoreboardManager().getMainScoreboard()
-                        .getTeam(this.settings.defendingTeamNameSetting().getValue());
+                        .getTeam(Settings.defendingTeamName);
                 if (team != null) {
                     title = team.getColor() + title;
                 }
@@ -304,37 +285,32 @@ public class GameManager extends BukkitRunnable implements Listener {
 
     public void readyPlayer(Player player) {
         World overworld = Bukkit.getWorlds().get(0);
-        Location attackersSpawnLocation = this.attackingTeamSpawnLocationSetting.toLocationInWorld(overworld);
-        Location defendersSpawnLocation = this.defendingTeamSpawnLocationSetting.toLocationInWorld(overworld);
-        Location attackingTeamChestLocation = this.attackingTeamChestLocationSetting.toLocationInWorld(overworld);
-        Location defendingTeamChestLocation = this.defendingTeamChestLocationSetting.toLocationInWorld(overworld);
-        Location respawnLocation = this.settings.respawnLocationSetting().toLocationInWorld(overworld);
 
         if (this.isOnAttackers(player)) {
-            if (this.isLocationSet(this.attackingTeamSpawnLocationSetting)) {
-                player.teleport(attackersSpawnLocation);
+            if (Settings.attackingTeamSpawnLocation.isSet()) {
+                player.teleport(Settings.attackingTeamSpawnLocation.toLocationInWorld(overworld));
             }
-            if (this.isLocationSet(this.settings.respawnLocationSetting())) {
-                player.setBedSpawnLocation(respawnLocation, true);
+            if (Settings.respawnLocation.isSet()) {
+                player.setBedSpawnLocation(Settings.respawnLocation.toLocationInWorld(overworld), true);
             }
             player.getInventory().clear();
             GiveTeamArmorCommand.giveTeamArmor(player);
             this.kitManager.givePlayerAttackingKit(player);
-            if (this.isLocationSet(this.attackingTeamChestLocationSetting)) {
-                this.copyChestToPlayer(attackingTeamChestLocation, player);
+            if (Settings.attackingTeamChestLocation.isSet()) {
+                this.copyChestToPlayer(Settings.attackingTeamChestLocation.toLocationInWorld(overworld), player);
             }
         } else if (this.isOnDefenders(player)) {
-            if (this.isLocationSet(this.defendingTeamSpawnLocationSetting)) {
-                player.teleport(defendersSpawnLocation);
+            if (Settings.defendingTeamSpawnLocation.isSet()) {
+                player.teleport(Settings.defendingTeamSpawnLocation.toLocationInWorld(overworld));
             }
-            if (this.isLocationSet(this.settings.respawnLocationSetting())) {
-                player.setBedSpawnLocation(respawnLocation, true);
+            if (Settings.respawnLocation.isSet()) {
+                player.setBedSpawnLocation(Settings.respawnLocation.toLocationInWorld(overworld), true);
             }
             player.getInventory().clear();
             GiveTeamArmorCommand.giveTeamArmor(player);
             this.kitManager.givePlayerDefendingKit(player);
-            if (this.isLocationSet(this.defendingTeamChestLocationSetting)) {
-                this.copyChestToPlayer(defendingTeamChestLocation, player);
+            if (Settings.defendingTeamSpawnLocation.isSet()) {
+                this.copyChestToPlayer(Settings.defendingTeamSpawnLocation.toLocationInWorld(overworld), player);
             }
         }
 
@@ -353,16 +329,16 @@ public class GameManager extends BukkitRunnable implements Listener {
         for (PotionEffect effect : player.getActivePotionEffects()) {
             player.removePotionEffect(effect.getType());
         }
-        if (this.settings.applyInvisibilityOnStart().isActive()) {
+        if (Settings.applyInvisibilityOnStart) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 1000000, 0, false, false, false));
         }
     }
 
     public void sendPlayersToLobby() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (isLocationSet(this.settings.lobbyLocationSetting())) {
+            if (Settings.lobbyLocation.isSet()) {
                 World overworld = Bukkit.getWorlds().get(0);
-                player.teleport(this.settings.lobbyLocationSetting().toLocationInWorld(overworld));
+                player.teleport(Settings.lobbyLocation.toLocationInWorld(overworld));
             }
             if (morphManager.isPlayerMorphed(player)) {
                 morphManager.unmorph(player);
@@ -384,12 +360,12 @@ public class GameManager extends BukkitRunnable implements Listener {
 
     public boolean isOnAttackers(Player player) {
         Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
-        return team != null && team.getName().equals(this.attackingTeamNameSetting.getValue());
+        return team != null && team.getName().equals(Settings.attackingTeamName);
     }
 
     public boolean isOnDefenders(Player player) {
         Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
-        return team != null && team.getName().equals(this.defendingTeamNameSetting.getValue());
+        return team != null && team.getName().equals(Settings.defendingTeamName);
     }
 
     private void copyChestToPlayer(Location chestLocation, Player player) {
@@ -417,11 +393,6 @@ public class GameManager extends BukkitRunnable implements Listener {
         return this.prepTimeRemaining >= 0;
     }
 
-    private boolean isLocationSet(LocationSetting setting) {
-        // TODO: Better way of having unset locations
-        return setting.x() != 0 || setting.y() != 0 || setting.z() != 0;
-    }
-
     /**
      * Set code to run every time the game finishes.
      */
@@ -433,8 +404,8 @@ public class GameManager extends BukkitRunnable implements Listener {
      * Start or reset the game
      */
     public void resetGame() {
-        this.timeRemaining = this.timePerRoundSetting.getValue();
-        this.prepTimeRemaining = this.settings.prepTimeSetting().getValue();
+        this.timeRemaining = Settings.timePerRound;
+        this.prepTimeRemaining = Settings.prepTime;
         this.isTimerActive = true;
         this.gameTargets.resetSelectedTargets();
         this.readyPlayers();
@@ -454,21 +425,17 @@ public class GameManager extends BukkitRunnable implements Listener {
         return this.alternateScoreboard;
     }
 
-    public GameManagerSettings getSettings() {
-        return this.settings;
-    }
-
     public GameTargets getGameTargets() {
         return this.gameTargets;
     }
 
     private Optional<Team> attackersTeam() {
         return Optional.ofNullable(Bukkit.getScoreboardManager().getMainScoreboard()
-                .getTeam(this.settings.attackingTeamNameSetting().getValue()));
+                .getTeam(Settings.attackingTeamName));
     }
 
     private Optional<Team> defendersTeam() {
         return Optional.ofNullable(Bukkit.getScoreboardManager().getMainScoreboard()
-                .getTeam(this.settings.defendingTeamNameSetting().getValue()));
+                .getTeam(Settings.defendingTeamName));
     }
 }
