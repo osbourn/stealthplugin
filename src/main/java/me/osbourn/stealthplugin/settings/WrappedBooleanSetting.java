@@ -71,4 +71,9 @@ public class WrappedBooleanSetting implements WrappedSetting {
             StealthPlugin.LOGGER.warning("Setting \"" + this.getName() + "\" failed to load from config");
         }
     }
+
+    @Override
+    public String[] tabCompletionOptions(String[] currentArgs) {
+        return currentArgs.length == 0 ? new String[]{"true", "false"} : new String[0];
+    }
 }

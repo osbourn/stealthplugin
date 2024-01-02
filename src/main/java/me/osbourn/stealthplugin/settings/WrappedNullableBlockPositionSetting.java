@@ -84,4 +84,15 @@ public class WrappedNullableBlockPositionSetting implements WrappedSetting {
 
         StealthPlugin.LOGGER.warning("Setting \"" + this.getName() + "\" failed to load from config");
     }
+
+    @Override
+    public String[] tabCompletionOptions(String[] currentArgs) {
+        if (currentArgs.length == 0) {
+            return new String[]{"unset", "~", "0"};
+        } else if (currentArgs.length <= 2 && !currentArgs[0].equals("unset")) {
+            return new String[]{"~", "0"};
+        } else {
+            return new String[0];
+        }
+    }
 }

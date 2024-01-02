@@ -61,10 +61,13 @@ public class SettingsCommand implements CommandExecutor, TabCompleter {
             return this.settingsManager.getSettingNames();
         } else if (args.length == 1) {
             return this.settingsManager.getSettingNames().stream().filter(s -> s.startsWith(args[0])).toList();
-        } else if (args.length == 2) {
-            // TODO: Tab complete for setting values
-            return List.of();
+        } else {
+            // We cut off the first and last index in args because the first index is the setting name
+            // and the last index is what is currently being entered
+            String[] currentArgs = Arrays.copyOfRange(args, 1, args.length - 1);
+            return Arrays.stream(this.settingsManager.getTabCompletionOptions(args[0], currentArgs))
+                    .filter(s -> s.startsWith(args[args.length - 1]))
+                    .toList();
         }
-        return List.of();
     }
 }

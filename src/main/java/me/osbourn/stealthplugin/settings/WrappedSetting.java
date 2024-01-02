@@ -11,4 +11,8 @@ public interface WrappedSetting {
     }
     Object toConfigValue();
     void setFromConfigValue(@Nullable Object value);
+
+    default String[] tabCompletionOptions(String[] currentArgs) {
+        return new String[0];
+    }
 }

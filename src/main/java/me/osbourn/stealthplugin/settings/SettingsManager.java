@@ -113,6 +113,15 @@ public class SettingsManager {
                 .toList();
     }
 
+    public String[] getTabCompletionOptions(String settingName, String[] currentArgs) {
+        Optional<WrappedSetting> wrappedSetting = this.getWrappedSetting(settingName);
+        if (wrappedSetting.isPresent()) {
+            return wrappedSetting.get().tabCompletionOptions(currentArgs);
+        } else {
+            return new String[0];
+        }
+    }
+
     public void printDebugInfo() {
         for (Field field : clazz.getDeclaredFields()) {
             field.setAccessible(true);
