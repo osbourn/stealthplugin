@@ -1,7 +1,7 @@
 package me.osbourn.stealthplugin.handlers;
 
 import me.osbourn.stealthplugin.MorphManager;
-import me.osbourn.stealthplugin.newsettings.Settings;
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;

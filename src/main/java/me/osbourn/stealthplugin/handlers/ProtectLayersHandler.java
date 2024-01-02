@@ -1,6 +1,6 @@
 package me.osbourn.stealthplugin.handlers;
 
-import me.osbourn.stealthplugin.newsettings.Settings;
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

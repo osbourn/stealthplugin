@@ -1,6 +1,6 @@
 package me.osbourn.stealthplugin;
 
-import me.osbourn.stealthplugin.newsettings.Settings;
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;

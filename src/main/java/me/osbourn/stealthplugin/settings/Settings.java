@@ -1,4 +1,4 @@
-package me.osbourn.stealthplugin.newsettings;
+package me.osbourn.stealthplugin.settings;
 
 import me.osbourn.stealthplugin.util.NullableBlockPosition;
 

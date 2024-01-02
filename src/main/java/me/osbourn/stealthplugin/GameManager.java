@@ -1,7 +1,7 @@
 package me.osbourn.stealthplugin;
 
 import me.osbourn.stealthplugin.commands.GiveTeamArmorCommand;
-import me.osbourn.stealthplugin.newsettings.Settings;
+import me.osbourn.stealthplugin.settings.Settings;
 import me.osbourn.stealthplugin.util.*;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.*;

@@ -1,7 +1,7 @@
 package me.osbourn.stealthplugin.commands;
 
 import me.osbourn.stealthplugin.GameManager;
-import me.osbourn.stealthplugin.newsettings.Settings;
+import me.osbourn.stealthplugin.settings.Settings;
 import me.osbourn.stealthplugin.util.MaterialsUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -13,7 +13,7 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import me.osbourn.stealthplugin.StealthPlugin;
-import me.osbourn.stealthplugin.newsettings.Settings;
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;

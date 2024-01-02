@@ -1,4 +1,4 @@
-package me.osbourn.stealthplugin.newsettings;
+package me.osbourn.stealthplugin.settings;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

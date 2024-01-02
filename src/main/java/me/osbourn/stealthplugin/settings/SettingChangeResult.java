@@ -1,4 +1,4 @@
-package me.osbourn.stealthplugin.newsettings;
+package me.osbourn.stealthplugin.settings;
 
 /**
  * Success or error message when changing a setting from a String

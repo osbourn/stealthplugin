@@ -1,4 +1,4 @@
-package me.osbourn.stealthplugin.newsettings;
+package me.osbourn.stealthplugin.settings;
 
 import me.osbourn.stealthplugin.util.NullableBlockPosition;
 import org.bukkit.plugin.java.JavaPlugin;

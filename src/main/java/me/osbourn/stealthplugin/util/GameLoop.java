@@ -3,7 +3,7 @@ package me.osbourn.stealthplugin.util;
 import me.osbourn.stealthplugin.GameManager;
 import me.osbourn.stealthplugin.commands.PasteStructureCommand;
 import me.osbourn.stealthplugin.commands.SwapRolesCommand;
-import me.osbourn.stealthplugin.newsettings.Settings;
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
