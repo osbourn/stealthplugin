@@ -50,7 +50,6 @@ public class StealthPlugin extends JavaPlugin {
         registerListener(new DisableHungerHandler());
         registerListener(new PreventRemovingArmorHandler());
         registerListener(new IncreaseEnvironmentalDamageHandler());
-        registerListener(new AnnounceBeaconsHandler(morphManager));
         registerListener(new BeaconRevealHandler(morphManager));
         registerListener(new MorphOnRespawnHandler(morphManager));
         registerListener(new PlayersDropArrowsHandler(morphManager));
