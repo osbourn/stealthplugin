@@ -21,6 +21,11 @@ public class StealthPlugin extends JavaPlugin {
      */
     public static Logger LOGGER = null;
     private SettingsManager settingsManager;
+    private MorphManager morphManager;
+    private GameManager gameManager;
+    private GameTargets gameTargets;
+    private ScoreManager scoreManager;
+    private GameLoop gameLoop;
 
     @Override
     public void onEnable() {
@@ -28,57 +33,19 @@ public class StealthPlugin extends JavaPlugin {
         this.settingsManager = new SettingsManager(Settings.class, this);
         this.settingsManager.loadSettings();
 
-        this.getCommand("setup").setExecutor(new SetupCommand());
-        this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());
-        this.getCommand("randomizeteams").setExecutor(new RandomizeTeamsCommand());
-        this.getCommand("swapteams").setExecutor(new SwapTeamsCommand());
-        SettingsCommand settingsCommand = new SettingsCommand(this.settingsManager);
-        this.getCommand("settings").setExecutor(settingsCommand);
-        this.getCommand("settings").setTabCompleter(settingsCommand);
+        morphManager = new MorphManager();
+        gameTargets = new GameTargets();
+        scoreManager = new ScoreManager();
+        gameManager = new GameManager(this, morphManager, scoreManager, new KitManager(), gameTargets);
+        gameLoop = new GameLoop(this, gameManager);
 
-        MorphManager morphManager = new MorphManager();
-        registerListener(morphManager);
-        this.getCommand("unmorph").setExecutor(new UnmorphCommand(morphManager));
-
-        PasteStructureCommand pasteStructureCommand = new PasteStructureCommand(this);
-        this.getCommand("pastestructure").setExecutor(pasteStructureCommand);
-
-        registerListener(new KillArrowsHandler());
-        registerListener(new ClearInventoryOnDeathHandler());
-        registerListener(new ProtectLayersHandler());
-        registerListener(new DisableEnderChestsHandler());
-        registerListener(new DisableHungerHandler());
-        registerListener(new PreventRemovingArmorHandler());
-        registerListener(new IncreaseEnvironmentalDamageHandler());
-        registerListener(new BeaconRevealHandler(morphManager));
-        registerListener(new MorphOnRespawnHandler(morphManager));
-        registerListener(new PlayersDropArrowsHandler(morphManager));
-
-        GameTargets gameTargets = new GameTargets();
-        registerListener(new GameTargetsHandler(gameTargets, morphManager));
-
-        ScoreManager scoreManager = new ScoreManager();
-
-        KitManager kitManager = new KitManager();
-        registerListener(morphManager);
-
-        GameManager gameManager = new GameManager(this, morphManager, scoreManager, kitManager, gameTargets);
-        registerListener(gameManager);
         gameManager.runTaskTimer(this, 20, 20);
-
-        GameLoop gameLoop = new GameLoop(this, gameManager, pasteStructureCommand);
         gameManager.setRunAfterGame(gameLoop::runRunnableIfActive);
 
-        registerListener(new PrepTimeHandler(gameManager));
-        registerListener(new PreventPrematureTargetDestructionHandler(gameManager));
-
-        this.getCommand("game").setExecutor(new GameCommand(gameManager, pasteStructureCommand, gameLoop));
-        this.getCommand("gameobjectives").setExecutor(new GameObjectivesCommand(gameManager));
-        this.getCommand("revive").setExecutor(new ReviveCommand(gameManager));
-        this.getCommand("togglesb").setExecutor(new ToggleGameScoreboardCommand(gameManager));
-        this.getCommand("selecttarget").setExecutor(new SelectTargetsCommand(gameManager));
-        this.getCommand("swaproles").setExecutor(new SwapRolesCommand());
-        this.getCommand("score").setExecutor(new ScoreCommand(scoreManager));
+        registerListener(morphManager);
+        registerListener(gameManager);
+        registerListeners();
+        registerCommands();
 
         if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
             ProtocolIntegration protocolIntegration = new ProtocolIntegration();
@@ -90,6 +57,43 @@ public class StealthPlugin extends JavaPlugin {
         } else {
             this.getLogger().warning("ProtocolLib not found, some features will not be available");
         }
+    }
+
+    private void registerListeners() {
+        registerListener(new KillArrowsHandler());
+        registerListener(new ClearInventoryOnDeathHandler());
+        registerListener(new ProtectLayersHandler());
+        registerListener(new DisableEnderChestsHandler());
+        registerListener(new DisableHungerHandler());
+        registerListener(new PreventRemovingArmorHandler());
+        registerListener(new IncreaseEnvironmentalDamageHandler());
+        registerListener(new BeaconRevealHandler(morphManager));
+        registerListener(new MorphOnRespawnHandler(morphManager));
+        registerListener(new PlayersDropArrowsHandler(morphManager));
+        registerListener(new PrepTimeHandler(gameManager));
+        registerListener(new PreventPrematureTargetDestructionHandler(gameManager));
+        registerListener(new GameTargetsHandler(gameTargets, morphManager));
+    }
+
+    private void registerCommands() {
+        this.getCommand("setup").setExecutor(new SetupCommand());
+        this.getCommand("giveteamarmor").setExecutor(new GiveTeamArmorCommand());
+        this.getCommand("randomizeteams").setExecutor(new RandomizeTeamsCommand());
+        this.getCommand("swapteams").setExecutor(new SwapTeamsCommand());
+        this.getCommand("morph").setExecutor(new MorphCommand(morphManager));
+        this.getCommand("unmorph").setExecutor(new UnmorphCommand(morphManager));
+        this.getCommand("game").setExecutor(new GameCommand(gameManager, this, gameLoop));
+        this.getCommand("gameobjectives").setExecutor(new GameObjectivesCommand(gameManager));
+        this.getCommand("revive").setExecutor(new ReviveCommand(gameManager));
+        this.getCommand("togglesb").setExecutor(new ToggleGameScoreboardCommand(gameManager));
+        this.getCommand("selecttarget").setExecutor(new SelectTargetsCommand(gameManager));
+        this.getCommand("swaproles").setExecutor(new SwapRolesCommand());
+        this.getCommand("score").setExecutor(new ScoreCommand(scoreManager));
+        this.getCommand("pastestructure").setExecutor(new PasteStructureCommand(this));
+
+        SettingsCommand settingsCommand = new SettingsCommand(this.settingsManager);
+        this.getCommand("settings").setExecutor(settingsCommand);
+        this.getCommand("settings").setTabCompleter(settingsCommand);
     }
 
     private void registerListener(Listener listener) {

@@ -21,6 +21,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +44,7 @@ public class PasteStructureCommand implements CommandExecutor {
             return false;
         }
 
-        return pasteStructure(sender);
+        return pasteStructure(this.plugin, sender);
     }
 
     /**
@@ -51,7 +52,7 @@ public class PasteStructureCommand implements CommandExecutor {
      * @param sender Source to send error messages to if pasting the structure fails
      * @return true if the structure pasted correctly, false if there were errors
      */
-    public boolean pasteStructure(@Nullable CommandSender sender) {
+    public static boolean pasteStructure(JavaPlugin plugin, @Nullable CommandSender sender) {
         if (!Settings.structurePasteLocation.isSet()) {
             if (sender != null) {
                 sender.sendMessage("Structure paste location is not set!");

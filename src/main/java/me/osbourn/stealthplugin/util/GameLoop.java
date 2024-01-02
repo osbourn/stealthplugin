@@ -17,14 +17,12 @@ import org.jetbrains.annotations.Nullable;
 public class GameLoop {
     private final JavaPlugin plugin;
     private final GameManager gameManager;
-    private final PasteStructureCommand structurePaster;
     private boolean active = false;
     private @Nullable BukkitRunnable currentRunnable = null;
 
-    public GameLoop(JavaPlugin plugin, GameManager gameManager, PasteStructureCommand structurePaster) {
+    public GameLoop(JavaPlugin plugin, GameManager gameManager) {
         this.plugin = plugin;
         this.gameManager = gameManager;
-        this.structurePaster = structurePaster;
     }
 
     public boolean isActive() {
@@ -61,7 +59,7 @@ public class GameLoop {
         if (this.currentRunnable != null) {
             this.cancelOnce();
         }
-        this.currentRunnable = new GameLoopRunnable(gameManager, structurePaster, () -> this.currentRunnable = null);
+        this.currentRunnable = new GameLoopRunnable(gameManager, plugin, () -> this.currentRunnable = null);
         this.currentRunnable.runTaskTimer(this.plugin, 20, 20);
     }
 
@@ -91,20 +89,18 @@ public class GameLoop {
         private LoopAction nextAction = LoopAction.SEND_PLAYERS_TO_LOBBY;
         private int timeUntilNextAction = 10;
         private final GameManager gameManager;
-        private final PasteStructureCommand structurePaster;
+        private final JavaPlugin plugin;
         private final Runnable afterFinishCode;
 
         /**
          * Creates a BukkitRunnable responsible for ending the game and starting the next game.
          *
          * @param gameManager The game manager to affect
-         * @param structurePaster Used to paste the structure as if the /pastestructure command was run
          * @param afterFinishCode The code that should be run after this runnable finishes all its actions.
          */
-        public GameLoopRunnable(GameManager gameManager, PasteStructureCommand structurePaster,
-                                Runnable afterFinishCode) {
+        public GameLoopRunnable(GameManager gameManager, JavaPlugin plugin, Runnable afterFinishCode) {
             this.gameManager = gameManager;
-            this.structurePaster = structurePaster;
+            this.plugin = plugin;
             this.afterFinishCode = afterFinishCode;
         }
 
@@ -135,7 +131,7 @@ public class GameLoop {
         private void sendPlayersToLobby() {
             this.gameManager.sendPlayersToLobby();
             SwapRolesCommand.swapRoles();
-            boolean pasteStructureResult = this.structurePaster.pasteStructure(null);
+            boolean pasteStructureResult = PasteStructureCommand.pasteStructure(this.plugin, null);
             if (!pasteStructureResult) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (player.hasPermission("stealth.manage")) {

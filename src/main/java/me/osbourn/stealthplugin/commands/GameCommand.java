@@ -5,16 +5,17 @@ import me.osbourn.stealthplugin.util.GameLoop;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public class GameCommand implements CommandExecutor {
     private final GameManager gameManager;
-    private final PasteStructureCommand structurePaster;
+    private final JavaPlugin plugin;
     private final GameLoop gameLoop;
 
-    public GameCommand(GameManager gameManager, PasteStructureCommand structurePaster, GameLoop gameLoop) {
+    public GameCommand(GameManager gameManager, JavaPlugin plugin, GameLoop gameLoop) {
         this.gameManager = gameManager;
-        this.structurePaster = structurePaster;
+        this.plugin = plugin;
         this.gameLoop = gameLoop;
     }
 
@@ -45,7 +46,7 @@ public class GameCommand implements CommandExecutor {
                 return true;
             }
             case "pasteandforcestart" -> {
-                boolean pasteWasSuccess = this.structurePaster.pasteStructure(sender);
+                boolean pasteWasSuccess = PasteStructureCommand.pasteStructure(plugin, sender);
                 if (!pasteWasSuccess) {
                     return false;
                 }
@@ -81,7 +82,7 @@ public class GameCommand implements CommandExecutor {
                 sender.sendMessage("Swapping roles...");
                 SwapRolesCommand.swapRoles();
                 sender.sendMessage("Pasting structure...");
-                boolean pasteWasSuccess = this.structurePaster.pasteStructure(sender);
+                boolean pasteWasSuccess = PasteStructureCommand.pasteStructure(plugin, sender);
                 if (pasteWasSuccess) {
                     sender.sendMessage("Structure pasted");
                 } else {
