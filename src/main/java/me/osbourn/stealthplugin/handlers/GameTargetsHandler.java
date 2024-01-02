@@ -2,7 +2,6 @@ package me.osbourn.stealthplugin.handlers;
 
 import me.osbourn.stealthplugin.MorphManager;
 import me.osbourn.stealthplugin.newsettings.Settings;
-import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import me.osbourn.stealthplugin.util.AnnouncementUtils;
 import me.osbourn.stealthplugin.util.GameTargets;
 import me.osbourn.stealthplugin.util.MaterialsUtil;

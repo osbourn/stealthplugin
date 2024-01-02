@@ -9,7 +9,6 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import me.osbourn.stealthplugin.MorphManager;
 import me.osbourn.stealthplugin.newsettings.Settings;
-import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;

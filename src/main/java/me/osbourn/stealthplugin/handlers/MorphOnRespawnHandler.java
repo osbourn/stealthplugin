@@ -2,7 +2,6 @@ package me.osbourn.stealthplugin.handlers;
 
 import me.osbourn.stealthplugin.MorphManager;
 import me.osbourn.stealthplugin.newsettings.Settings;
-import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;

@@ -1,7 +1,6 @@
 package me.osbourn.stealthplugin.handlers;
 
 import me.osbourn.stealthplugin.newsettings.Settings;
-import me.osbourn.stealthplugin.settingsapi.BooleanSetting;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

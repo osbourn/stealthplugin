@@ -1,8 +1,6 @@
 package me.osbourn.stealthplugin.commands;
 
-import me.osbourn.stealthplugin.StealthPlugin;
 import me.osbourn.stealthplugin.newsettings.SettingsManager;
-import me.osbourn.stealthplugin.settingsapi.Setting;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public class SettingsCommand implements CommandExecutor, TabCompleter {
     private final SettingsManager settingsManager;
