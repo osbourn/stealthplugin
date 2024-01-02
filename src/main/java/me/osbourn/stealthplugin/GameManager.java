@@ -309,8 +309,8 @@ public class GameManager extends BukkitRunnable implements Listener {
             player.getInventory().clear();
             GiveTeamArmorCommand.giveTeamArmor(player);
             this.kitManager.givePlayerDefendingKit(player);
-            if (Settings.defendingTeamSpawnLocation.isSet()) {
-                this.copyChestToPlayer(Settings.defendingTeamSpawnLocation.toLocationInWorld(overworld), player);
+            if (Settings.defendingTeamChestLocation.isSet()) {
+                this.copyChestToPlayer(Settings.defendingTeamChestLocation.toLocationInWorld(overworld), player);
             }
         }
 

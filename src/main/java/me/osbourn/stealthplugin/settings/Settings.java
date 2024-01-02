@@ -2,7 +2,6 @@ package me.osbourn.stealthplugin.settings;
 
 import me.osbourn.stealthplugin.util.NullableBlockPosition;
 
-@SuppressWarnings("unused")
 public final class Settings {
     private Settings() {
     }
