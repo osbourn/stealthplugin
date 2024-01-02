@@ -57,8 +57,10 @@ public class SettingsCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
                                       @NotNull String[] args) {
-        if (args.length <= 1) {
+        if (args.length == 0) {
             return this.settingsManager.getSettingNames();
+        } else if (args.length == 1) {
+            return this.settingsManager.getSettingNames().stream().filter(s -> s.startsWith(args[0])).toList();
         } else if (args.length == 2) {
             // TODO: Tab complete for setting values
             return List.of();
