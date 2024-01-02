@@ -139,7 +139,7 @@ public class GameLoop {
 
         private void sendPlayersToLobby() {
             this.gameManager.sendPlayersToLobby();
-            SwapRolesCommand.swapRoles(this.gameManager);
+            SwapRolesCommand.swapRoles();
             boolean pasteStructureResult = this.structurePaster.pasteStructure(null);
             if (!pasteStructureResult) {
                 for (Player player : Bukkit.getOnlinePlayers()) {

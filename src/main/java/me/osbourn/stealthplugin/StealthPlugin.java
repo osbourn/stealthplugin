@@ -98,7 +98,7 @@ public class StealthPlugin extends JavaPlugin {
         this.getCommand("revive").setExecutor(new ReviveCommand(gameManager));
         this.getCommand("togglesb").setExecutor(new ToggleGameScoreboardCommand(gameManager));
         this.getCommand("selecttarget").setExecutor(new SelectTargetsCommand(gameManager));
-        this.getCommand("swaproles").setExecutor(new SwapRolesCommand(gameManager));
+        this.getCommand("swaproles").setExecutor(new SwapRolesCommand());
         this.getCommand("score").setExecutor(new ScoreCommand(scoreManager));
 
         if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
