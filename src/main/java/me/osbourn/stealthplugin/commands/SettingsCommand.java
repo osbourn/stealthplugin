@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,11 +47,35 @@ public class SettingsCommand implements CommandExecutor, TabCompleter {
             return true;
         } else {
             String[] passedArgs = Arrays.copyOfRange(args, 1, args.length);
+            if (settingsManager.acceptsTildeExpressions(args[0])) {
+                boolean wasTildeSubstitutionSuccessful = substituteTildeExpressions(passedArgs, sender);
+                if (!wasTildeSubstitutionSuccessful) {
+                    return false;
+                }
+            }
             String valueToSet = String.join(" ", passedArgs);
             var result = settingsManager.changeSetting(args[0], valueToSet);
             sender.sendMessage(result.message());
             return result.wasSuccessful();
         }
+    }
+
+    private boolean substituteTildeExpressions(String[] passedArgs, CommandSender sender) {
+        for (int i = 0; i < passedArgs.length; i++) {
+            if (passedArgs[i].matches("^~-?[0-9]*$")) {
+                if (!(sender instanceof Player p)) {
+                    sender.sendMessage("Tilde expressions can only be used as players");
+                    return false;
+                }
+                int offset = passedArgs[i].length() == 1 ? 0 : Integer.parseInt(passedArgs[i].substring(1));
+                switch (i) {
+                    case 0 -> passedArgs[i] = Integer.toString(p.getLocation().getBlockX() + offset);
+                    case 1 -> passedArgs[i] = Integer.toString(p.getLocation().getBlockY() + offset);
+                    case 2 -> passedArgs[i] = Integer.toString(p.getLocation().getBlockZ() + offset);
+                }
+            }
+        }
+        return true;
     }
 
     @Nullable

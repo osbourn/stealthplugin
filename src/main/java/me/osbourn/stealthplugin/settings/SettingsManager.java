@@ -122,6 +122,11 @@ public class SettingsManager {
         }
     }
 
+    public boolean acceptsTildeExpressions(String settingName) {
+        Optional<WrappedSetting> wrappedSetting = this.getWrappedSetting(settingName);
+        return wrappedSetting.isPresent() && wrappedSetting.get().acceptsTildeExpressions();
+    }
+
     public void printDebugInfo() {
         for (Field field : clazz.getDeclaredFields()) {
             field.setAccessible(true);

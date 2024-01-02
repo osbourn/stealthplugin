@@ -95,4 +95,9 @@ public class WrappedNullableBlockPositionSetting implements WrappedSetting {
             return new String[0];
         }
     }
+
+    @Override
+    public boolean acceptsTildeExpressions() {
+        return true;
+    }
 }

@@ -15,4 +15,8 @@ public interface WrappedSetting {
     default String[] tabCompletionOptions(String[] currentArgs) {
         return new String[0];
     }
+
+    default boolean acceptsTildeExpressions() {
+        return false;
+    }
 }
