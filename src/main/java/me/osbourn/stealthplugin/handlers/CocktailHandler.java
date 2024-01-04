@@ -1,5 +1,6 @@
 package me.osbourn.stealthplugin.handlers;
 
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Item;
@@ -33,12 +34,14 @@ public class CocktailHandler implements Listener {
 
     @EventHandler
     public void lightCocktail(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            if (player.getTargetBlock(null, 5).getType() == Material.FIRE) {
-                boolean didLightCocktailInMainHand = lightCocktailIfAppropriate(player, EquipmentSlot.HAND);
-                if (!didLightCocktailInMainHand) {
-                    lightCocktailIfAppropriate(player, EquipmentSlot.OFF_HAND);
+        if (Settings.igniteCocktails) {
+            Player player = event.getPlayer();
+            if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+                if (player.getTargetBlock(null, 5).getType() == Material.FIRE) {
+                    boolean didLightCocktailInMainHand = lightCocktailIfAppropriate(player, EquipmentSlot.HAND);
+                    if (!didLightCocktailInMainHand) {
+                        lightCocktailIfAppropriate(player, EquipmentSlot.OFF_HAND);
+                    }
                 }
             }
         }
