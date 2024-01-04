@@ -14,6 +14,7 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import me.osbourn.stealthplugin.StealthPlugin;
 import me.osbourn.stealthplugin.settings.Settings;
+import me.osbourn.stealthplugin.util.NullableBlockPosition;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -48,15 +49,17 @@ public class PasteStructureCommand implements CommandExecutor {
 
         if (args.length == 0) {
             return pasteMapStructure(this.plugin, sender);
-        } else if (args.length == 1) {
-            return pasteStructure(this.plugin, sender, args[0]);
-        } else {
-            return false;
         }
+
+        return switch (args[0]) {
+            case "map" -> pasteMapStructure(this.plugin, sender);
+            case "lobby" -> pasteStructure(this.plugin, sender, Settings.lobbyPasteFile, Settings.lobbyPasteLocation);
+            default -> false;
+        };
     }
 
     public static boolean pasteMapStructure(JavaPlugin plugin, @Nullable CommandSender sender) {
-        return pasteStructure(plugin, sender, "internal/map.schem");
+        return pasteStructure(plugin, sender, Settings.mapPasteFile, Settings.mapPasteLocation);
     }
 
     /**
@@ -66,8 +69,8 @@ public class PasteStructureCommand implements CommandExecutor {
      * @param structureFile Name of the structure file, or something starting with "internal/"
      * @return true if the structure pasted correctly, false if there were errors
      */
-    public static boolean pasteStructure(JavaPlugin plugin, @Nullable CommandSender sender, String structureFile) {
-        if (!Settings.structurePasteLocation.isSet()) {
+    public static boolean pasteStructure(JavaPlugin plugin, @Nullable CommandSender sender, String structureFile, NullableBlockPosition pasteLocation) {
+        if (!pasteLocation.isSet()) {
             if (sender != null) {
                 sender.sendMessage("Structure paste location is not set!");
             }
@@ -129,9 +132,9 @@ public class PasteStructureCommand implements CommandExecutor {
 
         World overworld = Bukkit.getWorlds().get(0);
         com.sk89q.worldedit.world.World adaptedOverworld = BukkitAdapter.adapt(overworld);
-        int x = Settings.structurePasteLocation.x();
-        int y = Settings.structurePasteLocation.y();
-        int z = Settings.structurePasteLocation.z();
+        int x = pasteLocation.x();
+        int y = pasteLocation.y();
+        int z = pasteLocation.z();
         try (EditSession editSession = WorldEdit.getInstance().newEditSession(adaptedOverworld)) {
             Operation operation = new ClipboardHolder(clipboard)
                     .createPaste(editSession)

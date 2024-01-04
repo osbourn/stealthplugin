@@ -111,7 +111,7 @@ spigot {
             description = 'Paste the WorldEdit schematic at the location set using /settings'
             permission = 'stealth.manage'
             permissionMessage = 'You do not have permission to use this command'
-            usage = '/<command>'
+            usage = '/<command> [map|lobby]'
         }
         create('game') {
             description = 'Manage the game'

@@ -44,8 +44,14 @@ public final class Settings {
     public static boolean morphedPlayersCanAttack = false;
     @Setting(name = "morphedPlayersIgnoreArrows")
     public static boolean morphedPlayersIgnoreArrows = true;
-    @Setting(name = "structurePasteLocation")
-    public static NullableBlockPosition structurePasteLocation = NullableBlockPosition.UNSET;
+    @Setting(name = "mapPasteFile")
+    public static String mapPasteFile = "internal/map.schem";
+    @Setting(name = "mapPasteLocation")
+    public static NullableBlockPosition mapPasteLocation = NullableBlockPosition.UNSET;
+    @Setting(name = "lobbyPasteFile")
+    public static String lobbyPasteFile = "internal/lobby.schem";
+    @Setting(name = "lobbyPasteLocation")
+    public static NullableBlockPosition lobbyPasteLocation = NullableBlockPosition.UNSET;
     @Setting(name = "killEntitiesBeforePaste")
     public static boolean killEntitiesBeforePaste = true;
     @Setting(name = "killArrows")
