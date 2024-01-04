@@ -75,7 +75,7 @@ public class CocktailHandler implements Listener {
                 if (matchesCocktailId(itemStack, cocktailId)) {
                     player.setFireTicks(200);
                     player.getInventory().setItem(slot, null);
-                    createFireCylinder(player.getLocation(), 1, 0);
+                    createFireCylinder(player.getLocation(), 3, 1);
                 }
             }
         }
@@ -83,13 +83,14 @@ public class CocktailHandler implements Listener {
         for (World world : Bukkit.getWorlds()) {
             for (Item itemEntity : world.getEntitiesByClass(Item.class)) {
                 if (matchesCocktailId(itemEntity.getItemStack(), cocktailId)) {
-                    createFireCylinder(itemEntity.getLocation(), 1, 0);
+                    createFireCylinder(itemEntity.getLocation(), 3, 1);
                     itemEntity.remove();
                 }
             }
             for (ThrownPotion thrownPotion : world.getEntitiesByClass(ThrownPotion.class)) {
                 if (matchesCocktailId(thrownPotion.getItem(), cocktailId)) {
-                    createFireCylinder(thrownPotion.getLocation(), 1, 0);
+                    createFireCylinder(thrownPotion.getLocation(), 3, 1);
+                    thrownPotion.remove();
                 }
             }
         }
