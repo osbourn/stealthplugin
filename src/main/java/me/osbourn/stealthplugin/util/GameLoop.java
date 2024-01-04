@@ -131,7 +131,7 @@ public class GameLoop {
         private void sendPlayersToLobby() {
             this.gameManager.sendPlayersToLobby();
             SwapRolesCommand.swapRoles();
-            boolean pasteStructureResult = PasteStructureCommand.pasteStructure(this.plugin, null);
+            boolean pasteStructureResult = PasteStructureCommand.pasteMapStructure(this.plugin, null);
             if (!pasteStructureResult) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (player.hasPermission("stealth.manage")) {

@@ -25,10 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,15 +46,27 @@ public class PasteStructureCommand implements CommandExecutor {
             return false;
         }
 
-        return pasteStructure(this.plugin, sender);
+        if (args.length == 0) {
+            return pasteMapStructure(this.plugin, sender);
+        } else if (args.length == 1) {
+            return pasteStructure(this.plugin, sender, args[0]);
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean pasteMapStructure(JavaPlugin plugin, @Nullable CommandSender sender) {
+        return pasteStructure(plugin, sender, "internal/map.schem");
     }
 
     /**
      * Pastes the structure at location specified in settings
+     * @param plugin Plugin used to find the data folder to look in
      * @param sender Source to send error messages to if pasting the structure fails
+     * @param structureFile Name of the structure file, or something starting with "internal/"
      * @return true if the structure pasted correctly, false if there were errors
      */
-    public static boolean pasteStructure(JavaPlugin plugin, @Nullable CommandSender sender) {
+    public static boolean pasteStructure(JavaPlugin plugin, @Nullable CommandSender sender, String structureFile) {
         if (!Settings.structurePasteLocation.isSet()) {
             if (sender != null) {
                 sender.sendMessage("Structure paste location is not set!");
@@ -68,13 +77,35 @@ public class PasteStructureCommand implements CommandExecutor {
         // Load schematic
         Clipboard clipboard;
         try {
-            File file = new File(plugin.getDataFolder() + "/house.schem");
-            ClipboardFormat format = ClipboardFormats.findByFile(file);
-            ClipboardReader reader = format.getReader(new FileInputStream(file));
+            InputStream is;
+            ClipboardFormat format;
+            if (structureFile.startsWith("internal/")) {
+                String internalName = structureFile.substring("internal/".length());
+                is = StealthPlugin.class.getResourceAsStream("/" + internalName);
+                format = ClipboardFormats.findByAlias("schem"); // All internal schematics use this format
+                assert format != null;
+                if (is == null) {
+                    if (sender != null) {
+                        sender.sendMessage("No such internal file \"" + internalName + "\"");
+                    }
+                    return false;
+                }
+            } else {
+                File file = new File(plugin.getDataFolder() + "/" + structureFile);
+                is = new FileInputStream(file);
+                format = ClipboardFormats.findByFile(file);
+                if (format == null) {
+                    if (sender != null) {
+                        sender.sendMessage("Could not detect the file's format");
+                    }
+                    return false;
+                }
+            }
+            ClipboardReader reader = format.getReader(is);
             clipboard = reader.read();
         } catch (FileNotFoundException e) {
             if (sender != null) {
-                sender.sendMessage("File not found");
+                sender.sendMessage("No such file \"" + structureFile + "\" in the plugin config directory");
             }
             return false;
         } catch (IOException e) {

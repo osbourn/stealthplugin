@@ -46,7 +46,7 @@ public class GameCommand implements CommandExecutor {
                 return true;
             }
             case "pasteandforcestart" -> {
-                boolean pasteWasSuccess = PasteStructureCommand.pasteStructure(plugin, sender);
+                boolean pasteWasSuccess = PasteStructureCommand.pasteMapStructure(plugin, sender);
                 if (!pasteWasSuccess) {
                     return false;
                 }
@@ -82,7 +82,7 @@ public class GameCommand implements CommandExecutor {
                 sender.sendMessage("Swapping roles...");
                 SwapRolesCommand.swapRoles();
                 sender.sendMessage("Pasting structure...");
-                boolean pasteWasSuccess = PasteStructureCommand.pasteStructure(plugin, sender);
+                boolean pasteWasSuccess = PasteStructureCommand.pasteMapStructure(plugin, sender);
                 if (pasteWasSuccess) {
                     sender.sendMessage("Structure pasted");
                 } else {
