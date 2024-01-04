@@ -47,7 +47,7 @@ public final class Settings {
     @Setting(name = "mapPasteFile")
     public static String mapPasteFile = "internal/map.schem";
     @Setting(name = "mapPasteLocation")
-    public static NullableBlockPosition mapPasteLocation = NullableBlockPosition.UNSET;
+    public static NullableBlockPosition mapPasteLocation = NullableBlockPosition.fromCoords(0, 50, 0);
     @Setting(name = "lobbyPasteFile")
     public static String lobbyPasteFile = "internal/lobby.schem";
     @Setting(name = "lobbyPasteLocation")
@@ -59,9 +59,9 @@ public final class Settings {
     @Setting(name = "clearInventoryOnDeath")
     public static boolean clearInventoryOnDeath = true;
     @Setting(name = "protectedLayerEnabled")
-    public static boolean protectedLayerEnabled = false;
+    public static boolean protectedLayerEnabled = true;
     @Setting(name = "protectedLayerLevel")
-    public static int protectedLayerLevel = 0;
+    public static int protectedLayerLevel = 50;
     @Setting(name = "disableEnderChests")
     public static boolean disableEnderChests = true;
     @Setting(name = "disableHunger")
