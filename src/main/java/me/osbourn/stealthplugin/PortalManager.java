@@ -1,5 +1,7 @@
 package me.osbourn.stealthplugin;
 
+import me.osbourn.stealthplugin.settings.Settings;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,7 +25,7 @@ public class PortalManager implements Listener {
 
     @EventHandler
     public void createPortal(BlockPlaceEvent event) {
-        if (event.getBlockPlaced().getType() == Material.END_PORTAL_FRAME) {
+        if (Settings.portalSystemEnabled && event.getBlockPlaced().getType() == Material.END_PORTAL_FRAME) {
             Location loc = event.getBlockPlaced().getLocation().clone();
             loc.setWorld(event.getBlockPlaced().getWorld());
             portalLocations.add(loc);
@@ -33,7 +35,7 @@ public class PortalManager implements Listener {
     @EventHandler
     public void sneakOnPortal(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
-        if (event.isSneaking()) {
+        if (Settings.portalSystemEnabled && event.isSneaking() && canPlayerTeleport(player)) {
             Location loc = player.getLocation();
             // .clone().subtract(0.0, 1.0, 0.0) is not needed because portals are not a full block
             if (loc.getBlock().getType() == Material.END_PORTAL_FRAME) {
@@ -57,5 +59,9 @@ public class PortalManager implements Listener {
 
     private static boolean locationsHaveEqualBlockCoordinates(Location loc1, Location loc2) {
         return loc1.getBlockX() == loc2.getBlockX() && loc1.getBlockY() == loc2.getBlockY() && loc1.getBlockZ() == loc2.getBlockZ();
+    }
+
+    private static boolean canPlayerTeleport(Player player) {
+        return player.getGameMode() == GameMode.CREATIVE || GameManager.isOnDefenders(player);
     }
 }

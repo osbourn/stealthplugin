@@ -358,12 +358,12 @@ public class GameManager extends BukkitRunnable implements Listener {
         GiveTeamArmorCommand.giveAllPlayersTeamArmor();
     }
 
-    public boolean isOnAttackers(Player player) {
+    public static boolean isOnAttackers(Player player) {
         Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
         return team != null && team.getName().equals(Settings.attackingTeamName);
     }
 
-    public boolean isOnDefenders(Player player) {
+    public static boolean isOnDefenders(Player player) {
         Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
         return team != null && team.getName().equals(Settings.defendingTeamName);
     }
