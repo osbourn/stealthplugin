@@ -89,7 +89,7 @@ public class CocktailHandler implements Listener {
             }
             for (ThrownPotion thrownPotion : world.getEntitiesByClass(ThrownPotion.class)) {
                 if (matchesCocktailId(thrownPotion.getItem(), cocktailId)) {
-                    createFireCylinder(thrownPotion.getLocation(), 5, 5);
+                    createFireCylinder(thrownPotion.getLocation(), 1, 0);
                 }
             }
         }
@@ -129,5 +129,16 @@ public class CocktailHandler implements Listener {
 
     @EventHandler
     public void onPotionSplash(PotionSplashEvent event) {
+        ItemStack item = event.getPotion().getItem();
+        if (item.getType() == Material.SPLASH_POTION) {
+            var itemMeta = item.getItemMeta();
+            if (itemMeta != null) {
+                var persistentDataContainer = itemMeta.getPersistentDataContainer();
+                if (persistentDataContainer.has(this.cocktailIdKey, PersistentDataType.LONG)) {
+                    createFireCylinder(event.getPotion().getLocation(), 3, 1);
+                    event.setCancelled(true);
+                }
+            }
+        }
     }
 }
