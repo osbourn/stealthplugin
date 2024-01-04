@@ -20,8 +20,8 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CocktailHandler implements Listener {
-    private static final Color UNLIT_COCKTAIL_COLOR = Color.fromRGB(200, 200, 200);
-    private static final Color LIT_COCKTAIL_COLOR = Color.fromRGB(200, 0, 0);
+    private static final Color UNLIT_COCKTAIL_COLOR = Color.fromRGB(131, 84, 50);
+    private static final Color LIT_COCKTAIL_COLOR = Color.fromRGB(131, 84, 50);
 
     private final JavaPlugin plugin;
     private final NamespacedKey cocktailIdKey;
