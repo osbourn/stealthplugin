@@ -80,4 +80,6 @@ public final class Settings {
     public static boolean glowingTeammates = false;
     @Setting(name = "timeInLobby")
     public static int timeInLobby = 30;
+    @Setting(name = "explosiveArrows")
+    public static boolean explosiveArrows = true;
 }

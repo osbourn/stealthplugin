@@ -73,6 +73,7 @@ public class StealthPlugin extends JavaPlugin {
         registerListener(new PrepTimeHandler(gameManager));
         registerListener(new PreventPrematureTargetDestructionHandler(gameManager));
         registerListener(new GameTargetsHandler(gameTargets, morphManager));
+        registerListener(new ExplosiveArrowsHandler());
     }
 
     private void registerCommands() {
