@@ -29,9 +29,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PasteStructureCommand implements CommandExecutor {
     private final StealthPlugin plugin;
+
+    // TODO: Change so that this no longer uses static state
+    public static List<Runnable> beforePasteHooks = new ArrayList<>();
 
     public PasteStructureCommand(StealthPlugin plugin) {
         this.plugin = plugin;
@@ -89,6 +94,7 @@ public class PasteStructureCommand implements CommandExecutor {
                 }
             }
         }
+        beforePasteHooks.forEach(Runnable::run);
 
         World overworld = Bukkit.getWorlds().get(0);
         com.sk89q.worldedit.world.World adaptedOverworld = BukkitAdapter.adapt(overworld);

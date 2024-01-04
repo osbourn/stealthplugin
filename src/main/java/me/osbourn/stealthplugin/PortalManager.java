@@ -17,7 +17,7 @@ import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
 public class PortalManager implements Listener {
-    private List<Location> portalLocations;
+    private final List<Location> portalLocations;
 
     public PortalManager() {
         this.portalLocations = new ArrayList<>();
@@ -63,5 +63,9 @@ public class PortalManager implements Listener {
 
     private static boolean canPlayerTeleport(Player player) {
         return player.getGameMode() == GameMode.CREATIVE || GameManager.isOnDefenders(player);
+    }
+
+    public void clearPortals() {
+        this.portalLocations.clear();
     }
 }

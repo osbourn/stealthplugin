@@ -44,6 +44,8 @@ public class StealthPlugin extends JavaPlugin {
         gameManager.runTaskTimer(this, 20, 20);
         gameManager.setRunAfterGame(gameLoop::runRunnableIfActive);
 
+        PasteStructureCommand.beforePasteHooks.add(portalManager::clearPortals);
+
         registerListener(morphManager);
         registerListener(gameManager);
         registerListener(portalManager);
