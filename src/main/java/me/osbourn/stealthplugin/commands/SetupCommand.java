@@ -43,7 +43,6 @@ public class SetupCommand implements CommandExecutor {
         World overworld = Bukkit.getWorlds().get(0);
         overworld.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         overworld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        overworld.setGameRule(GameRule.DO_FIRE_TICK, false);
         overworld.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
         overworld.setGameRule(GameRule.NATURAL_REGENERATION, false);
         overworld.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
