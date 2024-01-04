@@ -25,6 +25,7 @@ public class StealthPlugin extends JavaPlugin {
     private GameManager gameManager;
     private GameTargets gameTargets;
     private ScoreManager scoreManager;
+    private PortalManager portalManager;
     private GameLoop gameLoop;
 
     @Override
@@ -36,6 +37,7 @@ public class StealthPlugin extends JavaPlugin {
         morphManager = new MorphManager();
         gameTargets = new GameTargets();
         scoreManager = new ScoreManager();
+        portalManager = new PortalManager();
         gameManager = new GameManager(this, morphManager, scoreManager, new KitManager(), gameTargets);
         gameLoop = new GameLoop(this, gameManager);
 
@@ -44,6 +46,7 @@ public class StealthPlugin extends JavaPlugin {
 
         registerListener(morphManager);
         registerListener(gameManager);
+        registerListener(portalManager);
         registerListeners();
         registerCommands();
 
