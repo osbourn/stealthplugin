@@ -21,23 +21,13 @@ public class CocktailHandler implements Listener {
 
     @EventHandler
     public void lightCocktail(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-            return;
-        }
         Player player = event.getPlayer();
-        EquipmentSlot flintAndSteelSlot = null;
-        EquipmentSlot possiblePotionSlot = null;
-        if (player.getInventory().getItemInMainHand().getType() == Material.FLINT_AND_STEEL) {
-            flintAndSteelSlot = EquipmentSlot.HAND;
-            possiblePotionSlot = EquipmentSlot.OFF_HAND;
-        } else if (player.getInventory().getItemInOffHand().getType() == Material.FLINT_AND_STEEL) {
-            flintAndSteelSlot = EquipmentSlot.OFF_HAND;
-            possiblePotionSlot = EquipmentSlot.HAND;
-        }
-        if (flintAndSteelSlot != null) {
-            boolean didLightCocktail = lightCocktailIfAppropriate(player, possiblePotionSlot);
-            if (didLightCocktail) {
-                event.setCancelled(true);
+        if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if (player.getTargetBlock(null, 5).getType() == Material.FIRE) {
+                boolean didLightCocktailInMainHand = lightCocktailIfAppropriate(player, EquipmentSlot.HAND);
+                if (!didLightCocktailInMainHand) {
+                    lightCocktailIfAppropriate(player, EquipmentSlot.OFF_HAND);
+                }
             }
         }
     }
