@@ -86,14 +86,14 @@ I might change in the future.
         </td>
     </tr>
     <tr>
-        <td>attackingTeamSpawnLocation</td><td>unset</td>
+        <td>attackingTeamSpawnLocation</td><td>-17 51 67</td>
         <td>
             The location attackers will be teleported to when the game is started. Needs
             to be set for the game to work.
         </td>
     </tr>
     <tr>
-        <td>defendingTeamSpawnLocation</td><td>unset</td>
+        <td>defendingTeamSpawnLocation</td><td>-67 51 69</td>
         <td>
             The location defenders will be teleported to when the game is started. Needs
             to be set for the game to work.
@@ -116,14 +116,14 @@ I might change in the future.
         </td>
     </tr>
     <tr>
-        <td>respawnLocation</td><td>unset</td>
+        <td>respawnLocation</td><td>-95 51 100</td>
         <td>
             The spawn point of each player will be set to this when the game starts.
             This means that killed players will respawn as silverfish here.
         </td>
     </tr>
     <tr>
-        <td>lobbyLocation</td><td>unset</td>
+        <td>lobbyLocation</td><td>-44 137 -86</td>
         <td>
             The location that players will teleport to when the "/game tolobby" command is run,
             or whenever players are to be sent to the lobby.
@@ -179,7 +179,7 @@ I might change in the future.
         </td>
     </tr>
     <tr>
-        <td>lobbyPasteLocation</td><td>unset</td>
+        <td>lobbyPasteLocation</td><td>-44 136 -86</td>
         <td>
             Like mapPasteLocation, this specifies where the lobby is pasted to when
             "/pastestructure lobby" is run.
