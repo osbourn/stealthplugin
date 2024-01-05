@@ -315,6 +315,10 @@ I might change in the future.
         <td>
             If true, tipped arrows with the #FF0000 color will be explosive and create
             explosions when they hit something.
+            Here is a command to get such an arrow:
+            <code>
+            /give @s tipped_arrow{CustomPotionColor:16711680,display:{Name:'["",{"text":"Explosive Arrow","italic":false}]'},HideFlags:32}
+            </code>
         </td>
     </tr>
     <tr>
@@ -323,6 +327,13 @@ I might change in the future.
             If true, the custom cocktail item will be enabled. Any potion (not splash or
             lingering) with the rgb(131, 84, 50) color can be turned into a deadly weapon
             by left-clicking fire with it.
+            <p>
+                Here is a command to get such a cocktail:
+                <code>
+                    /give @p potion{CustomPotionColor:8606770,display:{Name:'["",{"text":"Cocktail","italic":false}]',Lore:['["",{"text":"Left-click fire with this item","italic":false}]','["",{"text":"to ignite the fuse. Throw it","italic":false}]','["",{"text":"quickly!","italic":false}]']},HideFlags:32}
+                </code>
+                This is too long for chat so it must be run in a command block.
+            </p>
         </td>
     </tr>
     <tr>
