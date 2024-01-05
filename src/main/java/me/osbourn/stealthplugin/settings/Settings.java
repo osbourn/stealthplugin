@@ -74,6 +74,8 @@ public final class Settings {
     public static boolean beaconsRevealPlayers = true;
     @Setting(name = "morphOnRespawn")
     public static boolean morphOnRespawn = true;
+    @Setting(name = "disableMorphedPlayerDeathMessages")
+    public static boolean disableMorphedPlayerDeathMessages = false;
     @Setting(name = "playersDropArrows")
     public static boolean playersDropArrows = true;
     @Setting(name = "announceBrokenTargets")

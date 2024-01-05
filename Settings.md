@@ -268,6 +268,15 @@ I might change in the future.
         </td>
     </tr>
     <tr>
+        <td>disableMorphedPlayerDeathMessages</td><td>false</td>
+        <td>
+            If true, no death message will be displayed when players morphed as silverfish or
+            other mobs die.
+            If false, morphed players will have death messages, but the death messages will be
+            changed to a different color to avoid distracting players.
+        </td>
+    </tr>
+    <tr>
         <td>playersDropArrows</td><td>true</td>
         <td>
             If true, players will drop a few (currently 3) arrows when they die.

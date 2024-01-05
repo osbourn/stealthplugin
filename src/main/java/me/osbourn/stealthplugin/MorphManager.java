@@ -126,7 +126,11 @@ public class MorphManager implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         if (isPlayerMorphed(player)) {
-            event.setDeathMessage(ChatColor.DARK_GRAY + "Morphed player " + event.getDeathMessage());
+            if (Settings.disableMorphedPlayerDeathMessages) {
+                event.setDeathMessage(null);
+            } else {
+                event.setDeathMessage(ChatColor.DARK_GRAY + "Morphed player " + event.getDeathMessage());
+            }
             this.unmorph(player);
         }
     }
