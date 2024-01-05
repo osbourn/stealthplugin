@@ -69,3 +69,20 @@ Likewise, `/pastestructure lobby` creates the lobby. You may need to select its 
 `/settings lobbyPasteLocation ~ ~ ~`.
 
 I think the game is more fun during midnight, which is why I included the last command. :)
+
+### Usage
+
+Here is a quick overview of the most commonly used commands, which run the game:
+- `/randomizeteams red:4 blue:3` - Randomly assign 4 players to the red team and 3 to the blue team.
+- `/team join red Steve` - Assign Steve to the red team. This is a vanilla Minecraft command.
+- `/pastestructure` - Reset the map
+- `/game start` - Start the game. All participating players must be assigned to either the red or blue
+team before running this command.
+- `/game forcestart` - Start the game. If the game is already running, restart it.
+- `/game tolobby` - Run this command after each round to send players back to the lobby.
+- `/swaproles` - Switch which team is attacking and defending.
+- `/game readynext` - Equivalent to running `/game tolobby`, then `/swaproles`, then `/pastestructure`.
+- `/score reset` - Sets the score to "0 - 0"
+- `/game auto on` - This will essentially run `/game start` and `/game readynext` for you on a schedule.
+This generally won't go into effect until after a game has ended, so you still need to start the first
+game.
