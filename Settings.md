@@ -247,7 +247,18 @@ I might change in the future.
     <tr>
         <td>increaseEnvironmentalDamage</td><td>true</td>
         <td>
-            If true, players will take double damage from sources other than attacks.
+            If true, players will take increased damage from certain sources,
+            such as falling and drowning, but not damage from players.
+            Please see environmentalDamagePercentIncrease.
+        </td>
+    </tr>
+    <tr>
+        <td>environmentalDamagePercentIncrease</td><td>100</td>
+        <td>
+            If increaseEnvironmentalDamage is true, this is the percent by which to increase
+            damage from certain sources. 100 means double damage, 50 means 1.5x damage, etc.
+            This may be changed in the future to just be a direct multiplier instead of a percent.
+            If increaseEnvironmentalDamage is false, this has no effect.
         </td>
     </tr>
     <tr>

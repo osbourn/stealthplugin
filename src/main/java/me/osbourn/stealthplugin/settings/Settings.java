@@ -70,6 +70,8 @@ public final class Settings {
     public static boolean preventRemovingArmor = true;
     @Setting(name = "increaseEnvironmentalDamage")
     public static boolean increaseEnvironmentalDamage = true;
+    @Setting(name = "environmentalDamagePercentIncrease")
+    public static int environmentalDamagePercentIncrease = 100;
     @Setting(name = "beaconsRevealPlayers")
     public static boolean beaconsRevealPlayers = true;
     @Setting(name = "morphOnRespawn")
