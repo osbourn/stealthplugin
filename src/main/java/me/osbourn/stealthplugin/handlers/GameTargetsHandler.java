@@ -35,7 +35,7 @@ public class GameTargetsHandler implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         if (!event.isCancelled()) {
             Material brokenBlockType = event.getBlock().getType();
-            if (gameTargets.getAvailableTargets().contains(brokenBlockType)) {
+            if (gameTargets.getActiveTargets().contains(brokenBlockType)) {
                 gameTargets.registerAsBroken(brokenBlockType);
                 if (Settings.announceBrokenTargets) {
                     announceDestruction(brokenBlockType, "was broken");
@@ -52,7 +52,7 @@ public class GameTargetsHandler implements Listener {
         if (!event.isCancelled()) {
             for (Block block : event.blockList()) {
                 Material brokenBlockType = block.getType();
-                if (gameTargets.getAvailableTargets().contains(brokenBlockType)) {
+                if (gameTargets.getActiveTargets().contains(brokenBlockType)) {
                     gameTargets.registerAsBroken(brokenBlockType);
                     if (Settings.announceBrokenTargets) {
                         announceDestruction(brokenBlockType, "was blown up");
@@ -70,7 +70,7 @@ public class GameTargetsHandler implements Listener {
         if (!event.isCancelled()) {
             for (Block block : event.blockList()) {
                 Material brokenBlockType = block.getType();
-                if (gameTargets.getAvailableTargets().contains(brokenBlockType)) {
+                if (gameTargets.getActiveTargets().contains(brokenBlockType)) {
                     gameTargets.registerAsBroken(brokenBlockType);
                     if (Settings.announceBrokenTargets) {
                         announceDestruction(brokenBlockType, "was blown up");
@@ -86,7 +86,7 @@ public class GameTargetsHandler implements Listener {
         Block block = event.getClickedBlock();
         if (event.useInteractedBlock() != Event.Result.DENY && block != null) {
             if (action == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.RESPAWN_ANCHOR) {
-                if (gameTargets.getAvailableTargets().contains(Material.RESPAWN_ANCHOR)) {
+                if (gameTargets.getActiveTargets().contains(Material.RESPAWN_ANCHOR)) {
                     if (block.getBlockData() instanceof RespawnAnchor anchor) {
                         // TODO: Fix clicking the respawn anchor several times with glowstone in the offhand counting as a break
                         if (anchor.getCharges() > 0 && (event.getItem() == null || event.getItem().getType() != Material.GLOWSTONE)) {
