@@ -2,6 +2,13 @@
 
 This is a Spigot/Paper Plugin which runs a stealth-themed Minecraft minigame.
 
+- [Requirements](#requirements)
+- [Setup](#setup)
+  - [Recommended changes to server.properties](#recommended-changes-to-serverproperties)
+  - [Loading into a world](#loading-into-a-world)
+  - [Run these commands](#run-these-commands)
+- [Usage](#usage)
+
 ## Requirements
 
 - Spigot or Paper for Minecraft 1.18.2 or higher.
