@@ -193,23 +193,144 @@ I might change in the future.
             the most recent round.
         </td>
     </tr>
+    <tr>
+        <td>killArrows</td><td>true</td>
+        <td>
+            If true, then arrows (not including spectral arrows) will do lethal damage
+            to anything they hit. This is a core characteristic of the game, but if you
+            want to disable it you can.
+        </td>
+    </tr>
+    <tr>
+        <td>clearInventoryOnDeath</td><td>true</td>
+        <td>
+            If true, then players will not drop any items when they die, and the items will
+            instead be deleted. This requires keepInventory to be false.
+        </td>
+    </tr>
+    <tr>
+        <td>protectedLayerEnabled</td><td>true</td>
+        <td>
+            If the protected layer is enabled, then all blocks with a y-value less than
+            or equal to the protectedLayerLevel cannot be broken or blown up, except
+            by players in creative mode. This is used to make the floor of the map
+            unbreakable.
+        </td>
+    </tr>
+    <tr>
+        <td>protectedLayerLevel</td><td>50</td>
+        <td>
+            The top y-level that should be unable to be broken. Has no effect unless
+            protectedLayerEnabled is set to true.
+        </td>
+    </tr>
+    <tr>
+        <td>disableEnderChests</td><td>true</td>
+        <td>
+            If true, right-clicking on an Ender Chest will have no effect. Prevents
+            players from smuggling items between rounds.
+        </td>
+    </tr>
+    <tr>
+        <td>disableHunger</td><td>true</td>
+        <td>
+            If true, all players will permanently have max hunger.
+        </td>
+    </tr>
+    <tr>
+        <td>preventRemovingArmor</td><td>true</td>
+        <td>
+            If true, players cannot take off armor. Prevents players from taking
+            off their colored leather armor.
+        </td>
+    </tr>
+    <tr>
+        <td>increaseEnvironmentalDamage</td><td>true</td>
+        <td>
+            If true, players will take double damage from sources other than attacks.
+        </td>
+    </tr>
+    <tr>
+        <td>beaconsRevealPlayers</td><td>true</td>
+        <td>
+            If true, when a beacon is broken, all players nearby (including the player who
+            broke the beacon) will be given the glowing effect for a few seconds.
+            This gives beacons an actual use and gives a way for players to find opponents.
+        </td>
+    </tr>
+    <tr>
+        <td>morphOnRespawn</td><td>true</td>
+        <td>
+            If true, players will respawn as a mostly harmless silverfish.
+            This is basically the game's equivalent to spectator mode. If you disable
+            this, it is recommended you enable hardcore mode in server.properties
+            so that players will actually be eliminated when they are killed.
+        </td>
+    </tr>
+    <tr>
+        <td>playersDropArrows</td><td>true</td>
+        <td>
+            If true, players will drop a few (currently 3) arrows when they die.
+        </td>
+    </tr>
+    <tr>
+        <td>announceBrokenTargets</td><td>true</td>
+        <td>
+            If true, a chat message will be sent to all players when a target is broken.
+        </td>
+    </tr>
+    <tr>
+        <td>enforcePrepTime</td><td>true</td>
+        <td>
+            If true, attackers will be unable to break blocks during the "prep" game phase
+            where defenders have time to prepare. If false, prep time is basically
+            an honor system.
+        </td>
+    </tr>
+    <tr>
+        <td>preventPrematureTargetDestruction</td><td>true</td>
+        <td>
+            If true, players (mainly defenders) will be unable to destroy objectives
+            during prep time. This prevents defenders from destroying a target and then
+            selecting it to prevent the attackers from ever breaking it.
+        </td>
+    </tr>
+    <tr>
+        <td>glowingTeammates</td><td>false</td>
+        <td>
+            If true, players on your team will appear to have the glowing effect. Requires
+            ProtocolLib. This is very buggy right now so I recommend you leave this setting
+            as false.
+        </td>
+    </tr>
+    <tr>
+        <td>timeInLobby</td><td>30</td>
+        <td>
+            If "/game auto" is on, then this setting specifies the number of seconds
+            in the lobby before the next round starts.
+        </td>
+    </tr>
+    <tr>
+        <td>explosiveArrows</td><td>true</td>
+        <td>
+            If true, tipped arrows with the #FF0000 color will be explosive and create
+            explosions when they hit something.
+        </td>
+    </tr>
+    <tr>
+        <td>igniteCocktails</td><td>true</td>
+        <td>
+            If true, the custom cocktail item will be enabled. Any potion (not splash or
+            lingering) with the rgb(131, 84, 50) color can be turned into a deadly weapon
+            by left-clicking fire with it.
+        </td>
+    </tr>
+    <tr>
+        <td>portalSystemEnabled</td><td>true</td>
+        <td>
+            If true, then end portal frames will act as a navigation system for defenders.
+            Defenders can use end portal frames to teleport to other placed end portal
+            frames.
+        </td>
+    </tr>
 </table>
-killArrows: true
-clearInventoryOnDeath: true
-protectedLayerEnabled: true
-protectedLayerLevel: 50
-disableEnderChests: true
-disableHunger: true
-preventRemovingArmor: true
-increaseEnvironmentalDamage: true
-beaconsRevealPlayers: true
-morphOnRespawn: true
-playersDropArrows: true
-announceBrokenTargets: true
-enforcePrepTime: true
-preventPrematureTargetDestruction: true
-glowingTeammates: false
-timeInLobby: 30
-explosiveArrows: true
-igniteCocktails: true
-portalSystemEnabled: true
