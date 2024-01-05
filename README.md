@@ -70,7 +70,7 @@ Likewise, `/pastestructure lobby` creates the lobby. You may need to select its 
 
 I think the game is more fun during midnight, which is why I included the last command. :)
 
-### Usage
+## Usage
 
 Here is a quick overview of the most commonly used commands, which run the game:
 - `/randomizeteams red:4 blue:3` - Randomly assign 4 players to the red team and 3 to the blue team.
