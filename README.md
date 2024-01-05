@@ -104,7 +104,7 @@ otherwise noted there are no settings that need the game to be restarted.
 The settings save automatically when the plugin is shut down, but might not if the game crashes,
 so run `/settings save` periodically when modifying settings.
 
-See [Settings.md](#Settings.md) for a comprehensive list of settings.
+See [Settings.md](Settings.md) for a comprehensive list of settings.
 
 If you would like something to be made customizable, I might be able to add a setting for it.
 Please open an issue on GitHub.
