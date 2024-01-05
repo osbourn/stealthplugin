@@ -27,7 +27,18 @@ public class PortalManager implements Listener {
     public void createPortal(BlockPlaceEvent event) {
         if (Settings.portalSystemEnabled && event.getBlockPlaced().getType() == Material.END_PORTAL_FRAME) {
             Location loc = event.getBlockPlaced().getLocation().clone();
+
+            // Should be unnecessary but just in case
             loc.setWorld(event.getBlockPlaced().getWorld());
+
+            for (var existingPortalLocation : portalLocations) {
+                if (existingPortalLocation.distance(loc) < 3.0) {
+                    event.getPlayer().sendMessage("You can't place portals too close to existing portals!");
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+
             portalLocations.add(loc);
         }
     }
