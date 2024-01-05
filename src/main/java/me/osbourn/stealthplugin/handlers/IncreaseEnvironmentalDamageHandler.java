@@ -21,7 +21,9 @@ public class IncreaseEnvironmentalDamageHandler implements Listener {
                 && damageCause != DamageCause.MAGIC
                 && damageCause != DamageCause.POISON
                 && damageCause != DamageCause.WITHER
-                && damageCause != DamageCause.THORNS) {
+                && damageCause != DamageCause.THORNS
+                && damageCause != DamageCause.VOID
+                && damageCause != DamageCause.SUICIDE) {
                 event.setDamage(event.getDamage() * 2);
             }
         }
