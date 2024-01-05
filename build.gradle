@@ -30,6 +30,10 @@ repositories {
         name = 'dmulloy2-repo'
         url = "https://repo.dmulloy2.net/nexus/repository/public/"
     }
+    maven {
+        // For Simple Voice Chat
+        url = 'https://maven.maxhenkel.de/repository/public'
+    }
 }
 
 test {
@@ -52,12 +56,15 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+
+    compileOnly "de.maxhenkel.voicechat:voicechat-api:2.4.11"
 }
 
 spigot {
     apiVersion '1.18'
     depends 'WorldEdit'
     softDepends 'ProtocolLib'
+    softDepends 'voicechat'
     commands {
         create('setup') {
             description = 'Setup teams and other things, intended to be used once per world'
