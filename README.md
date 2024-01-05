@@ -8,6 +8,7 @@ This is a Spigot/Paper Plugin which runs a stealth-themed Minecraft minigame.
   - [Loading into a world](#loading-into-a-world)
   - [Run these commands](#run-these-commands)
 - [Usage](#usage)
+- [Config](#configuration)
 
 ## Requirements
 
@@ -93,3 +94,17 @@ team before running this command.
 - `/game auto on` - This will essentially run `/game start` and `/game readynext` for you on a schedule.
 This generally won't go into effect until after a game has ended, so you still need to start the first
 game.
+
+## Configuration
+
+The plugin has a large collection of settings that can be changed with the `/settings` command.
+The settings are stored in a YAML file in the plugin directory, so you can modify that, but unless
+otherwise noted there are no settings that need the game to be restarted.
+
+The settings save automatically when the plugin is shut down, but might not if the game crashes,
+so run `/settings save` periodically when modifying settings.
+
+See [Settings.md](#Settings.md) for a comprehensive list of settings.
+
+If you would like something to be made customizable, I might be able to add a setting for it.
+Please open an issue on GitHub.
