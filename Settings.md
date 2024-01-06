@@ -364,4 +364,14 @@ I might change in the future.
             frames.
         </td>
     </tr>
+    <tr>
+        <td>walkieTalkie</td><td>true</td>
+        <td>
+            Requires Simple Voice Chat to be installed on the server. If true, then holding an
+            item named "Walkie-Talkie" will send whatever you say over the microphone to everyone
+            else on your team with Simple Voice Chat installed.
+            You can use this command to get a Walkie-Talkie:
+            <code>/give @s dried_kelp{display:{Name:'[{"text":"Walkie-Talkie","italic":false}]'}}</code>
+        </td>
+    </tr>
 </table>

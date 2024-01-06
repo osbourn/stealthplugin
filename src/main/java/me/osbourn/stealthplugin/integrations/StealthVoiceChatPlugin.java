@@ -6,6 +6,7 @@ import de.maxhenkel.voicechat.api.VoicechatPlugin;
 import de.maxhenkel.voicechat.api.VoicechatServerApi;
 import de.maxhenkel.voicechat.api.events.EventRegistration;
 import de.maxhenkel.voicechat.api.events.MicrophonePacketEvent;
+import me.osbourn.stealthplugin.settings.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,6 +34,10 @@ public class StealthVoiceChatPlugin implements VoicechatPlugin {
     }
 
     private void onMicrophonePacket(MicrophonePacketEvent event) {
+        if (!Settings.walkieTalkie) {
+            return;
+        }
+
         // This code is similar to the code from here:
         // https://github.com/Flaton1/walkie-talkie-mod/blob/1.20.1/common/src/main/java/fr/flaton/walkietalkie/WalkieTalkieVoiceChatPlugin.java
         VoicechatServerApi voicechatServerApi = event.getVoicechat();
