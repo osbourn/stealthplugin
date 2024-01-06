@@ -13,7 +13,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.Objects;
 
-public class VoiceChatPlugin implements VoicechatPlugin {
+public class StealthVoiceChatPlugin implements VoicechatPlugin {
     @Override
     public String getPluginId() {
         return "stealthplugin";
