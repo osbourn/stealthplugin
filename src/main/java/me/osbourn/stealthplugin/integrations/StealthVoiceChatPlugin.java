@@ -7,7 +7,9 @@ import de.maxhenkel.voicechat.api.VoicechatServerApi;
 import de.maxhenkel.voicechat.api.events.EventRegistration;
 import de.maxhenkel.voicechat.api.events.MicrophonePacketEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -35,15 +37,15 @@ public class StealthVoiceChatPlugin implements VoicechatPlugin {
         VoicechatServerApi voicechatServerApi = event.getVoicechat();
         var senderConnection = event.getSenderConnection();
         if (senderConnection == null) {
-            System.out.println("error");
             return;
         }
         Player senderPlayer = (Player) senderConnection.getPlayer().getPlayer();
-        for (Player recieverPlayer : Bukkit.getOnlinePlayers()) {
-            VoicechatConnection connection = voicechatServerApi.getConnectionOf(recieverPlayer.getUniqueId());
-            if (connection != null && !senderPlayer.equals(recieverPlayer) && onSameTeam(senderPlayer, recieverPlayer)) {
-                voicechatServerApi.sendStaticSoundPacketTo(connection, event.getPacket().staticSoundPacketBuilder().build());
-                System.out.println("Sent " + senderPlayer.getName() + " to " + recieverPlayer.getName());
+        if (holdingWalkieTalkie(senderPlayer)) {
+            for (Player recieverPlayer : Bukkit.getOnlinePlayers()) {
+                VoicechatConnection connection = voicechatServerApi.getConnectionOf(recieverPlayer.getUniqueId());
+                if (connection != null && !senderPlayer.equals(recieverPlayer) && onSameTeam(senderPlayer, recieverPlayer)) {
+                    voicechatServerApi.sendStaticSoundPacketTo(connection, event.getPacket().staticSoundPacketBuilder().build());
+                }
             }
         }
     }
@@ -53,5 +55,11 @@ public class StealthVoiceChatPlugin implements VoicechatPlugin {
         Team team1 = scoreboard.getEntryTeam(player1.getName());
         Team team2 = scoreboard.getEntryTeam(player2.getName());
         return team1 != null && team1.equals(team2);
+    }
+
+    private boolean holdingWalkieTalkie(Player player) {
+        ItemStack mainHandItem = player.getInventory().getItemInMainHand();
+        ItemStack offHandItem = player.getInventory().getItemInOffHand();
+        return mainHandItem.getType() == Material.IRON_INGOT || offHandItem.getType() == Material.IRON_INGOT;
     }
 }
