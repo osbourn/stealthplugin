@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -60,6 +61,14 @@ public class StealthVoiceChatPlugin implements VoicechatPlugin {
     private boolean holdingWalkieTalkie(Player player) {
         ItemStack mainHandItem = player.getInventory().getItemInMainHand();
         ItemStack offHandItem = player.getInventory().getItemInOffHand();
-        return mainHandItem.getType() == Material.IRON_INGOT || offHandItem.getType() == Material.IRON_INGOT;
+        return (isWalkieTalkie(mainHandItem) || isWalkieTalkie(offHandItem))
+                && (mainHandItem.getType() != Material.CROSSBOW && offHandItem.getType() != Material.CROSSBOW);
+    }
+
+    private boolean isWalkieTalkie(ItemStack stack) {
+        if (stack == null) return false;
+        ItemMeta itemMeta = stack.getItemMeta();
+        if (itemMeta == null) return false;
+        return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equalsIgnoreCase("walkie-talkie");
     }
 }
