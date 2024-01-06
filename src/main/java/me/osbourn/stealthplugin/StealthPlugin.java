@@ -4,6 +4,7 @@ import me.osbourn.stealthplugin.commands.*;
 import me.osbourn.stealthplugin.handlers.*;
 import me.osbourn.stealthplugin.integrations.GlowEffectManager;
 import me.osbourn.stealthplugin.integrations.ProtocolIntegration;
+import me.osbourn.stealthplugin.integrations.SimpleVoiceChatIntegration;
 import me.osbourn.stealthplugin.settings.Settings;
 import me.osbourn.stealthplugin.settings.SettingsManager;
 import me.osbourn.stealthplugin.util.GameLoop;
@@ -61,6 +62,14 @@ public class StealthPlugin extends JavaPlugin {
             protocolIntegration.setup(glowEffectManager);
         } else {
             this.getLogger().warning("ProtocolLib not found, some features will not be available");
+        }
+
+        if (Bukkit.getPluginManager().isPluginEnabled("voicechat")) {
+            var simpleVoiceChatIntegration = new SimpleVoiceChatIntegration();
+            simpleVoiceChatIntegration.setup(this);
+            this.getLogger().info("Simple Voice Chat specific features enabled");
+        } else {
+            this.getLogger().warning("Simple Voice Chat not found, voice chat integration disabled");
         }
     }
 

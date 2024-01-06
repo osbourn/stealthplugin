@@ -96,4 +96,6 @@ public final class Settings {
     public static boolean igniteCocktails = true;
     @Setting(name = "portalSystemEnabled")
     public static boolean portalSystemEnabled = true;
+    @Setting(name = "walkieTalkie")
+    public static boolean walkieTalkie = true;
 }
