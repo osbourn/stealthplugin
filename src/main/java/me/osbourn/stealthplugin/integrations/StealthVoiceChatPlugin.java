@@ -66,8 +66,7 @@ public class StealthVoiceChatPlugin implements VoicechatPlugin {
     private boolean holdingWalkieTalkie(Player player) {
         ItemStack mainHandItem = player.getInventory().getItemInMainHand();
         ItemStack offHandItem = player.getInventory().getItemInOffHand();
-        return (isWalkieTalkie(mainHandItem) || isWalkieTalkie(offHandItem))
-                && (mainHandItem.getType() != Material.CROSSBOW && offHandItem.getType() != Material.CROSSBOW);
+        return isWalkieTalkie(mainHandItem) && offHandItem.getType() != Material.CROSSBOW;
     }
 
     private boolean isWalkieTalkie(ItemStack stack) {
