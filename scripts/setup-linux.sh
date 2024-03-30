@@ -56,3 +56,12 @@ bash start.sh
 
 echo 'Accepting EULA...'
 sed -i -e 's/eula=false/eula=true/' eula.txt
+
+echo 'Downloading recommended plugins...'
+cd plugins
+curl -O 'https://cdn.modrinth.com/data/1u6JkXh5/versions/JzCMkGax/worldedit-bukkit-7.3.0.jar'
+curl -O 'https://cdn.modrinth.com/data/9eGKb6K1/versions/WvPmSPnl/voicechat-bukkit-2.5.10.jar'
+curl -O 'https://cdn.modrinth.com/data/MEPADOya/versions/wVSaDcGA/voicechat-interaction-paper-v1.3.1%2B1.20.2.jar'
+curl -O 'https://cdn.modrinth.com/data/MubyTbnA/versions/Y9N0QwjG/FreedomChat-1.5.2.jar'
+# Currently skipping ProtocolLib since it is in development for 1.20, although unstable dev versions do exist
+cd ..
