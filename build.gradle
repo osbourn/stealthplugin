@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'kr.entree.spigradle' version '2.4.3'
+    id 'maven-publish'
 }
 
 group = 'me.osbourn'
@@ -192,5 +193,23 @@ processResources {
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/osbourn/stealthplugin")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
     }
 }
