@@ -57,6 +57,15 @@ bash start.sh
 echo 'Accepting EULA...'
 sed -i -e 's/eula=false/eula=true/' eula.txt
 
+echo 'Downloading stealthplugin'
+echo 'Making API call to find current version URL...'
+DOWNLOAD_URL=$(curl https://api.github.com/repos/osbourn/stealthplugin/releases/latest |
+  grep -o 'https://github.com/osbourn/stealthplugin/releases/download/.*/stealthplugin-.*\.jar')
+cd plugins
+echo "Downloading $DOWNLOAD_URL"
+curl -O "$DOWNLOAD_URL"
+cd ..
+
 echo 'Downloading recommended plugins...'
 cd plugins
 curl -O 'https://cdn.modrinth.com/data/1u6JkXh5/versions/JzCMkGax/worldedit-bukkit-7.3.0.jar'
