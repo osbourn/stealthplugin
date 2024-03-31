@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-echo '*** Part 1: Java installation ***'
+echo 'Checking for java...'
 if command -v java &> /dev/null
 then
   echo 'Java is installed. Please make sure it is the correct version (17 and up).'
@@ -17,15 +17,16 @@ else
     echo 'Installation finished.'
   elif command -v yum &> /dev/null
   then
+    # For my purposes, this is most likely Amazon Linux.
     echo 'Using yum to install java'
-    echo 'TODO: Not implemented yet'
+    echo 'Running yum --assumeyes install java-17-amazon-corretto.x86_64'
+    sudo yum --assumeyes install java-17-amazon-corretto.x86_64
+    echo 'Installation finished.'
   else
     echo 'Error: Neither apt nor yum is installed. Please install java manually.'
     exit 1
   fi
 fi
-
-echo '*** Part 2: Server installation and configuration ***'
 
 echo 'Making and entering ~/minecraft/ directory...'
 cd ~
