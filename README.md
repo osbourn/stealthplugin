@@ -17,6 +17,8 @@ This is a Spigot/Paper Plugin which runs a stealth-themed Minecraft minigame.
 It uses blocks from 1.18 so earlier versions aren't possible, but feel free to contact me for
 specific version requests.)
 - WorldEdit 7.2.0 or higher. Used to paste the map included in the plugin.
+Note (March 30, 2024): The current version of WorldEdit (7.3.0) seems to be breaking things. Please
+use 7.2.18 while I investigate.
 - (Optional) ProtocolLib 4.8.0 or higher. Used for certain extra features, like glowing teammates
   (this is not working very well right now, so feel free to skip this for the time being).
 

@@ -69,7 +69,7 @@ cd ..
 
 echo 'Downloading recommended plugins...'
 cd plugins
-curl -O 'https://cdn.modrinth.com/data/1u6JkXh5/versions/JzCMkGax/worldedit-bukkit-7.3.0.jar'
+curl -O 'https://cdn.modrinth.com/data/1u6JkXh5/versions/aNn2Fqf4/worldedit-bukkit-7.2.18-dist.jar'
 curl -O 'https://cdn.modrinth.com/data/9eGKb6K1/versions/WvPmSPnl/voicechat-bukkit-2.5.10.jar'
 curl -O 'https://cdn.modrinth.com/data/MEPADOya/versions/wVSaDcGA/voicechat-interaction-paper-v1.3.1%2B1.20.2.jar'
 curl -O 'https://cdn.modrinth.com/data/MubyTbnA/versions/Y9N0QwjG/FreedomChat-1.5.2.jar'
