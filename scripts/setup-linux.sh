@@ -64,7 +64,7 @@ DOWNLOAD_URL=$(curl https://api.github.com/repos/osbourn/stealthplugin/releases/
   grep -o 'https://github.com/osbourn/stealthplugin/releases/download/.*/stealthplugin-.*\.jar')
 cd plugins
 echo "Downloading $DOWNLOAD_URL"
-curl -O "$DOWNLOAD_URL"
+curl -L -O "$DOWNLOAD_URL"
 cd ..
 
 echo 'Downloading recommended plugins...'
